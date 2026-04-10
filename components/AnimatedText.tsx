@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, Variants } from "framer-motion";
-import { ElementType } from "react";
+import { motion, type Variants } from "framer-motion";
+import type { ElementType } from "react";
 
 interface AnimatedTextProps {
   text: string;

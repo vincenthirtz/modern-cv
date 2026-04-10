@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, MouseEvent, ReactNode } from "react";
+import { useRef, type MouseEvent, type ReactNode } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
 interface MagneticButtonProps {

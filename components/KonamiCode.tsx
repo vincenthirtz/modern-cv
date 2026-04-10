@@ -22,7 +22,7 @@ const SEQUENCE = [
  */
 export default function KonamiCode() {
   const [active, setActive] = useState(false);
-  const [progress, setProgress] = useState(0);
+  const [_progress, setProgress] = useState(0);
 
   useEffect(() => {
     let buffer: string[] = [];
