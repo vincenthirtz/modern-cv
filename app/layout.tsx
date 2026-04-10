@@ -86,12 +86,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       suppressHydrationWarning
     >
       <head>
-        {/* Flux RSS */}
+        {/* Flux RSS & Atom */}
         <link
           rel="alternate"
           type="application/rss+xml"
-          title="Vincent Hirtz — Notes"
+          title="Vincent Hirtz — Notes (RSS)"
           href="/feed.xml"
+        />
+        <link
+          rel="alternate"
+          type="application/atom+xml"
+          title="Vincent Hirtz — Notes (Atom)"
+          href="/feed.atom"
         />
         {/* Évite le flash en chargeant la préférence avant le rendu React */}
         <script

@@ -1,0 +1,174 @@
+"use client";
+
+import { useState, useMemo } from "react";
+import Link from "next/link";
+import Fuse from "fuse.js";
+import type { ArticleMeta } from "@/lib/articles";
+
+interface NotesFiltersProps {
+  articles: ArticleMeta[];
+}
+
+/**
+ * Composant client pour filtrer et rechercher les articles.
+ * Filtrage par catégorie + recherche full-text via Fuse.js.
+ */
+export default function NotesFilters({ articles }: NotesFiltersProps) {
+  const [query, setQuery] = useState("");
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+
+  // Extraire les catégories uniques
+  const categories = useMemo(
+    () => [...new Set(articles.map((a) => a.category))].sort(),
+    [articles],
+  );
+
+  // Index Fuse.js pour la recherche
+  const fuse = useMemo(
+    () =>
+      new Fuse(articles, {
+        keys: [
+          { name: "title", weight: 0.4 },
+          { name: "excerpt", weight: 0.3 },
+          { name: "category", weight: 0.2 },
+          { name: "dateLabel", weight: 0.1 },
+        ],
+        threshold: 0.4,
+        ignoreLocation: true,
+      }),
+    [articles],
+  );
+
+  // Filtrage combiné : catégorie + recherche
+  const filtered = useMemo(() => {
+    let results = articles;
+
+    // Filtre par catégorie
+    if (activeCategory) {
+      results = results.filter((a) => a.category === activeCategory);
+    }
+
+    // Recherche full-text
+    if (query.trim()) {
+      const fuseResults = fuse.search(query);
+      const slugs = new Set(fuseResults.map((r) => r.item.slug));
+      results = results.filter((a) => slugs.has(a.slug));
+    }
+
+    return results;
+  }, [articles, activeCategory, query, fuse]);
+
+  return (
+    <>
+      {/* Barre de recherche + filtres */}
+      <div className="mb-12 space-y-4">
+        {/* Recherche */}
+        <div className="relative">
+          <svg
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--fg-dim)]"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Rechercher un article..."
+            aria-label="Rechercher dans les articles"
+            className="w-full rounded-xl border bg-transparent py-3 pl-11 pr-4 font-mono text-sm text-[var(--fg)] placeholder:text-[var(--fg-dim)] focus:border-[var(--color-accent)] focus:outline-none"
+            style={{ borderColor: "var(--border-strong)" }}
+          />
+        </div>
+
+        {/* Filtres par catégorie */}
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            onClick={() => setActiveCategory(null)}
+            className={`rounded-full border px-3 py-1 font-mono text-[10px] uppercase tracking-widest transition-colors ${
+              activeCategory === null
+                ? "border-[var(--color-accent)] text-[var(--color-accent)]"
+                : "text-[var(--fg-muted)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            }`}
+            style={{
+              borderColor: activeCategory === null ? "var(--color-accent)" : "var(--border-strong)",
+            }}
+          >
+            Tous
+          </button>
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
+              className={`rounded-full border px-3 py-1 font-mono text-[10px] uppercase tracking-widest transition-colors ${
+                activeCategory === cat
+                  ? "border-[var(--color-accent)] text-[var(--color-accent)]"
+                  : "text-[var(--fg-muted)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+              }`}
+              style={{
+                borderColor:
+                  activeCategory === cat ? "var(--color-accent)" : "var(--border-strong)",
+              }}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Résultats */}
+      {filtered.length === 0 ? (
+        <div className="py-16 text-center">
+          <p className="font-serif text-2xl text-[var(--fg-muted)]">Aucun article trouvé.</p>
+          <p className="mt-2 text-sm text-[var(--fg-dim)]">
+            Essayez un autre terme ou retirez le filtre.
+          </p>
+        </div>
+      ) : (
+        <ul className="divide-y" style={{ borderColor: "var(--border)" }}>
+          {filtered.map((article) => (
+            <li key={article.slug}>
+              <Link href={`/notes/${article.slug}`} className="group block py-8 transition-colors">
+                <div className="mb-3 flex flex-wrap items-center gap-3 font-mono text-[10px] uppercase tracking-[0.2em]">
+                  <span
+                    className="rounded-full border px-3 py-1 text-[var(--color-accent)]"
+                    style={{ borderColor: "var(--color-accent)" }}
+                  >
+                    {article.category}
+                  </span>
+                  <span className="text-[var(--fg-muted)]">{article.dateLabel}</span>
+                  <span className="text-[var(--fg-dim)]">·</span>
+                  <span className="text-[var(--fg-muted)]">{article.readTime}</span>
+                </div>
+                <h2 className="font-serif text-3xl leading-tight transition-colors group-hover:text-[var(--color-accent)] md:text-4xl">
+                  {article.title}
+                </h2>
+                <p className="mt-3 max-w-2xl text-[var(--fg-muted)]">{article.excerpt}</p>
+                <div className="mt-4 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]">
+                  Lire l&apos;article{" "}
+                  <span className="transition-transform group-hover:translate-x-1">→</span>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {/* Compteur de résultats */}
+      {(query || activeCategory) && filtered.length > 0 && (
+        <div className="mt-6 font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]">
+          {filtered.length} article{filtered.length > 1 ? "s" : ""} trouvé
+          {filtered.length > 1 ? "s" : ""}
+        </div>
+      )}
+    </>
+  );
+}

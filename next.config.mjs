@@ -30,7 +30,7 @@ const nextConfig = {
 
   // Tree-shaking agressif pour les gros packages d'animation
   experimental: {
-    optimizePackageImports: ["motion", "lenis"],
+    optimizePackageImports: ["motion", "lenis", "fuse.js"],
   },
 
   // Formats d'image modernes auto si on ajoute des <Image>
@@ -49,9 +49,7 @@ const nextConfig = {
       {
         // Cache long pour les assets statiques
         source: "/(.*)\\.(svg|jpg|jpeg|png|webp|avif|ico|woff2)",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-        ],
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
       },
     ];
   },

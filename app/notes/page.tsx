@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ARTICLES } from "@/lib/articles";
+import { ARTICLES, type ArticleMeta } from "@/lib/articles";
+import NotesFilters from "@/components/NotesFilters";
 
 export const metadata: Metadata = {
   title: "Notes — Vincent Hirtz",
@@ -19,8 +20,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary",
     title: "Notes — Vincent Hirtz",
-    description:
-      "Retours d'expérience et réflexions sur le développement front-end.",
+    description: "Retours d'expérience et réflexions sur le développement front-end.",
     creator: "@vincenthirtz",
   },
 };
@@ -44,7 +44,15 @@ const breadcrumbJsonLd = {
   ],
 };
 
+/** Extrait les méta sérialisables (sans le composant Content). */
+function toMeta(article: (typeof ARTICLES)[number]): ArticleMeta {
+  const { Content, ...meta } = article;
+  return meta;
+}
+
 export default function NotesIndexPage() {
+  const articlesMeta = ARTICLES.map(toMeta);
+
   return (
     <main className="relative z-[2] px-6 pt-32 pb-32 sm:pt-40">
       <script
@@ -72,46 +80,17 @@ export default function NotesIndexPage() {
             </span>
           </div>
           <h1 className="font-serif text-[clamp(2.5rem,7vw,5.5rem)] leading-[0.95] tracking-tight">
-            J'écris pour <span className="italic text-[var(--color-accent)]">penser</span> plus
+            J&apos;écris pour <span className="italic text-[var(--color-accent)]">penser</span> plus
             clairement.
           </h1>
           <p className="mt-6 max-w-xl text-lg text-[var(--fg-muted)]">
-            Quelques notes longues sur le métier — frameworks, architecture, tests, leadership.
-            Pas de hot takes, juste du retour d'expérience.
+            Quelques notes longues sur le métier — frameworks, architecture, tests, leadership. Pas
+            de hot takes, juste du retour d&apos;expérience.
           </p>
         </div>
 
-        {/* Liste */}
-        <ul className="divide-y" style={{ borderColor: "var(--border)" }}>
-          {ARTICLES.map((article) => (
-            <li key={article.slug}>
-              <Link
-                href={`/notes/${article.slug}`}
-                className="group block py-8 transition-colors"
-              >
-                <div className="mb-3 flex flex-wrap items-center gap-3 font-mono text-[10px] uppercase tracking-[0.2em]">
-                  <span
-                    className="rounded-full border px-3 py-1 text-[var(--color-accent)]"
-                    style={{ borderColor: "var(--color-accent)" }}
-                  >
-                    {article.category}
-                  </span>
-                  <span className="text-[var(--fg-muted)]">{article.dateLabel}</span>
-                  <span className="text-[var(--fg-dim)]">·</span>
-                  <span className="text-[var(--fg-muted)]">{article.readTime}</span>
-                </div>
-                <h2 className="font-serif text-3xl leading-tight transition-colors group-hover:text-[var(--color-accent)] md:text-4xl">
-                  {article.title}
-                </h2>
-                <p className="mt-3 max-w-2xl text-[var(--fg-muted)]">{article.excerpt}</p>
-                <div className="mt-4 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]">
-                  Lire l'article{" "}
-                  <span className="transition-transform group-hover:translate-x-1">→</span>
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        {/* Filtres + liste d'articles */}
+        <NotesFilters articles={articlesMeta} />
       </div>
     </main>
   );
