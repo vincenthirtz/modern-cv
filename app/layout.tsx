@@ -108,6 +108,26 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             `,
           }}
         />
+        {/* JSON-LD WebSite schema pour Google rich results */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              url: "https://vincenthirtz.fr",
+              name: "Vincent Hirtz — Lead Developer & Architecte Logiciel",
+              description:
+                "Lead Developer basé à Lyon. Créateur de Pulse JS Framework. Curiosité infinie pour les nouvelles technos.",
+              inLanguage: "fr",
+              author: {
+                "@type": "Person",
+                name: "Vincent Hirtz",
+                url: "https://vincenthirtz.fr",
+              },
+            }),
+          }}
+        />
         {/* JSON-LD Person schema pour Google rich results */}
         <script
           type="application/ld+json"

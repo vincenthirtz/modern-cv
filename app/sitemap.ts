@@ -29,6 +29,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    {
+      url: `${base}/cv`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.7,
+    },
     ...articleEntries,
   ];
 }
