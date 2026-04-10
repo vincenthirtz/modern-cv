@@ -25,10 +25,9 @@ const child: Variants = {
     y: 0,
     filter: "blur(0px)",
     transition: {
-      type: "spring",
-      damping: 14,
-      stiffness: 100,
-      clamp: true,
+      opacity: { type: "spring", damping: 14, stiffness: 100 },
+      y: { type: "spring", damping: 14, stiffness: 100 },
+      filter: { type: "tween", duration: 0.4, ease: "easeOut" },
     },
   },
 };
