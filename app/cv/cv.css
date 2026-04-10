@@ -1,0 +1,280 @@
+/* ============================================================
+   CV — styles dédiés
+   Colorimétrie sombre comme le portfolio à l'écran,
+   bascule vers une version "encre noire sur papier blanc" à l'impression.
+   ============================================================ */
+
+.cv-doc {
+  background: var(--elevated);
+  border: 1px solid var(--border-strong);
+  border-radius: 1.25rem;
+  padding: 3rem 3.5rem;
+  box-shadow: 0 60px 120px -60px rgba(0, 0, 0, 0.6);
+}
+
+/* Header */
+.cv-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid var(--color-accent);
+  margin-bottom: 2rem;
+}
+
+.cv-name {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.cv-role {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--color-accent);
+  margin-top: 0.5rem;
+}
+
+.cv-contact {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.8rem;
+  color: var(--fg-muted);
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.cv-contact a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.cv-contact a:hover {
+  color: var(--color-accent);
+}
+
+.cv-icon {
+  display: inline-block;
+  width: 1.1em;
+  margin-right: 0.4em;
+  text-align: center;
+  opacity: 0.7;
+}
+
+/* Sections */
+.cv-section {
+  margin-top: 2rem;
+}
+
+.cv-section-title {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--color-accent);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border-strong);
+}
+
+.cv-section p {
+  color: var(--fg-muted);
+  font-size: 0.9rem;
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* Compétences */
+.cv-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem 2rem;
+}
+
+.cv-skill-cat {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.8rem;
+  margin-bottom: 0.4rem;
+  color: var(--fg);
+}
+
+.cv-skill-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.82rem;
+  color: var(--fg-muted);
+  line-height: 1.7;
+}
+
+/* Expériences */
+.cv-job {
+  margin-bottom: 1.5rem;
+  page-break-inside: avoid;
+}
+
+.cv-job-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.cv-job-title {
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--fg);
+}
+
+.cv-job-company {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-accent);
+  margin-top: 0.15rem;
+}
+
+.cv-job-period {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--fg-muted);
+  white-space: nowrap;
+}
+
+.cv-job-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+  color: var(--fg-muted);
+  line-height: 1.6;
+}
+
+.cv-job-list li {
+  position: relative;
+  padding-left: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.cv-job-list li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--color-accent);
+}
+
+.cv-job-detail {
+  font-size: 0.85rem;
+  color: var(--fg-muted);
+}
+
+/* Section deux colonnes (langues + intérêts) */
+.cv-section--two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+/* Responsive mobile */
+@media (max-width: 720px) {
+  .cv-doc {
+    padding: 2rem 1.5rem;
+  }
+  .cv-header {
+    grid-template-columns: 1fr;
+  }
+  .cv-contact {
+    text-align: left;
+  }
+  .cv-grid,
+  .cv-section--two {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================
+   Mode impression — A4, encre noire sur papier blanc
+   ============================================================ */
+@media print {
+  @page {
+    size: A4;
+    margin: 1.5cm 1.8cm;
+  }
+
+  /* Cache tout ce qui n'est pas le CV : nav, actions, footer, etc. */
+  .cv-actions,
+  .skip-link,
+  header[class*="fixed"],
+  .reduced-effects,
+  .pulse-dot,
+  .bg-noise {
+    display: none !important;
+  }
+
+  /* Force le fond blanc et le texte noir */
+  html,
+  body,
+  .cv-page,
+  .cv-doc {
+    background: #ffffff !important;
+    color: #0a0a0b !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .cv-name,
+  .cv-job-title,
+  .cv-skill-cat {
+    color: #0a0a0b !important;
+  }
+
+  .cv-section p,
+  .cv-skill-list,
+  .cv-job-list,
+  .cv-contact,
+  .cv-job-detail {
+    color: #2a2a2a !important;
+  }
+
+  /* Accent reste vert mais en plus sombre pour le print noir & blanc */
+  .cv-section-title,
+  .cv-job-company,
+  .cv-role,
+  .cv-job-list li::before {
+    color: #5a7f00 !important;
+  }
+
+  .cv-section-title {
+    border-bottom-color: #cccccc !important;
+  }
+
+  .cv-header {
+    border-bottom-color: #5a7f00 !important;
+  }
+
+  .cv-contact a {
+    color: #2a2a2a !important;
+    text-decoration: none !important;
+  }
+
+  /* Évite que les sections soient coupées entre deux pages */
+  .cv-section {
+    page-break-inside: avoid;
+  }
+}

@@ -1,0 +1,266 @@
+@import "tailwindcss";
+
+@theme {
+  /* Couleurs de la marque */
+  --color-ink: #0a0a0b;
+  --color-ink-soft: #111114;
+  --color-ink-elevated: #16161a;
+  --color-bone: #f0efe9;
+  --color-bone-muted: #a8a79f;
+  --color-bone-dim: #6b6a64;
+  --color-accent: #c8ff00;
+  --color-accent-soft: #d9ff4d;
+  --color-accent-contrast: #1a1a1a;
+  --color-accent-fg: #5a7a00;
+  --color-border: rgba(240, 239, 233, 0.08);
+  --color-border-strong: rgba(240, 239, 233, 0.16);
+
+  /* Light mode */
+  --color-paper: #f5f4ee;
+  --color-paper-soft: #ebeae3;
+
+  /* Polices */
+  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+
+/* Reset & base */
+:root {
+  color-scheme: dark;
+  --bg: var(--color-ink);
+  --fg: var(--color-bone);
+  --fg-muted: var(--color-bone-muted);
+  --fg-dim: var(--color-bone-dim);
+  --elevated: var(--color-ink-elevated);
+  --border: var(--color-border);
+  --border-strong: var(--color-border-strong);
+}
+
+:root.light {
+  color-scheme: light;
+  --bg: var(--color-paper);
+  --fg: #0a0a0b;
+  --fg-muted: #4a4a44;
+  --fg-dim: #75746e;
+  --elevated: #ffffff;
+  --border: rgba(10, 10, 11, 0.1);
+  --border-strong: rgba(10, 10, 11, 0.2);
+  /* Contraste WCAG AA : en mode light, utiliser les variantes sombres de l'accent.
+     Fallback = Lime light (#4a7a00), écrasé par JS si un autre accent est choisi. */
+  --color-accent: var(--color-accent-light, #4a7a00);
+  --color-accent-soft: var(--color-accent-light-soft, #6b9a00);
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  /* Le BackgroundShift fixe gère l'arrière-plan animé.
+     On garde une couleur de fallback identique pour les cas no-JS / hors viewport. */
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-ink);
+}
+
+/* Scrollbar discret */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}
+
+/* Grille de fond type graph paper */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, var(--border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+
+/* Grain noise overlay (SVG inline) */
+.bg-noise {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Texte avec gradient subtil */
+.text-gradient {
+  background: linear-gradient(180deg, var(--fg) 0%, var(--fg-muted) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Halo accent radial pour la hero */
+.bg-aurora {
+  background:
+    radial-gradient(800px circle at 15% 10%, rgba(200, 255, 0, 0.08), transparent 50%),
+    radial-gradient(600px circle at 85% 80%, rgba(200, 255, 0, 0.05), transparent 50%);
+}
+
+/* Bouton magnétique réutilisable */
+.btn-accent {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  background: var(--color-accent);
+  color: var(--color-ink);
+  font-weight: 500;
+  border-radius: 999px;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s;
+  will-change: transform;
+}
+.btn-accent:hover {
+  box-shadow: 0 0 0 6px rgba(200, 255, 0, 0.15), 0 0 40px rgba(200, 255, 0, 0.4);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  background: transparent;
+  color: var(--fg);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  transition: all 0.3s;
+}
+.btn-ghost:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* Cards génériques */
+.card {
+  background: var(--elevated);
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+  transition: border-color 0.4s, transform 0.4s, box-shadow 0.4s;
+  will-change: transform;
+}
+.card:hover {
+  border-color: var(--color-accent);
+  transform: translateY(-4px);
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--color-accent) inset, 0 0 60px -20px rgba(200, 255, 0, 0.25);
+}
+
+/* Pulse vert "disponible" */
+@keyframes pulseDot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.6); }
+  50% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+}
+.pulse-dot {
+  animation: pulseDot 2s ease-in-out infinite;
+}
+
+/* Marquee */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 40s linear infinite;
+}
+
+/* Utilitaires polices */
+.font-serif { font-family: var(--font-serif); }
+.font-sans { font-family: var(--font-sans); }
+.font-mono { font-family: var(--font-mono); }
+
+/* Liens */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Hover lisible quelle que soit la couleur d'accent choisie */
+.hover-accent:hover {
+  color: var(--color-accent-fg);
+}
+
+:root:not(.light) .hover-accent:hover {
+  color: var(--color-accent);
+}
+
+/* Réduction de mouvement */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Focus visible élégant */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* Fade vertical doux au top et au bottom des sections — adoucit les transitions */
+.section-fade {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+}
+
+/* Skip-to-content : caché jusqu'au focus clavier */
+.skip-link {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1000;
+  padding: 0.75rem 1.25rem;
+  background: var(--color-accent);
+  color: var(--color-ink);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  border-radius: 999px;
+  transform: translateY(-150%);
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: none;
+}

@@ -1,0 +1,167 @@
+export const meta = {
+  slug: "vue-laravel-retour-experience",
+  title: "Vue.js + Laravel : retour d'expérience après 4 ans chez SAPIENDO",
+  excerpt:
+    "Quatre ans à faire vivre une SPA Vue.js sur un back Laravel. Les pièges, les bonnes décisions, et ce que je referais différemment.",
+  category: "Architecture",
+  date: "2026-01-20",
+  dateLabel: "Janvier 2026",
+  readTime: "12 min",
+};
+
+<Lead>
+  Pendant 4 ans, j'ai été Lead Front-End chez SAPIENDO sur une plateforme
+  SaaS de gestion de la retraite. Stack : Vue.js côté front, Laravel côté
+  back. Voici ce que cette stack m'a appris — le bon, le moins bon, et ce
+  que je referais autrement.
+</Lead>
+
+## Pourquoi Vue + Laravel et pas autre chose
+
+Quand j'ai rejoint l'équipe, le choix avait déjà été fait. Ma première
+réaction a été : « Pourquoi pas Next ou Nuxt ? Pourquoi pas un mono-repo
+TypeScript ? » Avec le recul, je trouve que ce choix était plus malin
+qu'il n'y paraissait.
+
+Le contexte : un cabinet d'expertise retraite avec une équipe back PHP
+historique, des règles métier complexes, et une obligation de pouvoir
+livrer rapidement de nouvelles fonctionnalités sans casser l'existant. Dans
+ce contexte :
+
+- **Laravel** apporte une boîte à outils complète (queues, mailing, auth,
+  validation) sans avoir à les recoder.
+- **Vue** a une courbe d'apprentissage plus douce que React pour des devs
+  back qui font occasionnellement du front.
+- **L'écosystème Inertia.js** permet de bypasser une bonne partie de la
+  complexité d'une SPA classique.
+
+Pour une équipe de 6 développeurs avec deux profils full-stack et un seul
+spécialiste front, c'était la bonne décision.
+
+## Les pièges qu'on a découverts à nos dépens
+
+### 1. La double validation
+
+Premier piège classique : tu valides côté front (UX) *et* côté back
+(sécurité). C'est nécessaire, mais ça veut dire que tu écris deux fois les
+mêmes règles. Au début, on les laissait dériver. Six mois plus tard,
+certains formulaires acceptaient en front ce que le back refusait — ou
+l'inverse.
+
+Ce qu'on a fini par faire : exposer les règles de validation Laravel via
+une route `GET /api/validation/:form` qui renvoie le schéma. Le front les
+utilise pour configurer Vee-Validate. Une seule source de vérité.
+
+<CodeBlock lang="PHP">{`// Côté Laravel — règles centralisées
+class RetirementCalcRequest extends FormRequest
+{
+    public function rules(): array
+    {
+        return [
+            'birth_date' => ['required', 'date', 'before:today'],
+            'salary'     => ['required', 'numeric', 'min:0'],
+            'years'      => ['required', 'integer', 'between:1,50'],
+        ];
+    }
+}
+
+// Route exposant les règles
+Route::get('/api/validation/{form}', [ValidationController::class, 'show']);`}</CodeBlock>
+
+### 2. L'état partagé entre back et front
+
+Avec Inertia, tu hydrates ton composant Vue avec des props venant
+directement du contrôleur Laravel. Pratique, mais dangereux : tu n'as plus
+de boundary nette entre l'état serveur et l'état client.
+
+Symptôme : un dev modifie une propriété côté front, oubliant qu'elle vient
+du back. À la prochaine navigation, sa modification disparaît. Confusion
+garantie.
+
+Notre règle : **tout ce qui vient du back est readonly côté front**.
+Si tu veux le modifier, tu fais un clone local et tu envoies une mutation
+au back. Pas de magie. C'est plus verbeux, mais c'est explicite.
+
+### 3. Le couplage des routes
+
+Inertia fait que tes routes sont définies dans Laravel, mais consommées
+depuis Vue. Renomme une route Laravel, et trois écrans Vue cassent
+silencieusement (pas d'erreur de build, juste un 404 au runtime).
+
+Solution : on a généré un fichier `resources/js/routes.generated.ts` à
+chaque build, depuis les routes Laravel via Ziggy. TypeScript voit les
+routes, autocomplete marche, et un changement back casse le build front.
+Mieux qu'un 404 en prod.
+
+<Note>
+  Ziggy est génial mais peu utilisé. Si tu fais du Laravel + JS, c'est
+  probablement la pépite cachée que tu cherches.
+</Note>
+
+## Les wins qui ont vraiment compté
+
+### Cypress comme filet de sécurité
+
+On a misé sur Cypress dès le départ. Pas pour faire 1000 tests E2E
+exhaustifs, mais pour couvrir les **10 parcours critiques** — ceux qui font
+de l'argent. Connexion, simulation retraite, génération du rapport PDF,
+paiement, etc.
+
+Résultat : on a refactoré l'auth de fond en comble en deux semaines, sans
+régression visible côté client. Sans ces tests, on aurait reporté ce
+chantier de 6 mois par peur de tout casser.
+
+### Storybook pour onboarder les juniors
+
+Quand un nouveau dev arrive, il commence par lire Storybook avant de
+toucher au code. Il voit en 30 minutes tous les composants qu'il aura à
+composer, leurs variants, leurs props. C'est un investissement énorme à
+mettre en place, mais tu le rentabilises au troisième onboarding.
+
+### La discipline du code review
+
+Pas un commit n'a été mergé sans review pendant 4 ans. Pas un. Ça paraît
+bête, mais c'est ce qui a maintenu la qualité quand l'équipe a doublé. Et
+accessoirement, c'est aussi ce qui a permis aux juniors de progresser le
+plus vite.
+
+<Quote cite="Un de mes anciens devs">
+  Le truc qui m'a le plus appris, c'est pas les tutos. C'est les commentaires
+  de Vincent sur mes PR.
+</Quote>
+
+## Ce que je referais différemment
+
+### TypeScript dès le jour 1
+
+On a commencé en JavaScript pur. On est passé à TypeScript en année 2.
+Migrer 30k lignes a été douloureux. Si je recommençais : TypeScript
+partout, dès le jour 1, sans négociation.
+
+### Investir plus tôt sur le design system
+
+Notre Storybook est arrivé en année 3. Avant ça, on avait des composants
+dupliqués partout, des variants inconsistants, des couleurs hardcodées. Si
+je recommençais : **une semaine de design system avant le premier écran**.
+Token CSS, composants de base, variants documentés.
+
+### Découpler back et front plus tôt
+
+Inertia est génial pour démarrer vite, mais à un moment ça devient un
+couteau suisse qui te limite. Si je recommençais sur un produit aussi
+complexe, je passerais probablement à une vraie API REST/GraphQL en année
+2, en gardant Inertia uniquement pour les écrans simples (admin, settings).
+
+---
+
+## Conclusion
+
+Vue + Laravel n'est pas la stack la plus hype de 2026, mais c'est une
+stack *solide*. Elle privilégie la productivité d'équipe à la
+nouveauté. Elle te permet de livrer un MVP en 3 semaines et de le scaler à
+un produit mature en 4 ans, avec une équipe qui n'a pas besoin d'avoir
+suivi 200 tutoriels avant d'être productive.
+
+Et quelque part, c'est exactement ce qu'on demande à un Lead Dev :
+choisir des outils que *l'équipe* peut tenir, pas seulement ceux
+que *toi* tu trouves brillants.

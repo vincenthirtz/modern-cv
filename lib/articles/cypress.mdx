@@ -1,0 +1,186 @@
+export const meta = {
+  slug: "cypress-en-production-le-guide",
+  title: "Cypress en production : le guide que j'aurais aimé avoir",
+  excerpt:
+    "Comment construire une suite E2E qui ne devient pas un cauchemar à maintenir. Stratégies, pièges, et patterns issus de plusieurs projets.",
+  category: "Tests",
+  date: "2025-11-10",
+  dateLabel: "Novembre 2025",
+  readTime: "10 min",
+};
+
+<Lead>
+  Les tests E2E ont une réputation de cauchemar à maintenir. Lents, flaky,
+  cassés à la moindre refonte UI. Voici tout ce que j'ai appris en faisant
+  tourner des suites Cypress en production sur plusieurs projets — et ce que
+  je voudrais qu'on m'ait dit le premier jour.
+</Lead>
+
+## Pourquoi tant de monde déteste les E2E
+
+Quand un junior écrit son premier test E2E, il est conquis : il voit son
+application cliquée par une machine, c'est magique. Six mois plus tard, il
+les déteste. Parce qu'à 50 tests, ils prennent 25 minutes, ils échouent
+aléatoirement, et chaque refonte d'écran en casse la moitié.
+
+Le problème vient rarement de Cypress. Il vient de comment on l'utilise.
+
+## Les 5 règles que je m'impose sur tout projet
+
+### 1. Sélecteurs explicites uniquement
+
+Le piège #1 : sélectionner un élément par son texte ou par son
+`className`. Ça marche, jusqu'à la prochaine refonte UI où le texte change
+ou la classe disparaît. Tes tests cassent et tu ne comprends pas pourquoi.
+
+La règle : **chaque élément testable a un `data-cy` dédié**. C'est un
+contrat entre l'UI et la suite de tests. Tu peux refondre tout ce que tu
+veux, tant que tu gardes le `data-cy`, tes tests passent.
+
+<CodeBlock lang="HTML">{`<!-- ❌ Mauvais : couplé au texte et au style -->
+<button class="btn btn-primary">Valider</button>
+cy.contains("Valider").click();
+
+<!-- ✅ Bon : couplé à un contrat explicite -->
+<button data-cy="submit-form" class="btn btn-primary">Valider</button>
+cy.get('[data-cy="submit-form"]').click();`}</CodeBlock>
+
+### 2. `cy.intercept` pour tout ce qui sort
+
+Si ton test E2E dépend de l'API réelle, tu n'as pas un test E2E. Tu as un
+test d'intégration entre ton front, ton back, ton réseau, ta base, et le
+réseau Cloudflare entre les deux. Quand ça pète, bonne chance pour
+diagnostiquer.
+
+La règle : **intercepte tous les appels réseau** et fournis des fixtures.
+Tes tests deviennent reproductibles, rapides, et tu testes vraiment
+*ton front* et pas l'infra.
+
+<CodeBlock lang="JavaScript">{`// Intercepte la liste de produits avec une fixture stable
+cy.intercept("GET", "/api/products", {
+  fixture: "products/empty-list.json",
+}).as("getProducts");
+
+cy.visit("/shop");
+cy.wait("@getProducts");
+
+cy.get('[data-cy="empty-state"]').should("be.visible");`}</CodeBlock>
+
+<Note>
+  Cette règle a une exception : un seul "smoke test" qui tape la vraie API
+  en CI, sur un parcours critique. Juste pour s'assurer que back et front
+  peuvent encore se parler. Mais c'est un test, pas 200.
+</Note>
+
+### 3. Custom commands pour tout ce qui se répète
+
+Si tu écris `cy.get('[data-cy=email]').type(...)` suivi de
+`cy.get('[data-cy=password]').type(...)` dans 30 tests, t'as raté quelque
+chose. Crée une commande `cy.login(email, password)` et arrête de
+copier-coller.
+
+<CodeBlock lang="JavaScript">{`// cypress/support/commands.ts
+Cypress.Commands.add("login", (email = "demo@test.fr", password = "demo") => {
+  cy.session([email, password], () => {
+    cy.request("POST", "/api/login", { email, password });
+  });
+});
+
+// Dans un test
+cy.login();
+cy.visit("/dashboard");`}</CodeBlock>
+
+Bonus : `cy.session` permet de mettre en cache l'auth entre les tests. Tu
+gagnes 80% du temps d'exécution sur une suite qui a beaucoup de tests
+authentifiés.
+
+### 4. Pas d'attentes arbitraires
+
+Le pire pattern que je vois : `cy.wait(2000)`. Ça marche en local, ça flake
+en CI. Cypress a déjà des assertions auto-retry. Utilise-les.
+
+<CodeBlock lang="JavaScript">{`// ❌ Mauvais : pari sur un délai fixe
+cy.get('[data-cy="submit"]').click();
+cy.wait(2000);
+cy.get('[data-cy="success"]').should("be.visible");
+
+// ✅ Bon : attend l'état attendu, peu importe le temps
+cy.get('[data-cy="submit"]').click();
+cy.get('[data-cy="success"]', { timeout: 10000 }).should("be.visible");`}</CodeBlock>
+
+### 5. Un test ne dépend jamais d'un autre
+
+Chaque `it()` doit pouvoir tourner en isolation. Si ton test « édition »
+dépend que le test « création » ait tourné avant, tu as une dette technique
+cachée qui va exploser dès que tu paralléliseras.
+
+La règle : chaque test crée ses propres données via `beforeEach`
+(idéalement par appel API direct, pas en cliquant dans l'UI), tourne, et
+nettoie après lui.
+
+## L'organisation des fichiers
+
+Voici la structure que j'utilise sur tous mes projets :
+
+<CodeBlock>{`cypress/
+├── e2e/
+│   ├── auth/
+│   │   ├── login.cy.ts
+│   │   └── logout.cy.ts
+│   ├── checkout/
+│   │   ├── add-to-cart.cy.ts
+│   │   └── payment.cy.ts
+│   └── smoke/
+│       └── critical-paths.cy.ts
+├── fixtures/
+│   ├── users/
+│   ├── products/
+│   └── orders/
+└── support/
+    ├── commands.ts
+    └── e2e.ts`}</CodeBlock>
+
+Le dossier `smoke/` est spécial : il contient les 3-5 tests qui tapent la
+vraie API, lancés uniquement en CI sur un environnement de staging. Le
+reste est mocké.
+
+## Faire tenir tout ça en CI
+
+### Parallélisation
+
+Cypress Cloud (ex-Dashboard) permet la parallélisation native. Si ce n'est
+pas dans le budget, il y a des actions GitHub gratuites comme
+`cypress-io/github-action` qui acceptent un paramètre `spec`. Découpe ta
+suite en 4 chunks, fais 4 jobs parallèles, gagne 75% du temps.
+
+### Retry sur les flaky tests
+
+Par défaut, configure `retries: { runMode: 2, openMode: 0 }`. Si un test
+échoue, Cypress le retente jusqu'à 2 fois. Pas pour cacher des bugs, mais
+pour absorber les flakes réseau et CI.
+
+### Vidéos et screenshots à la demande
+
+Active les vidéos en CI uniquement, et seulement pour les tests qui
+échouent. Sinon ça remplit ton stockage et ralentit le runner pour rien.
+
+---
+
+## Conclusion
+
+Une suite Cypress qui tient la route, ce n'est pas une question de
+couverture maximale. C'est une question de **discipline** : sélecteurs
+explicites, mocks systématiques, custom commands, isolation stricte.
+
+Les tests E2E ne devraient pas être un jeu de quantité (« on a 800 tests ! »)
+mais de qualité (« nos 50 tests couvrent les 10 parcours qui font tomber
+l'entreprise quand ils cassent »). Choisis bien tes batailles.
+
+Et rappelle-toi cette règle d'or :
+
+<Note>
+  Un test qui flake une fois sur 20 est un test en lequel personne ne croit.
+  Un test en lequel personne ne croit ne sera pas regardé quand il échoue.
+  Un test qui n'est pas regardé quand il échoue est pire qu'aucun test : il
+  donne une fausse confiance.
+</Note>

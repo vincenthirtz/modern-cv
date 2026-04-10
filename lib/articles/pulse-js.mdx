@@ -1,0 +1,137 @@
+export const meta = {
+  slug: "pulse-js-framework-zero-dependance",
+  title: "Pulse JS : pourquoi j'ai créé un framework zéro-dépendance",
+  excerpt:
+    "Le retour aux fondamentaux : un framework déclaratif basé sur les sélecteurs CSS, sans build, sans abstraction inutile. Le pourquoi et le comment.",
+  category: "Open Source",
+  date: "2026-03-15",
+  dateLabel: "Mars 2026",
+  readTime: "8 min",
+};
+
+<Lead>
+  Il y a deux ans, j'ai installé un nouveau projet Next.js. Trois minutes
+  plus tard, `node_modules` pesait 380 Mo. Je me suis dit qu'il devait y avoir
+  mieux. C'est de là qu'est né Pulse JS.
+</Lead>
+
+## Le contexte : la fatigue des frameworks
+
+En 12 ans de carrière, j'ai construit des SPA avec à peu près tous les
+frameworks du marché. React, Vue, Angular, Svelte, Solid. Chacun avec ses
+forces, chacun avec sa courbe d'apprentissage, et chacun avec son écosystème
+gravitant autour : routeurs, stores, validateurs, builders.
+
+Le résultat : pour afficher un bouton qui incrémente un compteur, il faut
+**47 dépendances et un bundler de 200 Mo**. Pour quelqu'un qui a commencé à
+coder en jQuery, c'est devenu un peu absurde.
+
+Pulse JS est ma tentative de répondre à une question simple :
+
+<Quote>
+  Et si on pouvait construire des SPA modernes en n'utilisant *que* ce que le
+  navigateur sait déjà faire ?
+</Quote>
+
+## L'idée centrale : déclaratif via sélecteurs CSS
+
+La plupart des frameworks modernes — React en tête — partent d'un postulat :
+le DOM est lent, on va le virtualiser. Cette décision technique a permis des
+choses fantastiques, mais elle a aussi imposé un coût : tu dois maintenant
+décrire ton UI en JSX, transpiler ton code, et accepter que la moindre
+mutation passe par un diff.
+
+Le DOM *moderne* n'est plus lent. Il est même incroyablement rapide
+si tu l'utilises bien. Pulse JS part de cette observation et propose une
+autre voie : décrire les comportements **directement dans le HTML**, via des
+sélecteurs CSS, et laisser le navigateur faire le travail.
+
+### Un exemple vaut mieux qu'un long discours
+
+<CodeBlock lang="HTML">{`<div data-pulse="counter">
+  <button data-pulse-on="click" data-pulse-do="increment">−</button>
+  <span data-pulse-bind="count">0</span>
+  <button data-pulse-on="click" data-pulse-do="decrement">+</button>
+</div>`}</CodeBlock>
+
+<CodeBlock lang="JavaScript">{`Pulse.component("counter", {
+  state: { count: 0 },
+  actions: {
+    increment(state) { state.count++; },
+    decrement(state) { state.count--; },
+  },
+});`}</CodeBlock>
+
+Pas de build. Pas de JSX. Pas de transpilation. Tu poses le script
+`pulse.js` dans une balise `<script>`, et ça marche. Le navigateur fait
+ce qu'il sait faire : observer le DOM, écouter des événements, mettre à
+jour des éléments via leur sélecteur.
+
+## Les principes que je me suis fixés
+
+- **Zéro dépendance.** Si Pulse JS dépend d'un seul package, il a perdu son
+  pari. Tout est écrit en JavaScript moderne, sans polyfills ni helpers tiers.
+- **Pas de build step.** Tu télécharges un fichier, tu l'inclus, c'est tout.
+  Compatible avec n'importe quel back-end (Laravel, Rails, Django, statique...).
+- **Sélecteurs CSS comme API publique.** Tu connais déjà `querySelector`.
+  C'est suffisant pour décrire presque tout.
+- **Réactivité opt-in.** Tu n'as pas besoin de réactivité ? N'en utilise pas.
+  Tu en as besoin sur 3 éléments ? Tu en as sur 3 éléments.
+- **Petit.** Le bundle minifié pèse moins de 8 Ko gzippé. C'est moins qu'une
+  image de hero mal compressée.
+
+## Ce que Pulse JS n'essaie pas d'être
+
+Soyons honnêtes : Pulse JS ne va pas remplacer React pour ton application
+SaaS de 200k lignes de code. Ce n'est pas son objectif.
+
+Il vise plutôt :
+
+- Les sites institutionnels qui ont besoin d'*un peu* d'interactivité.
+- Les pages produit qui veulent un panier ou un sélecteur sans embarquer un framework.
+- Les MVP qu'on veut shipper en deux jours sans avoir à configurer Webpack.
+- Les développeurs back-end qui veulent ajouter du dynamique sans changer de mental model.
+
+<Note>
+  Pulse JS est inspiré de projets comme Alpine.js et HTMX, à qui je dois
+  beaucoup. La différence ? Pulse mise plus fort sur les sélecteurs CSS et
+  moins sur les attributs personnalisés, ce qui rend le markup plus lisible
+  à mon goût.
+</Note>
+
+## Les leçons apprises en construisant un framework
+
+### 1. Le diff est plus dur qu'il n'y paraît
+
+Au début, je voulais éviter tout diff. « Le DOM est rapide, suffit de tout
+re-render ». Faux. Quand tu as une liste de 500 éléments et que tu changes
+un seul item, refaire tout l'innerHTML coûte cher (et casse le focus, les
+sélections, les states de formulaires). J'ai fini par implémenter un mini
+diff DOM basé sur les clés — 200 lignes, mais essentielles.
+
+### 2. L'API publique est sacrée
+
+Quand tu écris ton premier framework, tu as envie d'en explorer toutes les
+idées. C'est une erreur. **Une API publique est un contrat.** Chaque méthode
+que tu exposes, tu vas devoir la maintenir pendant des années. J'ai jeté la
+moitié de ce que j'avais écrit en v0.1 pour ne garder que ce qui passait le
+test du « est-ce qu'un dev qui découvre Pulse va comprendre ça en 30 secondes ? ».
+
+### 3. La doc compte autant que le code
+
+Personne n'utilise un framework qu'il ne comprend pas. J'ai passé presque
+autant de temps sur le site `pulse-js.fr` que sur le framework lui-même. Avec
+des exemples interactifs, des recettes, et une section « pourquoi pas X » qui
+explique honnêtement quand utiliser autre chose.
+
+---
+
+## La suite
+
+Pulse JS est en v0.4 au moment où j'écris ces lignes. La v1 stable est
+prévue pour cet été, avec un système de routing déclaratif et des
+composants encapsulés. Le code est ouvert, les contributions bienvenues, et
+je suis toujours preneur de retours d'utilisation — même négatifs.
+
+Si tu veux jouer avec : [pulse-js.fr](https://pulse-js.fr). Si tu veux
+contribuer, le repo est sur [GitHub](https://github.com/vincenthirtz/pulse-js-framework).
