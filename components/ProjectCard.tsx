@@ -1,9 +1,9 @@
 "use client";
 
-import { motion } from "motion/react";
 import Image from "next/image";
 import TiltCard from "./TiltCard";
 import PulseSandbox from "./PulseSandbox";
+import useInViewCSS from "./useInViewCSS";
 
 interface Project {
   name: string;
@@ -26,12 +26,16 @@ interface ProjectCardProps {
 }
 
 export default function ProjectCard({ project, index, total, reversed }: ProjectCardProps) {
+  const { ref, inView } = useInViewCSS({ amount: 0.2 });
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 60 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
+    <div
+      ref={ref}
+      className={inView ? "anim-fade-up" : ""}
+      style={{
+        opacity: inView ? undefined : 0,
+        animationDuration: "0.8s",
+      }}
     >
       <TiltCard intensity={4} className="group">
         <article className="card relative overflow-hidden p-6 md:p-10">
@@ -123,6 +127,6 @@ export default function ProjectCard({ project, index, total, reversed }: Project
           </div>
         </article>
       </TiltCard>
-    </motion.div>
+    </div>
   );
 }

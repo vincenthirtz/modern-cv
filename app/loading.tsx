@@ -1,23 +1,23 @@
 /**
- * Skeleton minimaliste affiché pendant le chargement / la navigation.
- * Reprend les couleurs du theme pour éviter tout flash.
+ * Skeleton de chargement pour la page d'accueil.
+ * Affiché par Next.js pendant le rendu serveur de page.tsx.
  */
-export default function Loading() {
+export default function HomeLoading() {
   return (
-    <div
-      role="status"
-      aria-label="Chargement"
-      className="flex min-h-screen items-center justify-center"
-    >
-      <div className="flex items-center gap-3">
-        <span
-          className="h-2 w-2 animate-pulse rounded-full"
-          style={{ background: "var(--color-accent)" }}
-        />
-        <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
-          Loading
-        </span>
-      </div>
-    </div>
+    <main className="relative z-[2]" role="status" aria-label="Chargement">
+      {/* Hero skeleton */}
+      <section className="flex min-h-screen flex-col items-center justify-center px-6">
+        <div className="mx-auto w-full max-w-4xl space-y-6">
+          <div className="skeleton mx-auto h-4 w-40" />
+          <div className="skeleton mx-auto h-16 w-3/4 rounded-xl" />
+          <div className="skeleton mx-auto h-16 w-1/2 rounded-xl" />
+          <div className="skeleton mx-auto mt-8 h-5 w-96 max-w-full" />
+          <div className="mt-10 flex justify-center gap-4">
+            <div className="skeleton h-12 w-40 rounded-full" />
+            <div className="skeleton h-12 w-40 rounded-full" />
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }

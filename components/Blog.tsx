@@ -1,17 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "motion/react";
 import SectionTitle from "./SectionTitle";
+import useInViewCSS from "./useInViewCSS";
 import { ARTICLES } from "@/lib/articles";
 
 /**
  * Section "Notes" du portfolio. Affiche les 3 derniers articles sous forme
  * de cards cliquables vers /notes/[slug]. Source de vérité : lib/articles.
+ *
+ * Animations CSS natives avec stagger via animation-delay.
  */
 export default function Blog() {
-  // On affiche les 3 plus récents dans la home
   const articles = ARTICLES.slice(0, 3);
+  const { ref, inView } = useInViewCSS({ amount: 0.2 });
+  const { ref: linkRef, inView: linkInView } = useInViewCSS({ amount: 0.5 });
 
   return (
     <section id="blog" className="relative scroll-mt-32 py-32 px-6">
@@ -24,22 +27,15 @@ export default function Blog() {
           description="Quelques notes longues sur le métier. Pas de hot takes — juste du retour d'expérience."
         />
 
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={{
-            hidden: {},
-            visible: { transition: { staggerChildren: 0.15 } },
-          }}
-          className="grid grid-cols-1 gap-6 md:grid-cols-3"
-        >
-          {articles.map((article) => (
-            <motion.div
+        <div ref={ref} className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          {articles.map((article, i) => (
+            <div
               key={article.slug}
-              variants={{
-                hidden: { opacity: 0, y: 40 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.7 } },
+              className={inView ? "anim-fade-up" : ""}
+              style={{
+                opacity: inView ? undefined : 0,
+                animationDelay: `${i * 0.15}s`,
+                animationDuration: "0.7s",
               }}
             >
               <Link
@@ -74,17 +70,18 @@ export default function Blog() {
                   <span className="text-sm transition-transform group-hover:translate-x-1">→</span>
                 </div>
               </Link>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
 
         {/* Lien vers l'index complet */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-12 flex justify-center"
+        <div
+          ref={linkRef}
+          className={`mt-12 flex justify-center ${linkInView ? "anim-fade-up" : ""}`}
+          style={{
+            opacity: linkInView ? undefined : 0,
+            animationDelay: "0.4s",
+          }}
         >
           <Link
             href="/notes"
@@ -94,7 +91,7 @@ export default function Blog() {
             Toutes les notes
             <span>→</span>
           </Link>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
 import type { ReactNode } from "react";
+import useInViewCSS from "./useInViewCSS";
 
 interface SectionTransitionProps {
   children: ReactNode;
@@ -16,48 +16,27 @@ interface SectionTransitionProps {
  * - Léger lift vertical (60px → 0)
  * - Fade in subtil
  *
- * Le tout joué une seule fois quand la section entre dans le viewport,
- * avec une marge négative pour anticiper l'animation avant l'arrivée
- * complète.
+ * Le tout joué une seule fois quand la section entre dans le viewport.
+ * Utilise CSS natif + IntersectionObserver au lieu de Framer Motion.
  *
- * Les animations internes des composants enfants continuent de jouer
- * par-dessus, créant une cascade naturelle.
+ * Respecte prefers-reduced-motion via la media query dans globals.css.
  */
-export default function SectionTransition({
-  children,
-  delay = 0,
-}: SectionTransitionProps) {
-  const reduced = useReducedMotion();
-
-  if (reduced) {
-    // Respecte la préférence : pas d'animation, juste le rendu direct
-    return <>{children}</>;
-  }
+export default function SectionTransition({ children, delay = 0 }: SectionTransitionProps) {
+  const { ref, inView } = useInViewCSS({ amount: 0.1, rootMargin: "-10% 0px -10% 0px" });
 
   return (
-    <motion.div
-      initial={{
-        opacity: 0,
-        y: 60,
-        clipPath: "inset(15% 0% 0% 0% round 0px)",
+    <div
+      ref={ref}
+      className={inView ? "anim-section-reveal" : ""}
+      style={{
+        opacity: inView ? undefined : 0,
+        animationDelay: delay ? `${delay}s` : undefined,
+        willChange: inView ? undefined : "transform, opacity, clip-path",
+        contentVisibility: "auto",
+        containIntrinsicSize: "auto 600px",
       }}
-      whileInView={{
-        opacity: 1,
-        y: 0,
-        clipPath: "inset(0% 0% 0% 0% round 0px)",
-      }}
-      viewport={{
-        once: true,
-        margin: "-10% 0px -10% 0px",
-      }}
-      transition={{
-        duration: 1.1,
-        ease: [0.16, 1, 0.3, 1], // ease-out-expo doux
-        delay,
-      }}
-      style={{ willChange: "transform, opacity, clip-path" }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

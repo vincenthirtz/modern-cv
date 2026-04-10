@@ -13,6 +13,7 @@ import {
   Strong,
   UList,
 } from "@/components/ProseElements";
+import LinkPreview from "@/components/LinkPreview";
 
 /**
  * Mapping des éléments rendus par MDX vers nos briques typographiques.
@@ -54,6 +55,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     CodeBlock,
     InlineCode,
     Strong,
+    LinkPreview,
 
     ...components,
   };

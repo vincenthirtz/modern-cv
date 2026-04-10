@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import CopyButton from "./CopyButton";
 
 /**
  * Briques typographiques réutilisables pour les articles.
@@ -6,25 +7,15 @@ import type { ReactNode } from "react";
  */
 
 export function Lead({ children }: { children: ReactNode }) {
-  return (
-    <p className="font-serif text-xl leading-snug text-[var(--fg)] md:text-2xl">
-      {children}
-    </p>
-  );
+  return <p className="font-serif text-xl leading-snug text-[var(--fg)] md:text-2xl">{children}</p>;
 }
 
 export function H2({ children }: { children: ReactNode }) {
-  return (
-    <h2 className="mt-16 mb-4 font-serif text-3xl tracking-tight md:text-4xl">
-      {children}
-    </h2>
-  );
+  return <h2 className="mt-16 mb-4 font-serif text-3xl tracking-tight md:text-4xl">{children}</h2>;
 }
 
 export function H3({ children }: { children: ReactNode }) {
-  return (
-    <h3 className="mt-10 mb-3 font-serif text-2xl tracking-tight">{children}</h3>
-  );
+  return <h3 className="mt-10 mb-3 font-serif text-2xl tracking-tight">{children}</h3>;
 }
 
 export function P({ children }: { children: ReactNode }) {
@@ -59,20 +50,23 @@ interface CodeBlockProps {
 }
 export function CodeBlock({ children, lang }: CodeBlockProps) {
   return (
-    <pre
-      className="my-8 overflow-x-auto rounded-2xl border p-5 text-[13px] leading-relaxed"
-      style={{
-        background: "var(--elevated)",
-        borderColor: "var(--border-strong)",
-      }}
-    >
-      {lang && (
-        <div className="mb-3 font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]">
-          {lang}
-        </div>
-      )}
-      <code className="font-mono text-[var(--fg)]">{children}</code>
-    </pre>
+    <div className="group relative my-8">
+      <CopyButton text={children} />
+      <pre
+        className="overflow-x-auto rounded-2xl border p-5 text-[13px] leading-relaxed"
+        style={{
+          background: "var(--elevated)",
+          borderColor: "var(--border-strong)",
+        }}
+      >
+        {lang && (
+          <div className="mb-3 font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]">
+            {lang}
+          </div>
+        )}
+        <code className="font-mono text-[var(--fg)]">{children}</code>
+      </pre>
+    </div>
   );
 }
 
@@ -121,8 +115,7 @@ export function Divider() {
       className="my-12 border-0"
       style={{
         height: "1px",
-        background:
-          "linear-gradient(to right, transparent, var(--border-strong), transparent)",
+        background: "linear-gradient(to right, transparent, var(--border-strong), transparent)",
       }}
     />
   );

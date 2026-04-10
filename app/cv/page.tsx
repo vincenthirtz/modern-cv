@@ -45,14 +45,18 @@ export default function CVPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      {/* Barre d'actions — masquée à l'impression */}
+      {/* Fil d'Ariane + actions — masqués à l'impression */}
       <div className="cv-actions mx-auto mb-10 flex max-w-3xl items-center justify-between">
-        <Link
-          href="/"
-          className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)] transition-colors hover:text-[var(--color-accent)]"
+        <nav
+          aria-label="Fil d'ariane"
+          className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]"
         >
-          ← Retour au portfolio
-        </Link>
+          <Link href="/" className="transition-colors hover:text-[var(--color-accent)]">
+            Accueil
+          </Link>
+          <span className="text-[var(--fg-dim)]">/</span>
+          <span className="text-[var(--color-accent)]">CV</span>
+        </nav>
         <div className="flex gap-2">
           <a
             href="/cv.pdf"
