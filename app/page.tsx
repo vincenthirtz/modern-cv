@@ -14,7 +14,7 @@ import SectionTransition from "@/components/SectionTransition";
 
 export default function Home() {
   return (
-    <>
+    <div>
       {/* Effets globaux — lazy loaded côté client, non bloquants */}
       <ClientEffects />
 
@@ -61,6 +61,6 @@ export default function Home() {
       </main>
 
       <Footer />
-    </>
+    </div>
   );
 }

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
 import ThemeToggle from "./ThemeToggle";
 import EffectsToggle from "./EffectsToggle";
 import AccentPicker from "./AccentPicker";
@@ -23,18 +22,28 @@ export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [activeId, setActiveId] = useState<string>("");
-  const { scrollY } = useScroll();
-  const padding = useTransform(scrollY, [0, 200], [20, 12]);
+  const [padding, setPadding] = useState(20);
+  const [entered, setEntered] = useState(false);
 
   const burgerRef = useRef<HTMLButtonElement>(null);
 
+  // Scroll handler : détecte le scroll et ajuste le padding
   useEffect(() => {
     function onScroll() {
-      setScrolled(window.scrollY > 40);
+      const y = window.scrollY;
+      setScrolled(y > 40);
+      // Interpolation linéaire du padding : 20px → 12px entre 0 et 200px de scroll
+      setPadding(Math.max(12, 20 - (y / 200) * 8));
     }
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Animation d'entrée via CSS (remplace motion.header initial/animate)
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => setEntered(true));
+    return () => cancelAnimationFrame(raf);
   }, []);
 
   // Indicateur de section active basé sur IntersectionObserver
@@ -62,12 +71,16 @@ export default function Navigation() {
   }, []);
 
   return (
-    <motion.header
-      initial={{ y: -80, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: [0.2, 0.8, 0.2, 1], delay: 0.2 }}
+    <header
       className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-8"
-      style={{ paddingTop: padding, paddingBottom: padding }}
+      style={{
+        paddingTop: padding,
+        paddingBottom: padding,
+        opacity: entered ? 1 : 0,
+        transform: entered ? "translateY(0)" : "translateY(-80px)",
+        transition:
+          "opacity 0.6s cubic-bezier(0.2,0.8,0.2,1) 0.2s, transform 0.6s cubic-bezier(0.2,0.8,0.2,1) 0.2s, padding 0.15s ease",
+      }}
     >
       <nav
         className="mx-auto flex max-w-6xl items-center justify-between rounded-full border px-4 sm:px-6 py-3 transition-all"
@@ -128,6 +141,6 @@ export default function Navigation() {
 
       {/* Menu mobile déroulé avec focus trap */}
       <MobileMenu links={LINKS} open={open} setOpen={setOpen} burgerRef={burgerRef} />
-    </motion.header>
+    </header>
   );
 }
