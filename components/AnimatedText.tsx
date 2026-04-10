@@ -28,6 +28,7 @@ const child: Variants = {
       type: "spring",
       damping: 14,
       stiffness: 100,
+      clamp: true,
     },
   },
 };
