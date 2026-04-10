@@ -11,6 +11,8 @@ const LINKS = [
   { href: "#expertise", label: "Expertise", id: "expertise" },
   { href: "#projects", label: "Projets", id: "projects" },
   { href: "#experience", label: "Expérience", id: "experience" },
+  { href: "#community", label: "Communauté", id: "community" },
+  { href: "#blog", label: "Notes", id: "blog" },
   { href: "#contact", label: "Contact", id: "contact" },
 ];
 

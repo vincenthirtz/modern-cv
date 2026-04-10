@@ -7,9 +7,10 @@ const NAV_LINKS = [
   { href: "#expertise", label: "Expertise" },
   { href: "#projects", label: "Projets" },
   { href: "#experience", label: "Expérience" },
-  { href: "/notes", label: "Notes" },
-  { href: "/cv", label: "CV en ligne" },
+  { href: "#community", label: "Communauté" },
+  { href: "#blog", label: "Notes" },
   { href: "#contact", label: "Contact" },
+  { href: "/cv", label: "CV en ligne" },
 ];
 
 export default function Footer() {
