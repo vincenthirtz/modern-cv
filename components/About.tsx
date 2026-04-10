@@ -1,8 +1,6 @@
-"use client";
-
-import { motion } from "framer-motion";
 import Image from "next/image";
 import SectionTitle from "./SectionTitle";
+import MotionInView, { MotionInViewItem } from "./MotionInView";
 
 /**
  * Active la vraie photo. Mets `true` quand tu auras déposé `public/avatar.jpg`.
@@ -47,51 +45,36 @@ export default function About() {
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-5">
           {/* Texte 60% */}
           <div className="lg:col-span-3 space-y-6 text-base leading-relaxed text-[var(--fg-muted)] md:text-lg">
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              Je m'appelle <span className="text-[var(--fg)]">Vincent Hirtz</span>.
-              Développeur front-end passionné, avec plus de 10 ans d'expérience à
-              concevoir des solutions web modernes et performantes pour des
-              équipes qui veulent aller vite sans sacrifier la qualité.
-            </motion.p>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-            >
-              Expert en React, Vue.js et Angular, je suis spécialisé dans le
-              développement d'applications SPA complexes, la mise en place de
-              tests end-to-end, et l'architecture front-end scalable. Ces
-              dernières années, j'ai dirigé l'équipe technique de SAPIENDO sur
-              des plateformes Vue.js + Laravel pour la gestion de la retraite.
-            </motion.p>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              Quand je ne travaille pas, je contribue à l'open source —
-              notamment <span className="text-[var(--fg)]">Pulse JS</span>,
-              un framework déclaratif zéro-dépendance que je développe pour
-              repenser la façon dont on construit des SPA modernes. Curiosité
-              infinie pour les nouvelles technos, et un faible pour ce qui dure.
-            </motion.p>
+            <MotionInView>
+              <p>
+                Je m&apos;appelle <span className="text-[var(--fg)]">Vincent Hirtz</span>.
+                Développeur front-end passionné, avec plus de 10 ans d&apos;expérience à concevoir
+                des solutions web modernes et performantes pour des équipes qui veulent aller vite
+                sans sacrifier la qualité.
+              </p>
+            </MotionInView>
+            <MotionInView delay={0.1}>
+              <p>
+                Expert en React, Vue.js et Angular, je suis spécialisé dans le développement
+                d&apos;applications SPA complexes, la mise en place de tests end-to-end, et
+                l&apos;architecture front-end scalable. Ces dernières années, j&apos;ai dirigé
+                l&apos;équipe technique de SAPIENDO sur des plateformes Vue.js + Laravel pour la
+                gestion de la retraite.
+              </p>
+            </MotionInView>
+            <MotionInView delay={0.2}>
+              <p>
+                Quand je ne travaille pas, je contribue à l&apos;open source — notamment{" "}
+                <span className="text-[var(--fg)]">Pulse JS</span>, un framework déclaratif
+                zéro-dépendance que je développe pour repenser la façon dont on construit des SPA
+                modernes. Curiosité infinie pour les nouvelles technos, et un faible pour ce qui
+                dure.
+              </p>
+            </MotionInView>
           </div>
 
           {/* Photo 40% */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
-            className="relative lg:col-span-2"
-          >
+          <MotionInView direction="none" duration={0.8} className="relative lg:col-span-2">
             <div
               className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl border"
               style={{ borderColor: "var(--border-strong)" }}
@@ -121,8 +104,7 @@ export default function About() {
               <div
                 className="absolute inset-0 mix-blend-overlay"
                 style={{
-                  background:
-                    "linear-gradient(180deg, transparent 40%, rgba(200,255,0,0.25))",
+                  background: "linear-gradient(180deg, transparent 40%, rgba(200,255,0,0.25))",
                 }}
               />
               <div className="absolute inset-x-0 bottom-0 p-6">
@@ -138,39 +120,25 @@ export default function About() {
                 style={{ borderColor: "var(--color-accent)", opacity: 0.25 }}
               />
             </div>
-          </motion.div>
+          </MotionInView>
         </div>
 
         {/* Valeurs */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={{
-            hidden: {},
-            visible: { transition: { staggerChildren: 0.1 } },
-          }}
+        <MotionInView
+          stagger={0.1}
+          amount={0.2}
           className="mt-20 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
         >
           {VALUES.map((value) => (
-            <motion.div
-              key={value.title}
-              variants={{
-                hidden: { opacity: 0, y: 30 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-              }}
-              className="card group p-6"
-            >
+            <MotionInViewItem key={value.title} className="card group p-6">
               <div className="font-mono text-3xl text-[var(--color-accent)] transition-transform group-hover:scale-110">
                 {value.icon}
               </div>
               <h3 className="mt-4 font-serif text-2xl">{value.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-[var(--fg-muted)]">
-                {value.desc}
-              </p>
-            </motion.div>
+              <p className="mt-2 text-sm leading-relaxed text-[var(--fg-muted)]">{value.desc}</p>
+            </MotionInViewItem>
           ))}
-        </motion.div>
+        </MotionInView>
       </div>
     </section>
   );

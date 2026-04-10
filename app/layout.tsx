@@ -52,12 +52,21 @@ export const metadata: Metadata = {
     description:
       "Lead Developer basé à Lyon. Créateur de Pulse JS Framework. Curiosité infinie pour les nouvelles technos.",
     siteName: "Vincent Hirtz",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Vincent Hirtz — Lead Developer & Architecte Logiciel",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Vincent Hirtz — Lead Developer",
     description: "Lead Developer basé à Lyon. Créateur de Pulse JS Framework.",
     creator: "@vincenthirtz",
+    images: ["/twitter-image"],
   },
   robots: { index: true, follow: true },
 };
@@ -78,7 +87,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <head>
         {/* Flux RSS */}
-        <link rel="alternate" type="application/rss+xml" title="Vincent Hirtz — Notes" href="/feed.xml" />
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title="Vincent Hirtz — Notes"
+          href="/feed.xml"
+        />
         {/* Évite le flash en chargeant la préférence avant le rendu React */}
         <script
           dangerouslySetInnerHTML={{

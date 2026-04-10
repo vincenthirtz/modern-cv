@@ -1,10 +1,5 @@
-"use client";
-
-import { motion } from "framer-motion";
-import Image from "next/image";
 import SectionTitle from "./SectionTitle";
-import TiltCard from "./TiltCard";
-import PulseSandbox from "./PulseSandbox";
+import ProjectCard from "./ProjectCard";
 
 interface Project {
   name: string;
@@ -14,11 +9,8 @@ interface Project {
   tags: string[];
   gradient: string;
   href: string;
-  /** Texte du lien — par défaut "Voir le projet" */
   linkLabel?: string;
-  /** Image optionnelle. Drop-in dans /public puis renseigner le chemin. */
   image?: string;
-  /** Si true, remplace le visuel par le sandbox Pulse JS */
   showSandbox?: boolean;
 }
 
@@ -45,8 +37,7 @@ const PROJECTS: Project[] = [
     tags: ["Vue.js", "Laravel", "Cypress", "SPA"],
     href: "https://www.sapiendo.fr",
     linkLabel: "sapiendo.fr",
-    gradient:
-      "linear-gradient(135deg, #1e3a5f 0%, #2d5a8c 50%, #4a7ab8 100%)",
+    gradient: "linear-gradient(135deg, #1e3a5f 0%, #2d5a8c 50%, #4a7ab8 100%)",
   },
   {
     name: "Horoquartz — Gestion des temps",
@@ -57,8 +48,7 @@ const PROJECTS: Project[] = [
     tags: ["React", "Storybook", "SASS", "Design System"],
     href: "https://www.horoquartz.com",
     linkLabel: "horoquartz.com",
-    gradient:
-      "linear-gradient(135deg, #134e5e 0%, #2d7a8a 50%, #71b280 100%)",
+    gradient: "linear-gradient(135deg, #134e5e 0%, #2d7a8a 50%, #71b280 100%)",
   },
   {
     name: "Docapost Agility — Apps mobile & web",
@@ -69,8 +59,7 @@ const PROJECTS: Project[] = [
     tags: ["React Native", "NestJS", "Lerna", "Docker"],
     href: "https://www.docaposte.com",
     linkLabel: "docaposte.com",
-    gradient:
-      "linear-gradient(135deg, #2d1b3d 0%, #44318d 50%, #6c4ab6 100%)",
+    gradient: "linear-gradient(135deg, #2d1b3d 0%, #44318d 50%, #6c4ab6 100%)",
   },
 ];
 
@@ -87,113 +76,15 @@ export default function Projects() {
         />
 
         <div className="space-y-8">
-          {PROJECTS.map((project, i) => {
-            const isReversed = i % 2 === 1;
-            return (
-              <motion.div
-                key={project.name}
-                initial={{ opacity: 0, y: 60 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
-              >
-                <TiltCard intensity={4} className="group">
-                <article className="card relative overflow-hidden p-6 md:p-10">
-                <div
-                  className={`grid grid-cols-1 items-center gap-8 md:grid-cols-2 ${
-                    isReversed ? "md:[&>*:first-child]:order-2" : ""
-                  }`}
-                >
-                  {/* Visuel — sandbox interactif si Pulse JS, sinon image/gradient */}
-                  {project.showSandbox ? (
-                    <div style={{ transform: "translateZ(40px)" }}>
-                      <PulseSandbox />
-                    </div>
-                  ) : (
-                    <div
-                      className="relative aspect-[16/10] overflow-hidden rounded-xl border"
-                      style={{
-                        borderColor: "var(--border-strong)",
-                        transform: "translateZ(40px)",
-                      }}
-                    >
-                      {/* Image projet si fournie, sinon gradient */}
-                      {project.image ? (
-                        <Image
-                          src={project.image}
-                          alt={`Aperçu du projet ${project.name}`}
-                          fill
-                          sizes="(max-width: 768px) 90vw, 45vw"
-                          className="object-cover"
-                        />
-                      ) : (
-                        <>
-                          <div
-                            className="absolute inset-0"
-                            style={{ background: project.gradient }}
-                          />
-                          <div className="absolute inset-0 bg-grid opacity-30" />
-                        </>
-                      )}
-                      {/* Mock window chrome pour donner l'illusion d'un écran */}
-                      <div className="absolute left-4 top-4 flex gap-1.5">
-                        <span className="h-2 w-2 rounded-full bg-white/30" />
-                        <span className="h-2 w-2 rounded-full bg-white/30" />
-                        <span className="h-2 w-2 rounded-full bg-white/30" />
-                      </div>
-                      <div className="absolute right-4 bottom-4 font-mono text-[10px] uppercase tracking-widest text-white/60">
-                        {project.tags[0]}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Contenu */}
-                  <div style={{ transform: "translateZ(20px)" }}>
-                    <div className="font-mono text-[10px] uppercase tracking-widest text-[var(--color-accent)]">
-                      {String(i + 1).padStart(2, "0")} / {String(PROJECTS.length).padStart(2, "0")}
-                    </div>
-                    <h3 className="mt-3 font-serif text-4xl leading-tight md:text-5xl">
-                      {project.name}
-                    </h3>
-                    <p className="mt-2 text-base text-[var(--fg-muted)]">
-                      {project.tagline}
-                    </p>
-                    <p className="mt-4 text-sm leading-relaxed text-[var(--fg-muted)]">
-                      {project.description}
-                    </p>
-                    <div className="mt-5 flex flex-wrap gap-2">
-                      {project.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="rounded-full border px-3 py-1 font-mono text-[10px] uppercase tracking-widest text-[var(--fg-muted)] transition-colors group-hover:border-[var(--color-accent)] group-hover:text-[var(--color-accent)]"
-                          style={{ borderColor: "var(--border-strong)" }}
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="mt-6 flex items-center justify-between border-t pt-4" style={{ borderColor: "var(--border)" }}>
-                      <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]">
-                        {project.role}
-                      </span>
-                      <a
-                        href={project.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`${project.linkLabel ?? "Voir le projet"} (nouvel onglet)`}
-                        className="group/link inline-flex items-center gap-2 text-sm transition-colors hover:text-[var(--color-accent)]"
-                      >
-                        {project.linkLabel ?? "Voir le projet"}
-                        <span className="transition-transform group-hover/link:translate-x-1">↗</span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                </article>
-                </TiltCard>
-              </motion.div>
-            );
-          })}
+          {PROJECTS.map((project, i) => (
+            <ProjectCard
+              key={project.name}
+              project={project}
+              index={i}
+              total={PROJECTS.length}
+              reversed={i % 2 === 1}
+            />
+          ))}
         </div>
       </div>
     </section>
