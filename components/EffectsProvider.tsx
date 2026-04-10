@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react";
-import { MotionConfig } from "motion/react";
+import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 
 interface EffectsContextValue {
   reduced: boolean;
@@ -59,13 +51,7 @@ export default function EffectsProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
-  return (
-    <EffectsContext.Provider value={{ reduced, toggle }}>
-      <MotionConfig reducedMotion={hydrated && reduced ? "always" : "user"}>
-        {children}
-      </MotionConfig>
-    </EffectsContext.Provider>
-  );
+  return <EffectsContext.Provider value={{ reduced, toggle }}>{children}</EffectsContext.Provider>;
 }
 
 export function useEffectsMode(): EffectsContextValue {

@@ -1,35 +1,49 @@
 "use client";
 
-import { useEffect } from "react";
-import { motion, useAnimationControls } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
 /**
  * Transition d'entrée de page (fondu + léger glissement vertical).
  *
- * N'utilise PAS `key={pathname}` : ce pattern force React à démonter
- * tout l'arbre enfant à chaque navigation, ce qui détruit les composants
- * Link avant que Next.js finalise la navigation → premier clic perdu.
- *
- * À la place on re-déclenche l'animation via `useAnimationControls`
- * quand le pathname change, sans toucher au DOM.
+ * Utilise des transitions CSS pures au lieu de Framer Motion pour éviter
+ * le bug "Cannot read properties of null (reading 'removeChild')" causé
+ * par une race condition entre l'animation Framer Motion et le remplacement
+ * du DOM par React lors de la navigation côté client.
  */
 export default function PageTransition({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  const controls = useAnimationControls();
+  const [visible, setVisible] = useState(true);
+  const isFirst = useRef(true);
 
   useEffect(() => {
-    controls.set({ opacity: 0, y: 12 });
-    controls.start({ opacity: 1, y: 0 });
-  }, [pathname, controls]);
+    // Pas d'animation au premier rendu (déjà visible via SSR)
+    if (isFirst.current) {
+      isFirst.current = false;
+      return;
+    }
+
+    // Reset invisible → visible sur chaque navigation
+    setVisible(false);
+    const raf = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setVisible(true);
+      });
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [pathname]);
 
   return (
-    <motion.div
-      animate={controls}
-      transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+    <div
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(12px)",
+        transition:
+          "opacity 0.3s cubic-bezier(0.25,0.1,0.25,1), transform 0.3s cubic-bezier(0.25,0.1,0.25,1)",
+      }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

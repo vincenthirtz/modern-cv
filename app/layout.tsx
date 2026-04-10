@@ -183,13 +183,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         }}
       >
         {/* Mise à jour des variables de polices pour matcher next/font */}
-        <style>{`
-          :root {
-            --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
-            --font-serif: var(--font-instrument-serif), ui-serif, Georgia, serif;
-            --font-mono: var(--font-jetbrains-mono), ui-monospace, Menlo, monospace;
-          }
-        `}</style>
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `:root{--font-sans:var(--font-dm-sans),ui-sans-serif,system-ui,sans-serif;--font-serif:var(--font-instrument-serif),ui-serif,Georgia,serif;--font-mono:var(--font-jetbrains-mono),ui-monospace,Menlo,monospace}`,
+          }}
+        />
         {/* Skip-to-content pour les utilisateurs au clavier / lecteur d'écran */}
         <a href="#main" className="skip-link">
           Aller au contenu principal
