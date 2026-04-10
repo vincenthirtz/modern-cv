@@ -25,24 +25,24 @@ export default function ConsoleEgg() {
     const bold =
       "color:#f0efe9;font-family:ui-monospace,monospace;font-weight:700;font-size:13px;";
 
-    // eslint-disable-next-line no-console
+     
     console.log(`%c${banner}`, accent);
-    // eslint-disable-next-line no-console
+     
     console.log(
       "%cSalut, dev curieux·se 👋",
       bold,
     );
-    // eslint-disable-next-line no-console
+     
     console.log(
       "%cTu lis le code source ? Cool, j'aime ça.\nSi tu cherches un Lead Dev Front-End, on peut en parler.",
       muted,
     );
-    // eslint-disable-next-line no-console
+     
     console.log(
       "%c→ hirtzvincent@free.fr\n→ https://github.com/vincenthirtz\n→ https://pulse-js.fr",
       accent,
     );
-    // eslint-disable-next-line no-console
+     
     console.log(
       "%cPS: essaie ↑↑↓↓←→←→ B A pour un cheat code 😉",
       muted,

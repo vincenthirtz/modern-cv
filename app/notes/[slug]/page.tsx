@@ -11,7 +11,7 @@ import {
 
 /** Extrait la partie sérialisable d'un article (sans le composant Content). */
 function toMeta(article: Article): ArticleMeta {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+   
   const { Content, ...meta } = article;
   return meta;
 }

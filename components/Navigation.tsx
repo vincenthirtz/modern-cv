@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "motion/react";
 import ThemeToggle from "./ThemeToggle";
 import EffectsToggle from "./EffectsToggle";
 import AccentPicker from "./AccentPicker";

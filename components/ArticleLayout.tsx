@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { motion, useScroll, useSpring } from "framer-motion";
+import { motion, useScroll, useSpring } from "motion/react";
 import type { ArticleMeta } from "@/lib/articles";
 import AnimatedText from "./AnimatedText";
 import ShareButtons from "./ShareButtons";

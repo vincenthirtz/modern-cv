@@ -8,7 +8,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { MotionConfig } from "framer-motion";
+import { MotionConfig } from "motion/react";
 
 interface EffectsContextValue {
   reduced: boolean;

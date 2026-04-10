@@ -30,7 +30,7 @@ const nextConfig = {
 
   // Tree-shaking agressif pour les gros packages d'animation
   experimental: {
-    optimizePackageImports: ["framer-motion", "lenis"],
+    optimizePackageImports: ["motion", "lenis"],
   },
 
   // Formats d'image modernes auto si on ajoute des <Image>
