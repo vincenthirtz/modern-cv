@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { Children, isValidElement, type ReactNode } from "react";
 import CopyButton from "./CopyButton";
 
 /**
@@ -6,16 +6,44 @@ import CopyButton from "./CopyButton";
  * Une seule source de vérité pour le rythme vertical et les styles de prose.
  */
 
+/** Extrait le texte brut d'un ReactNode pour générer un slug d'ancre. */
+function textContent(node: ReactNode): string {
+  if (typeof node === "string") return node;
+  if (typeof node === "number") return String(node);
+  if (isValidElement(node)) return textContent((node.props as { children?: ReactNode }).children);
+  if (Array.isArray(node)) return Children.toArray(node).map(textContent).join("");
+  return "";
+}
+
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
 export function Lead({ children }: { children: ReactNode }) {
   return <p className="font-serif text-xl leading-snug text-[var(--fg)] md:text-2xl">{children}</p>;
 }
 
 export function H2({ children }: { children: ReactNode }) {
-  return <h2 className="mt-16 mb-4 font-serif text-3xl tracking-tight md:text-4xl">{children}</h2>;
+  const id = slugify(textContent(children));
+  return (
+    <h2 id={id} className="mt-16 mb-4 scroll-mt-24 font-serif text-3xl tracking-tight md:text-4xl">
+      {children}
+    </h2>
+  );
 }
 
 export function H3({ children }: { children: ReactNode }) {
-  return <h3 className="mt-10 mb-3 font-serif text-2xl tracking-tight">{children}</h3>;
+  const id = slugify(textContent(children));
+  return (
+    <h3 id={id} className="mt-10 mb-3 scroll-mt-24 font-serif text-2xl tracking-tight">
+      {children}
+    </h3>
+  );
 }
 
 export function P({ children }: { children: ReactNode }) {

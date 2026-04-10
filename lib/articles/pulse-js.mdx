@@ -6,13 +6,12 @@ export const meta = {
   category: "Open Source",
   date: "2026-03-15",
   dateLabel: "Mars 2026",
-  readTime: "8 min",
+  readTime: "~4 min",
 };
 
 <Lead>
-  Il y a deux ans, j'ai installé un nouveau projet Next.js. Trois minutes
-  plus tard, `node_modules` pesait 380 Mo. Je me suis dit qu'il devait y avoir
-  mieux. C'est de là qu'est né Pulse JS.
+  Il y a deux ans, j'ai installé un nouveau projet Next.js. Trois minutes plus tard, `node_modules`
+  pesait 380 Mo. Je me suis dit qu'il devait y avoir mieux. C'est de là qu'est né Pulse JS.
 </Lead>
 
 ## Le contexte : la fatigue des frameworks
@@ -29,8 +28,8 @@ coder en jQuery, c'est devenu un peu absurde.
 Pulse JS est ma tentative de répondre à une question simple :
 
 <Quote>
-  Et si on pouvait construire des SPA modernes en n'utilisant *que* ce que le
-  navigateur sait déjà faire ?
+  Et si on pouvait construire des SPA modernes en n'utilisant *que* ce que le navigateur sait déjà
+  faire ?
 </Quote>
 
 ## L'idée centrale : déclaratif via sélecteurs CSS
@@ -41,7 +40,7 @@ choses fantastiques, mais elle a aussi imposé un coût : tu dois maintenant
 décrire ton UI en JSX, transpiler ton code, et accepter que la moindre
 mutation passe par un diff.
 
-Le DOM *moderne* n'est plus lent. Il est même incroyablement rapide
+Le DOM _moderne_ n'est plus lent. Il est même incroyablement rapide
 si tu l'utilises bien. Pulse JS part de cette observation et propose une
 autre voie : décrire les comportements **directement dans le HTML**, via des
 sélecteurs CSS, et laisser le navigateur faire le travail.
@@ -87,16 +86,15 @@ SaaS de 200k lignes de code. Ce n'est pas son objectif.
 
 Il vise plutôt :
 
-- Les sites institutionnels qui ont besoin d'*un peu* d'interactivité.
+- Les sites institutionnels qui ont besoin d'_un peu_ d'interactivité.
 - Les pages produit qui veulent un panier ou un sélecteur sans embarquer un framework.
 - Les MVP qu'on veut shipper en deux jours sans avoir à configurer Webpack.
 - Les développeurs back-end qui veulent ajouter du dynamique sans changer de mental model.
 
 <Note>
-  Pulse JS est inspiré de projets comme Alpine.js et HTMX, à qui je dois
-  beaucoup. La différence ? Pulse mise plus fort sur les sélecteurs CSS et
-  moins sur les attributs personnalisés, ce qui rend le markup plus lisible
-  à mon goût.
+  Pulse JS est inspiré de projets comme Alpine.js et HTMX, à qui je dois beaucoup. La différence ?
+  Pulse mise plus fort sur les sélecteurs CSS et moins sur les attributs personnalisés, ce qui rend
+  le markup plus lisible à mon goût.
 </Note>
 
 ## Les leçons apprises en construisant un framework

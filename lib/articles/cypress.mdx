@@ -6,14 +6,13 @@ export const meta = {
   category: "Tests",
   date: "2025-11-10",
   dateLabel: "Novembre 2025",
-  readTime: "10 min",
+  readTime: "~5 min",
 };
 
 <Lead>
-  Les tests E2E ont une réputation de cauchemar à maintenir. Lents, flaky,
-  cassés à la moindre refonte UI. Voici tout ce que j'ai appris en faisant
-  tourner des suites Cypress en production sur plusieurs projets — et ce que
-  je voudrais qu'on m'ait dit le premier jour.
+  Les tests E2E ont une réputation de cauchemar à maintenir. Lents, flaky, cassés à la moindre
+  refonte UI. Voici tout ce que j'ai appris en faisant tourner des suites Cypress en production sur
+  plusieurs projets — et ce que je voudrais qu'on m'ait dit le premier jour.
 </Lead>
 
 ## Pourquoi tant de monde déteste les E2E
@@ -42,6 +41,7 @@ veux, tant que tu gardes le `data-cy`, tes tests passent.
 cy.contains("Valider").click();
 
 <!-- ✅ Bon : couplé à un contrat explicite -->
+
 <button data-cy="submit-form" class="btn btn-primary">Valider</button>
 cy.get('[data-cy="submit-form"]').click();`}</CodeBlock>
 
@@ -54,7 +54,7 @@ diagnostiquer.
 
 La règle : **intercepte tous les appels réseau** et fournis des fixtures.
 Tes tests deviennent reproductibles, rapides, et tu testes vraiment
-*ton front* et pas l'infra.
+_ton front_ et pas l'infra.
 
 <CodeBlock lang="JavaScript">{`// Intercepte la liste de produits avec une fixture stable
 cy.intercept("GET", "/api/products", {
@@ -67,9 +67,9 @@ cy.wait("@getProducts");
 cy.get('[data-cy="empty-state"]').should("be.visible");`}</CodeBlock>
 
 <Note>
-  Cette règle a une exception : un seul "smoke test" qui tape la vraie API
-  en CI, sur un parcours critique. Juste pour s'assurer que back et front
-  peuvent encore se parler. Mais c'est un test, pas 200.
+  Cette règle a une exception : un seul "smoke test" qui tape la vraie API en CI, sur un parcours
+  critique. Juste pour s'assurer que back et front peuvent encore se parler. Mais c'est un test, pas
+  200.
 </Note>
 
 ### 3. Custom commands pour tout ce qui se répète
@@ -179,8 +179,7 @@ l'entreprise quand ils cassent »). Choisis bien tes batailles.
 Et rappelle-toi cette règle d'or :
 
 <Note>
-  Un test qui flake une fois sur 20 est un test en lequel personne ne croit.
-  Un test en lequel personne ne croit ne sera pas regardé quand il échoue.
-  Un test qui n'est pas regardé quand il échoue est pire qu'aucun test : il
-  donne une fausse confiance.
+  Un test qui flake une fois sur 20 est un test en lequel personne ne croit. Un test en lequel
+  personne ne croit ne sera pas regardé quand il échoue. Un test qui n'est pas regardé quand il
+  échoue est pire qu'aucun test : il donne une fausse confiance.
 </Note>

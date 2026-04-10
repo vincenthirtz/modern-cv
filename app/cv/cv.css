@@ -212,33 +212,59 @@
 @media print {
   @page {
     size: A4;
-    margin: 1.5cm 1.8cm;
+    margin: 1.2cm 1.5cm;
   }
 
-  /* Cache tout ce qui n'est pas le CV : nav, actions, footer, etc. */
+  /* ---- Masquer tout ce qui n'est pas le CV ---- */
   .cv-actions,
   .skip-link,
+  nav,
+  footer,
   header[class*="fixed"],
   .reduced-effects,
   .pulse-dot,
-  .bg-noise {
+  .bg-noise,
+  .bg-grid,
+  [data-lenis-prevent],
+  [aria-hidden="true"] {
     display: none !important;
   }
 
-  /* Force le fond blanc et le texte noir */
+  /* ---- Réinitialiser les fonds et couleurs ---- */
   html,
-  body,
-  .cv-page,
-  .cv-doc {
+  body {
     background: #ffffff !important;
-    color: #0a0a0b !important;
-    box-shadow: none !important;
-    border: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
+    color: #1a1a1a !important;
+    font-size: 11pt !important;
+    line-height: 1.45 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
-  .cv-name,
+  .cv-page {
+    background: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    min-height: auto !important;
+  }
+
+  .cv-doc {
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: none !important;
+  }
+
+  /* ---- Typographie ---- */
+  .cv-name {
+    color: #0a0a0b !important;
+    font-size: 28pt !important;
+  }
+
   .cv-job-title,
   .cv-skill-cat {
     color: #0a0a0b !important;
@@ -250,14 +276,15 @@
   .cv-contact,
   .cv-job-detail {
     color: #2a2a2a !important;
+    font-size: 9.5pt !important;
   }
 
-  /* Accent reste vert mais en plus sombre pour le print noir & blanc */
+  /* ---- Couleur d'accent pour l'impression ---- */
   .cv-section-title,
   .cv-job-company,
   .cv-role,
   .cv-job-list li::before {
-    color: #5a7f00 !important;
+    color: #3d6600 !important;
   }
 
   .cv-section-title {
@@ -265,16 +292,69 @@
   }
 
   .cv-header {
-    border-bottom-color: #5a7f00 !important;
+    border-bottom-color: #3d6600 !important;
+    padding-bottom: 1rem !important;
+    margin-bottom: 1.5rem !important;
   }
 
+  /* ---- Liens ---- */
   .cv-contact a {
     color: #2a2a2a !important;
     text-decoration: none !important;
   }
 
-  /* Évite que les sections soient coupées entre deux pages */
+  /* Afficher l'URL des liens externes */
+  .cv-contact a[href^="http"]::after {
+    content: none; /* Pas pour le contact — l'URL est déjà visible */
+  }
+
+  /* ---- Grille compétences ---- */
+  .cv-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 0.75rem 1.5rem !important;
+  }
+
+  .cv-section--two {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  /* ---- Sauts de page ---- */
   .cv-section {
     page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .cv-job {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Forcer la première page à contenir header + profil + compétences */
+  .cv-section:nth-child(n + 3) {
+    page-break-before: auto;
+  }
+
+  /* ---- Espacement réduit pour tout faire tenir ---- */
+  .cv-section {
+    margin-top: 1.25rem !important;
+  }
+
+  .cv-job {
+    margin-bottom: 1rem !important;
+  }
+
+  .cv-job-list {
+    margin-top: 0.25rem !important;
+  }
+
+  .cv-job-list li {
+    margin-bottom: 0.1rem !important;
+  }
+
+  /* ---- Supprimer les animations et transitions ---- */
+  * {
+    animation: none !important;
+    transition: none !important;
   }
 }

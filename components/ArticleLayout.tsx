@@ -6,6 +6,8 @@ import { motion, useScroll, useSpring } from "motion/react";
 import type { ArticleMeta } from "@/lib/articles";
 import AnimatedText from "./AnimatedText";
 import ShareButtons from "./ShareButtons";
+import TableOfContents from "./TableOfContents";
+import LikeButton from "./LikeButton";
 
 interface ArticleLayoutProps {
   article: ArticleMeta;
@@ -21,11 +23,7 @@ interface ArticleLayoutProps {
  * Le contenu est passé en `children` (et non en prop function) pour respecter
  * la frontière Server Component → Client Component de Next 15.
  */
-export default function ArticleLayout({
-  article,
-  children,
-  related = [],
-}: ArticleLayoutProps) {
+export default function ArticleLayout({ article, children, related = [] }: ArticleLayoutProps) {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 120,
@@ -41,8 +39,7 @@ export default function ArticleLayout({
         className="fixed top-0 left-0 right-0 z-[60] h-[2px] origin-left"
         style={{
           scaleX,
-          background:
-            "linear-gradient(to right, var(--color-accent), var(--color-accent-soft))",
+          background: "linear-gradient(to right, var(--color-accent), var(--color-accent-soft))",
         }}
       />
 
@@ -57,17 +54,11 @@ export default function ArticleLayout({
             aria-label="Fil d'ariane"
             className="mb-10 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]"
           >
-            <Link
-              href="/"
-              className="transition-colors hover:text-[var(--color-accent)]"
-            >
+            <Link href="/" className="transition-colors hover:text-[var(--color-accent)]">
               ← Retour
             </Link>
             <span className="text-[var(--fg-dim)]">/</span>
-            <Link
-              href="/notes"
-              className="transition-colors hover:text-[var(--color-accent)]"
-            >
+            <Link href="/notes" className="transition-colors hover:text-[var(--color-accent)]">
               Notes
             </Link>
           </motion.nav>
@@ -101,23 +92,31 @@ export default function ArticleLayout({
         </div>
       </header>
 
-      {/* Contenu */}
+      {/* Contenu + TOC sidebar */}
       <div className="relative px-6 pb-32">
-        <div className="mx-auto max-w-3xl">
+        <div className="mx-auto max-w-5xl lg:grid lg:grid-cols-[1fr_220px] lg:gap-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
+            className="max-w-3xl"
           >
             {children}
           </motion.div>
+
+          {/* Sidebar TOC — visible uniquement sur grand écran */}
+          <aside className="hidden lg:block">
+            <div className="sticky top-28">
+              <TableOfContents />
+            </div>
+          </aside>
         </div>
       </div>
 
       {/* Footer : signature + autres notes */}
       <footer className="relative border-t px-6 py-20" style={{ borderColor: "var(--border)" }}>
         <div className="mx-auto max-w-3xl">
-          {/* Signature + partage */}
+          {/* Signature + like + partage */}
           <div className="mb-16 flex flex-wrap items-center justify-between gap-6">
             <div className="flex items-center gap-4">
               <div
@@ -133,10 +132,13 @@ export default function ArticleLayout({
                 </div>
               </div>
             </div>
-            <ShareButtons
-              url={`https://vincenthirtz.fr/notes/${article.slug}`}
-              title={article.title}
-            />
+            <div className="flex items-center gap-4">
+              <LikeButton slug={article.slug} />
+              <ShareButtons
+                url={`https://vincenthirtz.fr/notes/${article.slug}`}
+                title={article.title}
+              />
+            </div>
           </div>
 
           {/* Articles liés */}
@@ -150,11 +152,7 @@ export default function ArticleLayout({
               </div>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 {related.map((rel) => (
-                  <Link
-                    key={rel.slug}
-                    href={`/notes/${rel.slug}`}
-                    className="card group block p-6"
-                  >
+                  <Link key={rel.slug} href={`/notes/${rel.slug}`} className="card group block p-6">
                     <div className="font-mono text-[10px] uppercase tracking-widest text-[var(--color-accent)]">
                       {rel.category} · {rel.dateLabel}
                     </div>
