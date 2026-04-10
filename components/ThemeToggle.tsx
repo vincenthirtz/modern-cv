@@ -9,7 +9,7 @@ import { useAnnounce } from "./A11yAnnouncer";
  * Évite le flash via le script inline dans layout.tsx.
  */
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [theme, setTheme] = useState<"dark" | "light" | null>(null);
   const announce = useAnnounce();
 
   useEffect(() => {
@@ -24,6 +24,16 @@ export default function ThemeToggle() {
     document.documentElement.classList.toggle("light", next === "light");
     localStorage.setItem("theme", next);
     announce(next === "light" ? "Mode clair activé" : "Mode sombre activé");
+  }
+
+  if (theme === null) {
+    // Rendu placeholder avant hydratation pour éviter le mismatch
+    return (
+      <span
+        className="relative inline-flex h-9 w-16 items-center rounded-full border"
+        style={{ borderColor: "var(--border-strong)", background: "var(--elevated)" }}
+      />
+    );
   }
 
   const isDark = theme === "dark";

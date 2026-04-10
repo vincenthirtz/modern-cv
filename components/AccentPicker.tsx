@@ -27,8 +27,6 @@ const ACCENTS = [
 
 export type AccentName = (typeof ACCENTS)[number]["name"];
 
-const DEFAULT_ACCENT = ACCENTS[0];
-
 function applyAccent(accent: (typeof ACCENTS)[number]) {
   const s = document.documentElement.style;
   s.setProperty("--color-accent", accent.color);
@@ -42,7 +40,7 @@ function applyAccent(accent: (typeof ACCENTS)[number]) {
 
 export default function AccentPicker() {
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState<string>(DEFAULT_ACCENT.color);
+  const [active, setActive] = useState<string | null>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const announce = useAnnounce();
 
@@ -50,10 +48,8 @@ export default function AccentPicker() {
   useEffect(() => {
     const stored = localStorage.getItem("accent");
     const match = ACCENTS.find((a) => a.name === stored);
-    if (match) {
-      setActive(match.color);
-      applyAccent(match);
-    }
+    setActive((match ?? ACCENTS[0]).color);
+    if (match) applyAccent(match);
   }, []);
 
   // Fermer le panneau au clic extérieur
@@ -84,6 +80,17 @@ export default function AccentPicker() {
     localStorage.setItem("accent", accent.name);
     setOpen(false);
     announce(`Couleur d'accentuation : ${accent.name}`);
+  }
+
+  if (active === null) {
+    return (
+      <div className="relative">
+        <span
+          className="inline-flex h-9 w-9 items-center justify-center rounded-full border"
+          style={{ borderColor: "var(--border-strong)", background: "var(--elevated)" }}
+        />
+      </div>
+    );
   }
 
   return (
