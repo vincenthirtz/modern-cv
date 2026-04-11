@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PrintButton from "./PrintButton";
+import JsonLd from "@/components/JsonLd";
 import "./cv.css";
 
 export const metadata: Metadata = {
@@ -41,10 +42,7 @@ const breadcrumbJsonLd = {
 export default function CVPage() {
   return (
     <main id="main" className="cv-page relative z-[2] min-h-screen px-6 py-12">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
+      <JsonLd data={breadcrumbJsonLd} />
       {/* Fil d'Ariane + actions — masqués à l'impression */}
       <div className="cv-actions mx-auto mb-10 flex max-w-3xl items-center justify-between">
         <nav

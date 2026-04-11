@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import BrandingGrid from "@/components/BrandingGrid";
+import JsonLd from "@/components/JsonLd";
 
 export const metadata: Metadata = {
   title: "Branding — Vincent Hirtz",
@@ -30,10 +31,7 @@ const breadcrumbJsonLd = {
 export default function BrandingPage() {
   return (
     <main className="relative z-[2] px-6 pt-32 pb-32 sm:pt-40">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
+      <JsonLd data={breadcrumbJsonLd} />
       <div className="mx-auto max-w-5xl">
         {/* Breadcrumb */}
         <nav

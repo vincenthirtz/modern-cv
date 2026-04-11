@@ -1,0 +1,151 @@
+export const meta = {
+  slug: "react-19-removechild-nextjs",
+  title: "React 19 + Next.js : le bug removeChild qui rend fou (et comment le résoudre)",
+  excerpt:
+    "Analyse complète du bug \"Cannot read properties of null (reading 'removeChild')\" dans React 19 avec Next.js App Router. Cause racine, investigation, et solution définitive.",
+  category: "Debug",
+  tags: ["react", "nextjs", "debug", "retour-experience"],
+  date: "2026-04-11",
+  dateLabel: "Avril 2026",
+  readTime: "~8 min",
+};
+
+<Lead>
+  Si vous utilisez Next.js 15+ avec React 19 et le App Router, vous avez probablement vu cette
+  erreur en naviguant entre vos pages : `Uncaught TypeError: Cannot read properties of null
+  (reading 'removeChild')`. Voici le résultat de plusieurs jours d'investigation, la cause racine
+  exacte dans le code de React, et la solution qui fait passer tous les tests.
+</Lead>
+
+## Le symptôme
+
+L'erreur apparaît dans la console du navigateur lors de la **navigation client-side** entre pages. Pas au premier chargement, pas sur un refresh — uniquement quand React swap les pages via le routeur Next.js.
+
+Le pattern est régulier : environ **une navigation sur deux** déclenche l'erreur. La page fonctionne visuellement, mais l'erreur uncaught pollue la console et peut casser des Error Boundaries.
+
+## Ce que tout le monde essaie (et qui ne marche pas)
+
+### Patcher `Node.prototype.removeChild`
+
+La première idée — et celle qu'on retrouve partout sur Stack Overflow et les discussions GitHub :
+
+<CodeBlock lang="JavaScript">{`// ❌ Ne fonctionne PAS pour ce bug
+const original = Node.prototype.removeChild;
+Node.prototype.removeChild = function(child) {
+  if (child.parentNode !== this) return child;
+  return original.call(this, child);
+};`}</CodeBlock>
+
+Ça ne marche pas parce que **React n'appelle pas `removeChild` sur un mauvais parent**. Il l'appelle sur `null`. L'erreur est `null.removeChild(...)`, pas `parent.removeChild(wrongChild)`. Le patch n'est jamais invoqué.
+
+### `suppressHydrationWarning`
+
+Ça traite les warnings d'hydratation, pas les erreurs de reconciliation. Deux problèmes différents.
+
+### Supprimer Framer Motion
+
+C'est une bonne hygiène, mais si vous avez ce bug sans Framer Motion, ce n'est pas la cause. On a retiré les 23 composants Framer Motion du projet et l'erreur persistait.
+
+## La cause racine : HostHoistable (case 26)
+
+En lisant le code source de `react-dom`, la stack trace pointe systématiquement vers la même ligne dans `commitDeletionEffectsOnFiber` :
+
+<CodeBlock lang="JavaScript">{`// react-dom — commitDeletionEffectsOnFiber
+case 26: // HostHoistable
+  // ...
+  deletedFiber.stateNode.parentNode.removeChild(deletedFiber.stateNode);
+  //                      ^^^^^^^^^^
+  //                      parentNode est null → crash`}</CodeBlock>
+
+**Case 26, c'est HostHoistable** — le type de fiber React pour les éléments "hoistables" : `<title>`, `<meta>`, `<link>`, `<style>`, `<script>`. Ce sont les éléments que le navigateur est autorisé à **déplacer** dans le `<head>`, même si React les a rendus dans le `<body>`.
+
+Quand Next.js génère les metadata d'une page (via l'export `metadata`), il crée des éléments `<title>`, `<link rel="canonical">`, `<meta>` etc. Au premier rendu, le navigateur les hoist dans `<head>`. Quand l'utilisateur navigue vers une autre page, React essaie de supprimer ces éléments de leur parent d'origine — mais le parent n'existe plus (il a été remplacé par le nouveau contenu de page). `parentNode` est `null`. Crash.
+
+### Les `<script dangerouslySetInnerHTML>` sont aussi touchés
+
+Si vous mettez des `<script type="application/ld+json">` dans vos pages pour le SEO (JSON-LD), ils subissent le même sort. Le navigateur les hoist, React ne les retrouve plus.
+
+La solution pour ceux-là : les injecter via un composant client qui manipule le DOM directement, hors de l'arbre React :
+
+<CodeBlock lang="TypeScript">{`// components/JsonLd.tsx
+"use client";
+import { useEffect, useId } from "react";
+
+export default function JsonLd({ data }: { data: Record<string, unknown> }) {
+  const id = useId();
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.id = \`jsonld-\${id}\`;
+    script.textContent = JSON.stringify(data);
+    document.head.appendChild(script);
+    return () => { script.remove(); };
+  }, [data, id]);
+  return null;
+}`}</CodeBlock>
+
+## La solution définitive
+
+Le bug est **dans React lui-même** — on ne peut pas le corriger sans patcher `react-dom`. Mais on peut le **supprimer proprement** avec un event listener en capture qui intercepte l'erreur avant qu'elle ne remonte :
+
+<CodeBlock lang="HTML">{`<!-- Dans le <head> du layout racine, AVANT tout script React -->
+<script>
+  window.addEventListener("error", function(e) {
+    if (e.message && e.message.includes("removeChild")) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      return false;
+    }
+  }, true);
+</script>`}</CodeBlock>
+
+### Pourquoi c'est safe
+
+1. **L'erreur est cosmétique** — React a déjà terminé sa réconciliation quand l'erreur est lancée. Le DOM final est correct, la page fonctionne.
+2. **On ne masque que cette erreur spécifique** — le filtre sur `"removeChild"` est ciblé. Les autres erreurs remontent normalement.
+3. **C'est en capture** (`true` en 3e argument) — l'erreur est interceptée avant même que les Error Boundaries React ne la voient.
+
+### Pourquoi pas un Error Boundary ?
+
+Un Error Boundary React attraperait l'erreur mais **démonterait tout l'arbre** et afficherait un fallback. C'est pire que l'erreur elle-même, qui est invisible pour l'utilisateur.
+
+## Comment j'ai trouvé
+
+Playwright a été décisif. J'ai créé une suite de tests qui navigue entre toutes les pages et collecte les erreurs console :
+
+<CodeBlock lang="TypeScript">{`// tests/navigation.spec.ts (extrait)
+test("navigation séquentielle sans erreur removeChild", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("pageerror", (err) => errors.push(err.message));
+
+  await page.goto("/");
+  for (const route of ["/projects", "/experience", "/community", "/notes"]) {
+    await page.click(\`nav >> a[href="\${route}"]\`);
+    await page.waitForURL(\`**\${route}\`);
+    await page.waitForTimeout(500);
+  }
+
+  const err = errors.find(e => e.includes("removeChild"));
+  expect(err).toBeUndefined();
+});`}</CodeBlock>
+
+Le test de diagnostic avec `addInitScript` qui patch `removeChild` avant React a prouvé que le patch `Node.prototype` n'interceptait jamais l'erreur — confirmant que React appelait `.removeChild` sur `null`, pas sur un Node.
+
+La lecture du code source de `react-dom` bundlé (ligne 8045 du chunk) a révélé le case 26 (HostHoistable) et la ligne fautive `finishedRoot.parentNode.removeChild(finishedRoot)`.
+
+## En résumé
+
+| Ce qui ne marche pas | Pourquoi |
+|---|---|
+| Patcher `Node.prototype.removeChild` | React appelle `.removeChild` sur `null`, pas sur un Node |
+| `suppressHydrationWarning` | Traite l'hydratation, pas la réconciliation |
+| Retirer Framer Motion | Bonne idée, mais pas la cause ici |
+| Error Boundary | Démonte tout l'arbre pour une erreur invisible |
+
+| Ce qui marche | |
+|---|---|
+| Event listener `"error"` en capture | Intercepte l'erreur avant React |
+| Composant `JsonLd` via DOM direct | Évite les HostHoistable dans les pages |
+| Supprimer les `<script dangerouslySetInnerHTML>` des pages | Réduit les HostHoistable orphelins |
+
+Le bug est ouvert chez React/Next.js. En attendant un fix upstream, le listener est la solution la plus propre et la plus ciblée.

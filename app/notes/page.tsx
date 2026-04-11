@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ARTICLES, type ArticleMeta } from "@/lib/articles";
 import NotesFilters from "@/components/NotesFilters";
+import JsonLd from "@/components/JsonLd";
 
 export const metadata: Metadata = {
   title: "Notes — Vincent Hirtz",
@@ -55,10 +56,7 @@ export default function NotesIndexPage() {
 
   return (
     <main className="relative z-[2] px-6 pt-32 pb-32 sm:pt-40">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
+      <JsonLd data={breadcrumbJsonLd} />
       <div className="mx-auto max-w-4xl">
         {/* Breadcrumb */}
         <nav aria-label="Fil d'ariane" className="mb-10">

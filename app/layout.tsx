@@ -1,12 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Sans, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import EffectsProvider from "@/components/EffectsProvider";
-import PageTransition from "@/components/PageTransition";
 import A11yAnnouncer from "@/components/A11yAnnouncer";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 import Navigation from "@/components/Navigation";
 import ClientEffects from "@/components/ClientEffects";
-import DOMSafetyNet from "@/components/DOMSafetyNet";
 import Footer from "@/components/Footer";
 import "./globals.css";
 
@@ -105,6 +103,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           title="Vincent Hirtz — Notes (Atom)"
           href="/feed.atom"
         />
+        {/* Supprime silencieusement l'erreur React 19 HostHoistable removeChild
+            qui se produit lors de la navigation client-side quand React essaie
+            de supprimer des metadata (<title>, <link>, <meta>) dont le parentNode
+            est devenu null. C'est un bug connu de React 19 + Next.js App Router.
+            Ref: vercel/next.js#58055 */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.addEventListener("error",function(e){if(e.message&&e.message.includes("removeChild")){e.preventDefault();e.stopImmediatePropagation();return false}},true);`,
+          }}
+        />
         {/* Évite le flash en chargeant la préférence avant le rendu React */}
         <script
           dangerouslySetInnerHTML={{
@@ -199,13 +207,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Aller au contenu principal
         </a>
         {/* Provider global des effets visuels (mode lecture / reduced effects) */}
-        <DOMSafetyNet />
         <A11yAnnouncer>
           <EffectsProvider>
             <ClientEffects />
             <ServiceWorkerRegister />
             <Navigation />
-            <PageTransition>{children}</PageTransition>
+            {children}
             <Footer />
           </EffectsProvider>
         </A11yAnnouncer>

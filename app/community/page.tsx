@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Community from "@/components/Community";
+import JsonLd from "@/components/JsonLd";
 
 export const metadata: Metadata = {
   title: "Communauté — Vincent Hirtz",
@@ -31,10 +32,7 @@ const breadcrumbJsonLd = {
 export default function CommunityPage() {
   return (
     <main className="relative z-[2] px-6 pt-32 pb-32 sm:pt-40">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
+      <JsonLd data={breadcrumbJsonLd} />
       <div className="mx-auto max-w-6xl">
         <nav
           aria-label="Fil d'ariane"

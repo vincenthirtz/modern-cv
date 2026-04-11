@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import ArticleLayout from "@/components/ArticleLayout";
+import JsonLd from "@/components/JsonLd";
 import {
   getAllSlugs,
   getArticleBySlug,
@@ -117,14 +118,8 @@ export default async function NotePage({ params }: PageProps) {
 
   return (
     <main className="relative z-[2]">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
-      />
+      <JsonLd data={breadcrumbJsonLd} />
+      <JsonLd data={articleJsonLd} />
       <ArticleLayout article={toMeta(article)} related={related}>
         <Content />
       </ArticleLayout>
