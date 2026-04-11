@@ -81,8 +81,10 @@ test.describe("Menu mobile", () => {
     const pages = ["/", "/projects", "/experience", "/notes", "/contact"];
 
     for (const path of pages) {
-      await page.goto(path);
-      await page.waitForLoadState("networkidle");
+      await page.goto(path, { waitUntil: "domcontentloaded" });
+      // Petite stabilisation pour laisser le layout se poser sans
+      // attendre networkidle (peu fiable sous charge en pre-commit).
+      await page.waitForTimeout(300);
 
       // Pas de scroll horizontal significatif (tolérance de 10px)
       const overflow = await page.evaluate(
