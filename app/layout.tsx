@@ -6,6 +6,7 @@ import A11yAnnouncer from "@/components/A11yAnnouncer";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 import Navigation from "@/components/Navigation";
 import ClientEffects from "@/components/ClientEffects";
+import DOMSafetyNet from "@/components/DOMSafetyNet";
 import Footer from "@/components/Footer";
 import "./globals.css";
 
@@ -198,6 +199,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Aller au contenu principal
         </a>
         {/* Provider global des effets visuels (mode lecture / reduced effects) */}
+        <DOMSafetyNet />
         <A11yAnnouncer>
           <EffectsProvider>
             <ClientEffects />
