@@ -41,7 +41,7 @@ const breadcrumbJsonLd = {
 
 export default function CVPage() {
   return (
-    <main id="main" className="cv-page relative z-[2] min-h-screen px-6 py-12">
+    <main id="main" className="cv-page relative z-[2] min-h-screen px-6 pt-32 pb-12">
       <JsonLd data={breadcrumbJsonLd} />
       {/* Fil d'Ariane + actions — masqués à l'impression */}
       <div className="cv-actions mx-auto mb-10 flex max-w-3xl items-center justify-between">
