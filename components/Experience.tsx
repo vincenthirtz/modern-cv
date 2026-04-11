@@ -44,7 +44,7 @@ export default function Experience() {
         <SectionTitle
           number="04"
           label="Expérience"
-          title="Dix ans, quatre maisons, une obsession."
+          title="Dix ans, 3 entreprises, une obsession."
           highlight="obsession."
           description="Du junior qui découvrait le monitoring au lead qui forme la prochaine génération. Voilà le parcours."
         />
