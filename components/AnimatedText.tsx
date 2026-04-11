@@ -39,8 +39,7 @@ export default function AnimatedText({
     <Wrapper className={className}>
       <span ref={ref} style={{ display: "inline-block" }} aria-label={text}>
         {tokens.map((token, i) => {
-          const isHighlight =
-            !!highlight && splitBy === "word" && norm(token) === norm(highlight);
+          const isHighlight = !!highlight && splitBy === "word" && norm(token) === norm(highlight);
           const tokenDelay = delay + i * staggerChildren;
           return (
             <span

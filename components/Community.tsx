@@ -71,11 +71,7 @@ export default function Community() {
           description="Quand le client n'attend rien, je code quand même. Open source, contributions, expérimentations — voilà ce qui vit en parallèle."
         />
 
-        <ul
-          ref={listRef}
-          className="divide-y"
-          style={{ borderColor: "var(--border)" }}
-        >
+        <ul ref={listRef} className="divide-y" style={{ borderColor: "var(--border)" }}>
           {ITEMS.map((item, i) => (
             <li
               key={item.title}

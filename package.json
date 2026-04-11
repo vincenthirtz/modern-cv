@@ -13,7 +13,9 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,mjs,json,md,css}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mjs,json,md,css}\"",
     "typecheck": "tsc --noEmit",
-    "analyze": "ANALYZE=true next build"
+    "test": "npx playwright test",
+    "analyze": "ANALYZE=true next build",
+    "prepare": "husky"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",
@@ -38,6 +40,8 @@
     "eslint": "^9.28.0",
     "eslint-config-next": "^16.2.3",
     "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
     "postcss": "^8.5.9",
     "prettier": "^3.8.2",
     "tailwindcss": "^4.2.2",
