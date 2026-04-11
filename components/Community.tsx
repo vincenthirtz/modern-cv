@@ -146,8 +146,8 @@ export default function Community() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-12 max-w-2xl text-sm text-[var(--fg-muted)]"
         >
-          <span className="text-[var(--color-accent)]">→</span> Vous organisez un meetup
-          ou une conférence sur React, Vue, Cypress ou les frameworks DOM ?{" "}
+          <span className="text-[var(--color-accent)]">→</span> Vous organisez un meetup ou une
+          conférence sur React, Vue, Cypress ou les frameworks DOM ?{" "}
           <a
             href="#contact"
             className="underline decoration-[var(--color-accent)] underline-offset-4 hover:text-[var(--color-accent)]"

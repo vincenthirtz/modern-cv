@@ -31,6 +31,7 @@ npm run analyze      # Build avec bundle analyzer (ANALYZE=true)
 ## Vérification avant commit
 
 Toujours lancer ces commandes avant de considérer un changement comme terminé :
+
 ```bash
 npm run typecheck && npm run lint && npm run format:check
 ```
@@ -60,6 +61,7 @@ types/                # Définitions TypeScript (mdx.d.ts)
 ## Accessibilité (a11y)
 
 Le projet a des exigences fortes en accessibilité :
+
 - Score Lighthouse accessibility minimum : **0.95** (erreur si inférieur)
 - Composant `A11yAnnouncer` pour les annonces aux lecteurs d'écran
 - Skip-link "Aller au contenu principal"

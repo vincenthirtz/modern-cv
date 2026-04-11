@@ -45,14 +45,14 @@ Ouvrir [http://localhost:3000](http://localhost:3000).
 
 ## 🎨 Design system
 
-| Token             | Valeur     | Usage                              |
-| ----------------- | ---------- | ---------------------------------- |
-| `--color-ink`     | `#0a0a0b`  | Fond principal (dark)              |
-| `--color-bone`    | `#f0efe9`  | Texte principal                    |
-| `--color-accent`  | `#c8ff00`  | Accent vert citron électrique      |
-| `--font-serif`    | Instrument Serif | Titres                       |
-| `--font-sans`     | DM Sans    | Corps de texte                     |
-| `--font-mono`     | JetBrains Mono | Éléments techniques            |
+| Token            | Valeur           | Usage                         |
+| ---------------- | ---------------- | ----------------------------- |
+| `--color-ink`    | `#0a0a0b`        | Fond principal (dark)         |
+| `--color-bone`   | `#f0efe9`        | Texte principal               |
+| `--color-accent` | `#c8ff00`        | Accent vert citron électrique |
+| `--font-serif`   | Instrument Serif | Titres                        |
+| `--font-sans`    | DM Sans          | Corps de texte                |
+| `--font-mono`    | JetBrains Mono   | Éléments techniques           |
 
 ## 🪄 Easter egg
 

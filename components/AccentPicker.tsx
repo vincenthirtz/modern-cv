@@ -18,11 +18,51 @@ import { useAnnounce } from "./A11yAnnouncer";
  * contre le fond paper #f5f4ee.
  */
 const ACCENTS = [
-  { name: "Lime",   color: "#c8ff00", soft: "#d9ff4d", contrast: "#1a1a1a", fg: "#5a7a00", lightColor: "#4a7a00", lightSoft: "#6b9a00" },
-  { name: "Cyan",   color: "#00e5ff", soft: "#4df0ff", contrast: "#0a1a1f", fg: "#007a8a", lightColor: "#007a8a", lightSoft: "#009aaa" },
-  { name: "Rose",   color: "#ff3c82", soft: "#ff6fa3", contrast: "#ffffff", fg: "#d42265", lightColor: "#d42265", lightSoft: "#e8447f" },
-  { name: "Orange", color: "#ff8a00", soft: "#ffaa40", contrast: "#1a1200", fg: "#b86200", lightColor: "#b86200", lightSoft: "#d07400" },
-  { name: "Violet", color: "#a78bfa", soft: "#c4b5fd", contrast: "#1a1530", fg: "#6d47d9", lightColor: "#6d47d9", lightSoft: "#8660ec" },
+  {
+    name: "Lime",
+    color: "#c8ff00",
+    soft: "#d9ff4d",
+    contrast: "#1a1a1a",
+    fg: "#5a7a00",
+    lightColor: "#4a7a00",
+    lightSoft: "#6b9a00",
+  },
+  {
+    name: "Cyan",
+    color: "#00e5ff",
+    soft: "#4df0ff",
+    contrast: "#0a1a1f",
+    fg: "#007a8a",
+    lightColor: "#007a8a",
+    lightSoft: "#009aaa",
+  },
+  {
+    name: "Rose",
+    color: "#ff3c82",
+    soft: "#ff6fa3",
+    contrast: "#ffffff",
+    fg: "#d42265",
+    lightColor: "#d42265",
+    lightSoft: "#e8447f",
+  },
+  {
+    name: "Orange",
+    color: "#ff8a00",
+    soft: "#ffaa40",
+    contrast: "#1a1200",
+    fg: "#b86200",
+    lightColor: "#b86200",
+    lightSoft: "#d07400",
+  },
+  {
+    name: "Violet",
+    color: "#a78bfa",
+    soft: "#c4b5fd",
+    contrast: "#1a1530",
+    fg: "#6d47d9",
+    lightColor: "#6d47d9",
+    lightSoft: "#8660ec",
+  },
 ] as const;
 
 export type AccentName = (typeof ACCENTS)[number]["name"];

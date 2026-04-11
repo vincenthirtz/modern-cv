@@ -41,16 +41,14 @@ export default function Footer() {
               VH<span className="text-[var(--color-accent)]">.</span>
             </a>
             <p className="mt-3 max-w-xs text-sm text-[var(--fg-muted)]">
-              Vincent Hirtz — Lead Developer Front-End, basé à Lyon, disponible
-              en remote ou sur site.
+              Vincent Hirtz — Lead Developer Front-End, basé à Lyon, disponible en remote ou sur
+              site.
             </p>
             <div className="mt-4 flex items-center gap-2">
               <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]">
                 Lyon, France
               </span>
-              <span className="font-mono text-[10px] text-[var(--color-accent)]">
-                — {time}
-              </span>
+              <span className="font-mono text-[10px] text-[var(--color-accent)]">— {time}</span>
             </div>
           </div>
 
@@ -78,7 +76,9 @@ export default function Footer() {
               style={{ borderColor: "var(--border-strong)" }}
             >
               Retour en haut
-              <span className="inline-block transition-transform group-hover:-translate-y-0.5">↑</span>
+              <span className="inline-block transition-transform group-hover:-translate-y-0.5">
+                ↑
+              </span>
             </a>
             <div className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]">
               Tip : essayez ↑↑↓↓←→←→ B A

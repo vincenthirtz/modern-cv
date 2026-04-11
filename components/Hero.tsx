@@ -36,19 +36,12 @@ export default function Hero() {
       <div aria-hidden className="bg-aurora pointer-events-none absolute inset-0" />
 
       {/* Formes flottantes en arrière-plan */}
-      <motion.div
-        aria-hidden
-        style={{ y: blobY }}
-        className="pointer-events-none absolute inset-0"
-      >
+      <motion.div aria-hidden style={{ y: blobY }} className="pointer-events-none absolute inset-0">
         <div className="absolute top-1/4 -left-32 h-[420px] w-[420px] rounded-full bg-[var(--color-accent)] opacity-[0.06] blur-[120px]" />
         <div className="absolute bottom-10 right-0 h-[360px] w-[360px] rounded-full bg-[var(--color-accent)] opacity-[0.04] blur-[100px]" />
       </motion.div>
 
-      <motion.div
-        style={{ y, opacity }}
-        className="relative z-10 mx-auto w-full max-w-6xl px-6"
-      >
+      <motion.div style={{ y, opacity }} className="relative z-10 mx-auto w-full max-w-6xl px-6">
         {/* Tagline */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -80,9 +73,9 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 1.4 }}
           className="mt-8 max-w-2xl text-lg leading-relaxed text-[var(--fg-muted)] md:text-xl"
         >
-          Lead Developer Front-End basé à Lyon. 10+ ans à concevoir des SPA
-          complexes avec React, Vue et Angular — et à former les équipes qui
-          les font vivre. Curiosité infinie, code soigné.
+          Lead Developer Front-End basé à Lyon. 10+ ans à concevoir des SPA complexes avec React,
+          Vue et Angular — et à former les équipes qui les font vivre. Curiosité infinie, code
+          soigné.
         </motion.p>
 
         {/* CTAs */}
@@ -94,7 +87,16 @@ export default function Hero() {
         >
           <MagneticButton href="#projects" className="btn-accent">
             Voir mes projets
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <line x1="5" y1="12" x2="19" y2="12" />
               <polyline points="12 5 19 12 12 19" />
             </svg>
@@ -109,7 +111,16 @@ export default function Hero() {
             className="btn-ghost"
           >
             Télécharger le CV
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
               <polyline points="7 10 12 15 17 10" />
               <line x1="12" y1="15" x2="12" y2="3" />

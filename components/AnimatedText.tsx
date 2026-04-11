@@ -69,10 +69,8 @@ export default function AnimatedText({
       >
         {tokens.map((token, i) => {
           // Normalisation pour matcher un mot peu importe la ponctuation/casse
-          const norm = (s: string) =>
-            s.toLowerCase().replace(/[^a-zàâäéèêëîïôöùûüÿ]/gi, "");
-          const isHighlight =
-            !!highlight && splitBy === "word" && norm(token) === norm(highlight);
+          const norm = (s: string) => s.toLowerCase().replace(/[^a-zàâäéèêëîïôöùûüÿ]/gi, "");
+          const isHighlight = !!highlight && splitBy === "word" && norm(token) === norm(highlight);
           return (
             <motion.span
               key={`${token}-${i}`}

@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/generate-articles-index.mjs",
     "build": "next build",
+    "articles:generate": "node scripts/generate-articles-index.mjs",
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -16,6 +18,7 @@
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
+    "@netlify/blobs": "^10.7.4",
     "@next/mdx": "^16.2.3",
     "@types/mdx": "^2.0.13",
     "fuse.js": "^7.3.0",

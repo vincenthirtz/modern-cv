@@ -22,11 +22,7 @@ interface SectionDividerProps {
  * Le divider est lui-même un repère visuel rythmique entre les sections,
  * pas un séparateur fonctionnel.
  */
-export default function SectionDivider({
-  number,
-  next,
-  variant = "line",
-}: SectionDividerProps) {
+export default function SectionDivider({ number, next, variant = "line" }: SectionDividerProps) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -37,11 +33,7 @@ export default function SectionDivider({
   // Les lignes scale-X de 0 à 1 quand le divider entre dans le viewport
   const lineScale = useTransform(scrollYProgress, [0.3, 0.6], [0, 1]);
   // Opacity du label fade in/out
-  const labelOpacity = useTransform(
-    scrollYProgress,
-    [0.3, 0.5, 0.7, 0.9],
-    [0, 1, 1, 0],
-  );
+  const labelOpacity = useTransform(scrollYProgress, [0.3, 0.5, 0.7, 0.9], [0, 1, 1, 0]);
 
   if (variant === "minimal") {
     return (
@@ -76,14 +68,8 @@ export default function SectionDivider({
 
       {/* Marker central — losange rotatif */}
       <div className="relative mx-6 flex flex-col items-center">
-        <motion.div
-          style={{ rotate }}
-          className="relative h-3 w-3 md:h-4 md:w-4"
-        >
-          <span
-            aria-hidden
-            className="absolute inset-0 block bg-[var(--color-accent)]"
-          />
+        <motion.div style={{ rotate }} className="relative h-3 w-3 md:h-4 md:w-4">
+          <span aria-hidden className="absolute inset-0 block bg-[var(--color-accent)]" />
           <span
             aria-hidden
             className="absolute -inset-2 block animate-pulse rounded-full bg-[var(--color-accent)] opacity-20 blur-md"

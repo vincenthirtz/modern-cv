@@ -51,6 +51,14 @@ const nextConfig = {
         source: "/(.*)\\.(svg|jpg|jpeg|png|webp|avif|ico|woff2)",
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
       },
+      {
+        // Le Service Worker doit toujours être re-validé pour détecter les mises à jour
+        source: "/sw.js",
+        headers: [
+          { key: "Cache-Control", value: "no-cache, no-store, must-revalidate" },
+          { key: "Service-Worker-Allowed", value: "/" },
+        ],
+      },
     ];
   },
 };

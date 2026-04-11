@@ -3,6 +3,7 @@ import { DM_Sans, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import EffectsProvider from "@/components/EffectsProvider";
 import PageTransition from "@/components/PageTransition";
 import A11yAnnouncer from "@/components/A11yAnnouncer";
+import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 import "./globals.css";
 
 // Polices Google — chargées via next/font pour optimisation
@@ -195,6 +196,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Provider global des effets visuels (mode lecture / reduced effects) */}
         <A11yAnnouncer>
           <EffectsProvider>
+            <ServiceWorkerRegister />
             <PageTransition>{children}</PageTransition>
           </EffectsProvider>
         </A11yAnnouncer>

@@ -16,6 +16,7 @@ interface NotesFiltersProps {
 export default function NotesFilters({ articles }: NotesFiltersProps) {
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [activeTag, setActiveTag] = useState<string | null>(null);
 
   // Extraire les catégories uniques
   const categories = useMemo(
@@ -23,14 +24,18 @@ export default function NotesFilters({ articles }: NotesFiltersProps) {
     [articles],
   );
 
+  // Extraire les tags uniques
+  const allTags = useMemo(() => [...new Set(articles.flatMap((a) => a.tags))].sort(), [articles]);
+
   // Index Fuse.js pour la recherche
   const fuse = useMemo(
     () =>
       new Fuse(articles, {
         keys: [
-          { name: "title", weight: 0.4 },
-          { name: "excerpt", weight: 0.3 },
-          { name: "category", weight: 0.2 },
+          { name: "title", weight: 0.35 },
+          { name: "excerpt", weight: 0.25 },
+          { name: "category", weight: 0.15 },
+          { name: "tags", weight: 0.15 },
           { name: "dateLabel", weight: 0.1 },
         ],
         threshold: 0.4,
@@ -48,6 +53,11 @@ export default function NotesFilters({ articles }: NotesFiltersProps) {
       results = results.filter((a) => a.category === activeCategory);
     }
 
+    // Filtre par tag
+    if (activeTag) {
+      results = results.filter((a) => a.tags.includes(activeTag));
+    }
+
     // Recherche full-text
     if (query.trim()) {
       const fuseResults = fuse.search(query);
@@ -56,7 +66,7 @@ export default function NotesFilters({ articles }: NotesFiltersProps) {
     }
 
     return results;
-  }, [articles, activeCategory, query, fuse]);
+  }, [articles, activeCategory, activeTag, query, fuse]);
 
   return (
     <>
@@ -122,6 +132,31 @@ export default function NotesFilters({ articles }: NotesFiltersProps) {
             </button>
           ))}
         </div>
+
+        {/* Filtres par tag */}
+        {allTags.length > 0 && (
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]">
+              Tags
+            </span>
+            {allTags.map((tag) => (
+              <button
+                key={tag}
+                onClick={() => setActiveTag(activeTag === tag ? null : tag)}
+                className={`rounded-full border px-2.5 py-0.5 font-mono text-[10px] tracking-wide transition-colors ${
+                  activeTag === tag
+                    ? "border-[var(--color-accent)] text-[var(--color-accent)]"
+                    : "text-[var(--fg-dim)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+                }`}
+                style={{
+                  borderColor: activeTag === tag ? "var(--color-accent)" : "var(--border)",
+                }}
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Résultats */}
@@ -152,6 +187,19 @@ export default function NotesFilters({ articles }: NotesFiltersProps) {
                   {article.title}
                 </h2>
                 <p className="mt-3 max-w-2xl text-[var(--fg-muted)]">{article.excerpt}</p>
+                {article.tags.length > 0 && (
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    {article.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded-full border px-2 py-0.5 font-mono text-[10px] tracking-wide text-[var(--fg-dim)]"
+                        style={{ borderColor: "var(--border)" }}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
                 <div className="mt-4 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]">
                   Lire l&apos;article{" "}
                   <span className="transition-transform group-hover:translate-x-1">→</span>
@@ -163,7 +211,7 @@ export default function NotesFilters({ articles }: NotesFiltersProps) {
       )}
 
       {/* Compteur de résultats */}
-      {(query || activeCategory) && filtered.length > 0 && (
+      {(query || activeCategory || activeTag) && filtered.length > 0 && (
         <div className="mt-6 font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]">
           {filtered.length} article{filtered.length > 1 ? "s" : ""} trouvé
           {filtered.length > 1 ? "s" : ""}

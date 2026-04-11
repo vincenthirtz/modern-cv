@@ -2,16 +2,15 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import ArticleLayout from "@/components/ArticleLayout";
 import {
-  ARTICLES,
   getAllSlugs,
   getArticleBySlug,
+  getRelatedArticles,
   type Article,
   type ArticleMeta,
 } from "@/lib/articles";
 
 /** Extrait la partie sérialisable d'un article (sans le composant Content). */
 function toMeta(article: Article): ArticleMeta {
-   
   const { Content, ...meta } = article;
   return meta;
 }
@@ -51,7 +50,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       locale: "fr_FR",
       publishedTime: article.date,
       authors: ["Vincent Hirtz"],
-      tags: [article.category],
+      tags: [article.category, ...article.tags],
     },
     twitter: {
       card: "summary_large_image",
@@ -70,10 +69,8 @@ export default async function NotePage({ params }: PageProps) {
   // Cela évite de passer une fonction (non sérialisable) en prop à un Client Component.
   const { Content } = article;
 
-  // Articles liés : tous les autres, max 2 — sérialisés en méta seulement
-  const related = ARTICLES.filter((a) => a.slug !== slug)
-    .slice(0, 2)
-    .map(toMeta);
+  // Articles liés par tags communs, max 2 — sérialisés en méta seulement
+  const related = getRelatedArticles(slug, 2).map(toMeta);
 
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",

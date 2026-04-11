@@ -9,6 +9,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
+        disallow: "/api/",
       },
     ],
     sitemap: "https://vincenthirtz.fr/sitemap.xml",

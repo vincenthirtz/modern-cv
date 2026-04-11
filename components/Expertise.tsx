@@ -137,8 +137,12 @@ export default function Expertise() {
               className={`card group relative overflow-hidden p-6 ${cat.span}`}
             >
               {/* Glow accent qui apparait au hover */}
-              <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                style={{ background: "radial-gradient(400px circle at 50% 0%, rgba(200,255,0,0.08), transparent 70%)" }}
+              <div
+                className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                style={{
+                  background:
+                    "radial-gradient(400px circle at 50% 0%, rgba(200,255,0,0.08), transparent 70%)",
+                }}
               />
               <div className="relative">
                 <div className="flex items-center justify-between">
@@ -151,7 +155,9 @@ export default function Expertise() {
                 </div>
                 <ul
                   className={`mt-6 space-y-4 ${
-                    cat.span.includes("col-span-4") ? "md:grid md:grid-cols-2 md:gap-x-8 md:space-y-0 md:[&>li]:mb-4" : ""
+                    cat.span.includes("col-span-4")
+                      ? "md:grid md:grid-cols-2 md:gap-x-8 md:space-y-0 md:[&>li]:mb-4"
+                      : ""
                   }`}
                 >
                   {cat.skills.map((skill) => (
@@ -163,7 +169,10 @@ export default function Expertise() {
                         </span>
                       </div>
                       {/* Jauge animée */}
-                      <div className="h-[3px] w-full overflow-hidden rounded-full" style={{ background: "var(--border)" }}>
+                      <div
+                        className="h-[3px] w-full overflow-hidden rounded-full"
+                        style={{ background: "var(--border)" }}
+                      >
                         <motion.div
                           initial={{ width: 0 }}
                           whileInView={{ width: `${(skill.level / 5) * 100}%` }}

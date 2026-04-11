@@ -79,6 +79,20 @@ export default function ArticleLayout({ article, children, related = [] }: Artic
             <span className="text-[var(--fg-muted)]">{article.dateLabel}</span>
             <span className="text-[var(--fg-dim)]">·</span>
             <span className="text-[var(--fg-muted)]">{article.readTime} de lecture</span>
+            {article.tags.length > 0 && (
+              <>
+                <span className="text-[var(--fg-dim)]">·</span>
+                {article.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full border px-2 py-0.5 text-[var(--fg-muted)]"
+                    style={{ borderColor: "var(--border-strong)" }}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </>
+            )}
           </motion.div>
 
           {/* Titre animé */}

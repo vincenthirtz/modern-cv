@@ -93,8 +93,8 @@ export default function Contact() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-6 max-w-2xl text-lg text-[var(--fg-muted)]"
         >
-          Un projet en tête ? Une équipe à structurer ? Une architecture à
-          challenger ? Discutons-en — promis, je réponds vite.
+          Un projet en tête ? Une équipe à structurer ? Une architecture à challenger ? Discutons-en
+          — promis, je réponds vite.
         </motion.p>
 
         <div className="mt-16 grid grid-cols-1 gap-12 lg:grid-cols-5">
@@ -106,7 +106,10 @@ export default function Contact() {
             className="card space-y-5 p-8 lg:col-span-3"
           >
             <div>
-              <label htmlFor="name" className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-muted)]">
+              <label
+                htmlFor="name"
+                className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-muted)]"
+              >
                 Nom
               </label>
               <input
@@ -121,13 +124,20 @@ export default function Contact() {
                 style={{ borderColor: errors.name ? "#ff6b6b" : "var(--border-strong)" }}
               />
               {errors.name && (
-                <p id="name-error" role="alert" className="mt-2 font-mono text-[11px] text-[#ff8a8a]">
+                <p
+                  id="name-error"
+                  role="alert"
+                  className="mt-2 font-mono text-[11px] text-[#ff8a8a]"
+                >
                   {errors.name}
                 </p>
               )}
             </div>
             <div>
-              <label htmlFor="email" className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-muted)]">
+              <label
+                htmlFor="email"
+                className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-muted)]"
+              >
                 Email
               </label>
               <input
@@ -142,13 +152,20 @@ export default function Contact() {
                 style={{ borderColor: errors.email ? "#ff6b6b" : "var(--border-strong)" }}
               />
               {errors.email && (
-                <p id="email-error" role="alert" className="mt-2 font-mono text-[11px] text-[#ff8a8a]">
+                <p
+                  id="email-error"
+                  role="alert"
+                  className="mt-2 font-mono text-[11px] text-[#ff8a8a]"
+                >
                   {errors.email}
                 </p>
               )}
             </div>
             <div>
-              <label htmlFor="message" className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-muted)]">
+              <label
+                htmlFor="message"
+                className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-muted)]"
+              >
                 Message
               </label>
               <textarea
@@ -163,24 +180,32 @@ export default function Contact() {
                 style={{ borderColor: errors.message ? "#ff6b6b" : "var(--border-strong)" }}
               />
               {errors.message && (
-                <p id="message-error" role="alert" className="mt-2 font-mono text-[11px] text-[#ff8a8a]">
+                <p
+                  id="message-error"
+                  role="alert"
+                  className="mt-2 font-mono text-[11px] text-[#ff8a8a]"
+                >
                   {errors.message}
                 </p>
               )}
             </div>
             <div className="pt-2">
-              <p
-                id="contact-status"
-                role="status"
-                aria-live="polite"
-                className="sr-only"
-              >
+              <p id="contact-status" role="status" aria-live="polite" className="sr-only">
                 {sent ? "Message envoyé avec succès." : ""}
               </p>
               <MagneticButton as="button" type="submit" className="btn-accent">
                 {sent ? "Message envoyé ✓" : "Envoyer"}
                 {!sent && (
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <line x1="22" y1="2" x2="11" y2="13" />
                     <polygon points="22 2 15 22 11 13 2 9 22 2" />
                   </svg>
@@ -199,7 +224,9 @@ export default function Contact() {
                 href="mailto:hirtzvincent@free.fr"
                 className="mt-3 block break-words font-serif text-2xl leading-tight transition-colors hover:text-[var(--color-accent)] md:text-3xl"
               >
-                hirtzvincent<br />@free.fr
+                hirtzvincent
+                <br />
+                @free.fr
               </a>
               <a
                 href="tel:+33769167612"

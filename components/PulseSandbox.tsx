@@ -133,8 +133,7 @@ export default function PulseSandbox() {
           className="border-t px-4 py-2 font-mono text-[9px] uppercase tracking-widest text-[var(--fg-dim)]"
           style={{ borderColor: "var(--border)" }}
         >
-          state.count ={" "}
-          <span className="text-[var(--color-accent)]">{count}</span>
+          state.count = <span className="text-[var(--color-accent)]">{count}</span>
         </div>
       </div>
     </div>

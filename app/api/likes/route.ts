@@ -1,20 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getLikes, incrementLikes } from "@/lib/likes-store";
 
 /**
  * API de likes anonymes par article.
  *
- * Stockage en mémoire (reset au redémarrage). Pour un stockage persistant,
- * remplacer `likesStore` par Upstash Redis ou Vercel KV :
+ * Stockage persistant via fichier JSON (voir lib/likes-store.ts).
  *
- *   import { kv } from "@vercel/kv";
- *   const get = (slug: string) => kv.get<number>(`likes:${slug}`);
- *   const incr = (slug: string) => kv.incr(`likes:${slug}`);
- *
- * GET /api/likes?slug=mon-article   → { likes: 42 }
+ * GET  /api/likes?slug=mon-article   → { likes: 42 }
  * POST /api/likes { slug: "mon-article" } → { likes: 43 }
  */
-
-const likesStore = new Map<string, number>();
 
 export async function GET(request: NextRequest) {
   const slug = request.nextUrl.searchParams.get("slug");
@@ -23,7 +17,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "slug parameter required" }, { status: 400 });
   }
 
-  const likes = likesStore.get(slug) ?? 0;
+  const likes = await getLikes(slug);
   return NextResponse.json({ likes });
 }
 
@@ -40,8 +34,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "slug required" }, { status: 400 });
   }
 
-  const current = likesStore.get(slug) ?? 0;
-  likesStore.set(slug, current + 1);
-
-  return NextResponse.json({ likes: current + 1 });
+  const likes = await incrementLikes(slug);
+  return NextResponse.json({ likes });
 }

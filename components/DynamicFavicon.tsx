@@ -22,17 +22,13 @@ export default function DynamicFavicon() {
       const root = document.documentElement;
       const isLight = root.classList.contains("light");
       // getComputedStyle donne la valeur finale (après override CSS :root.light)
-      const accent =
-        getComputedStyle(root).getPropertyValue("--color-accent").trim() ||
-        "#c8ff00";
+      const accent = getComputedStyle(root).getPropertyValue("--color-accent").trim() || "#c8ff00";
       const bg = isLight ? "#f5f4ee" : "#0a0a0b";
 
       const href = `data:image/svg+xml,${encodeURIComponent(buildSvg(bg, accent))}`;
 
       // Supprimer tous les favicons existants pour forcer le navigateur à relire
-      document
-        .querySelectorAll<HTMLLinkElement>('link[rel="icon"]')
-        .forEach((el) => el.remove());
+      document.querySelectorAll<HTMLLinkElement>('link[rel="icon"]').forEach((el) => el.remove());
 
       const link = document.createElement("link");
       link.rel = "icon";
