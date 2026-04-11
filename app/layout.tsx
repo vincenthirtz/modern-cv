@@ -82,6 +82,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="fr"
+      data-scroll-behavior="smooth"
       className={`${dmSans.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable}`}
       // Toggle dark/light géré côté client
       suppressHydrationWarning

@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { href: "#blog", label: "Notes" },
   { href: "#contact", label: "Contact" },
   { href: "/cv", label: "CV en ligne" },
+  { href: "/branding", label: "Branding" },
 ];
 
 export default function Footer() {
