@@ -1,7 +1,6 @@
 "use client";
 
-import { useRef, type MouseEvent, type ReactNode } from "react";
-import { motion, useMotionValue, useSpring } from "motion/react";
+import { useRef, useState, type MouseEvent, type ReactNode } from "react";
 
 interface MagneticButtonProps {
   children: ReactNode;
@@ -32,15 +31,9 @@ export default function MagneticButton({
   target,
   ariaLabel,
 }: MagneticButtonProps) {
-  // Un ref générique HTMLElement nullable suffit — on n'utilise que getBoundingClientRect.
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
   const anchorRef = useRef<HTMLAnchorElement | null>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
-
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const sx = useSpring(x, { stiffness: 300, damping: 20, mass: 0.4 });
-  const sy = useSpring(y, { stiffness: 300, damping: 20, mass: 0.4 });
-
   const useAnchor = (as ?? (href ? "a" : "button")) === "a";
 
   function handleMove(e: MouseEvent) {
@@ -49,26 +42,29 @@ export default function MagneticButton({
     const el = useAnchor ? anchorRef.current : buttonRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
-    const offsetX = e.clientX - (rect.left + rect.width / 2);
-    const offsetY = e.clientY - (rect.top + rect.height / 2);
-    x.set(offsetX * strength);
-    y.set(offsetY * strength);
+    const offsetX = (e.clientX - (rect.left + rect.width / 2)) * strength;
+    const offsetY = (e.clientY - (rect.top + rect.height / 2)) * strength;
+    setOffset({ x: offsetX, y: offsetY });
   }
 
   function handleLeave() {
-    x.set(0);
-    y.set(0);
+    setOffset({ x: 0, y: 0 });
   }
 
+  const transformStyle = {
+    transform: `translate(${offset.x}px, ${offset.y}px)`,
+    transition: "transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1)",
+  };
+
   const inner = (
-    <motion.span style={{ x: sx, y: sy }} className="inline-flex items-center gap-2">
+    <span style={transformStyle} className="inline-flex items-center gap-2">
       {children}
-    </motion.span>
+    </span>
   );
 
   if (useAnchor) {
     return (
-      <motion.a
+      <a
         ref={anchorRef}
         href={href}
         onClick={onClick}
@@ -78,26 +74,26 @@ export default function MagneticButton({
         target={target}
         rel={target === "_blank" ? "noopener noreferrer" : undefined}
         aria-label={ariaLabel}
-        style={{ x: sx, y: sy }}
+        style={transformStyle}
         className={className}
       >
         {inner}
-      </motion.a>
+      </a>
     );
   }
 
   return (
-    <motion.button
+    <button
       type={type}
       ref={buttonRef}
       onClick={onClick}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
       aria-label={ariaLabel}
-      style={{ x: sx, y: sy }}
+      style={transformStyle}
       className={className}
     >
       {inner}
-    </motion.button>
+    </button>
   );
 }

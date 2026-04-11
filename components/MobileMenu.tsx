@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "motion/react";
 import type { NavLink } from "./DesktopNav";
 
 interface MobileMenuProps {
@@ -68,49 +67,40 @@ export default function MobileMenu({ links, open, setOpen, burgerRef }: MobileMe
   }, [open, setOpen]);
 
   return (
-    <AnimatePresence>
-      {open && (
-        <motion.div
-          ref={menuRef}
-          id="mobile-nav-menu"
-          role="dialog"
-          aria-label="Menu de navigation"
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.2 }}
-          className="mx-auto mt-2 max-w-6xl rounded-2xl border p-4 md:hidden"
-          style={{
-            background: "var(--elevated)",
-            borderColor: "var(--border-strong)",
-          }}
-        >
-          <ul className="flex flex-col gap-1" role="list">
-            {links.map((link) => {
-              const props = {
-                className: "block rounded-xl px-4 py-3 text-sm hover:bg-[var(--bg)]",
-                onClick: () => {
-                  setOpen(false);
-                  burgerRef.current?.focus();
-                },
-              };
-              return (
-                <li key={link.href}>
-                  {link.href.startsWith("/") ? (
-                    <Link href={link.href} {...props}>
-                      {link.label}
-                    </Link>
-                  ) : (
-                    <a href={link.href} {...props}>
-                      {link.label}
-                    </a>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <div
+      ref={menuRef}
+      id="mobile-nav-menu"
+      role="dialog"
+      aria-label="Menu de navigation"
+      aria-hidden={!open}
+      className="mx-auto mt-2 max-w-6xl rounded-2xl border p-4 md:hidden"
+      style={{
+        background: "var(--elevated)",
+        borderColor: "var(--border-strong)",
+        opacity: open ? 1 : 0,
+        transform: open ? "translateY(0)" : "translateY(-10px)",
+        transition: "opacity 0.2s ease, transform 0.2s ease, visibility 0.2s",
+        pointerEvents: open ? "auto" : "none",
+        visibility: open ? "visible" : "hidden",
+      }}
+    >
+      <ul className="flex flex-col gap-1" role="list">
+        {links.map((link) => (
+          <li key={link.href}>
+            <Link
+              href={link.href}
+              tabIndex={open ? 0 : -1}
+              onClick={() => {
+                setOpen(false);
+                burgerRef.current?.focus();
+              }}
+              className="block rounded-xl px-4 py-3 text-sm hover:bg-[var(--bg)]"
+            >
+              {link.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }

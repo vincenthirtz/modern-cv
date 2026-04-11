@@ -1,7 +1,8 @@
 "use client";
 
+import { useRef } from "react";
 import Link from "next/link";
-import { motion } from "motion/react";
+import { useInView } from "@/hooks/useInView";
 import SectionTitle from "./SectionTitle";
 
 interface CommunityItem {
@@ -14,12 +15,6 @@ interface CommunityItem {
   meta: string;
 }
 
-/**
- * Items de communauté & open source.
- *
- * Tous vérifiables depuis github.com/vincenthirtz. Pour ajouter un talk
- * ou une conférence, ajouter une entrée avec type: "talk" — la card s'adapte.
- */
 const ITEMS: CommunityItem[] = [
   {
     type: "open-source",
@@ -60,6 +55,11 @@ const TYPE_ICON: Record<CommunityItem["type"], string> = {
 };
 
 export default function Community() {
+  const listRef = useRef<HTMLUListElement>(null);
+  const noteRef = useRef<HTMLParagraphElement>(null);
+  const listInView = useInView(listRef, { once: true, amount: 0.2 });
+  const noteInView = useInView(noteRef, { once: true });
+
   return (
     <section id="community" className="relative scroll-mt-32 py-32 px-6">
       <div className="mx-auto max-w-6xl">
@@ -71,23 +71,18 @@ export default function Community() {
           description="Quand le client n'attend rien, je code quand même. Open source, contributions, expérimentations — voilà ce qui vit en parallèle."
         />
 
-        <motion.ul
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={{
-            hidden: {},
-            visible: { transition: { staggerChildren: 0.12 } },
-          }}
+        <ul
+          ref={listRef}
           className="divide-y"
           style={{ borderColor: "var(--border)" }}
         >
-          {ITEMS.map((item) => (
-            <motion.li
+          {ITEMS.map((item, i) => (
+            <li
               key={item.title}
-              variants={{
-                hidden: { opacity: 0, y: 30 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+              style={{
+                opacity: listInView ? 1 : 0,
+                transform: listInView ? "translateY(0)" : "translateY(30px)",
+                transition: `opacity 0.6s ease ${i * 0.12}s, transform 0.6s ease ${i * 0.12}s`,
               }}
             >
               <a
@@ -135,17 +130,18 @@ export default function Community() {
                   ↗
                 </span>
               </a>
-            </motion.li>
+            </li>
           ))}
-        </motion.ul>
+        </ul>
 
         {/* Note discrète : invitation aux talks/meetups */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
+        <p
+          ref={noteRef}
           className="mt-12 max-w-2xl text-sm text-[var(--fg-muted)]"
+          style={{
+            opacity: noteInView ? 1 : 0,
+            transition: "opacity 0.6s ease 0.4s",
+          }}
         >
           <span className="text-[var(--color-accent)]">→</span> Vous organisez un meetup ou une
           conférence sur React, Vue, Cypress ou les frameworks DOM ?{" "}
@@ -156,7 +152,7 @@ export default function Community() {
             On peut en parler
           </Link>
           .
-        </motion.p>
+        </p>
       </div>
     </section>
   );

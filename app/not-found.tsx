@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { motion, AnimatePresence } from "motion/react";
 import { useEffect, useState, useCallback } from "react";
 
 /* Symboles de code flottants */
@@ -65,9 +64,11 @@ export default function NotFound() {
   const [consoleIndex, setConsoleIndex] = useState(0);
   const [displayedLines, setDisplayedLines] = useState<string[]>([]);
   const [clickCount, setClickCount] = useState(0);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setParticles(generateParticles(18));
+    setMounted(true);
   }, []);
 
   useEffect(() => {
@@ -119,7 +120,7 @@ export default function NotFound() {
       {/* Particules flottantes de code */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
         {particles.map((p) => (
-          <motion.span
+          <span
             key={p.id}
             className="absolute font-mono select-none"
             style={{
@@ -128,45 +129,38 @@ export default function NotFound() {
               fontSize: p.size,
               opacity: p.opacity,
               color: "var(--color-accent)",
-            }}
-            animate={{
-              y: [0, -30, 10, -20, 0],
-              x: [0, 15, -10, 5, 0],
-              rotate: [0, 5, -5, 3, 0],
-            }}
-            transition={{
-              duration: p.duration,
-              repeat: Infinity,
-              delay: p.delay,
-              ease: "easeInOut",
+              animation: `not-found-float ${p.duration}s ease-in-out infinite`,
+              animationDelay: `${p.delay}s`,
             }}
           >
             {p.symbol}
-          </motion.span>
+          </span>
         ))}
       </div>
 
       {/* Label */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+      <div
         className="mb-8 flex items-center gap-3"
+        style={{
+          opacity: mounted ? 1 : 0,
+          transform: mounted ? "translateY(0)" : "translateY(20px)",
+          transition: "opacity 0.6s ease, transform 0.6s ease",
+        }}
       >
         <span className="block h-[1px] w-10 bg-[var(--color-accent)]" />
         <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
           Page introuvable
         </span>
         <span className="block h-[1px] w-10 bg-[var(--color-accent)]" />
-      </motion.div>
+      </div>
 
       {/* Grand 404 avec glitch + parallaxe */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, type: "spring", bounce: 0.3 }}
-        style={{ x: mousePos.x, y: mousePos.y }}
+      <div
         className="relative select-none cursor-pointer"
+        style={{
+          transform: `translate(${mousePos.x}px, ${mousePos.y}px)`,
+          transition: "transform 0.3s ease",
+        }}
         onClick={handleSecretClick}
         role="presentation"
       >
@@ -189,61 +183,60 @@ export default function NotFound() {
         {/* Couche principale */}
         <span className="absolute inset-0 flex items-center justify-center font-serif text-[clamp(3rem,10vw,7rem)] leading-none">
           4
-          <motion.span
-            animate={{ rotate: [0, -15, 15, -8, 8, 0], scale: [1, 1.1, 0.95, 1.05, 1] }}
-            transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 2 }}
+          <span
             className="inline-block text-[var(--color-accent)]"
+            style={{ animation: "not-found-wiggle 2.5s ease-in-out infinite 2s" }}
           >
             0
-          </motion.span>
+          </span>
           4
         </span>
-      </motion.div>
+      </div>
 
       {/* Easter egg message */}
-      <AnimatePresence>
-        {secretMessage && (
-          <motion.p
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            className="mt-2 font-mono text-xs text-[var(--color-accent)]"
-          >
-            {secretMessage}
-          </motion.p>
-        )}
-      </AnimatePresence>
+      {secretMessage && (
+        <p
+          className="mt-2 font-mono text-xs text-[var(--color-accent)]"
+          style={{ animation: "not-found-fade-in 0.3s ease" }}
+        >
+          {secretMessage}
+        </p>
+      )}
 
       {/* Titre */}
-      <motion.h1
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
+      <h1
         className="mt-6 font-serif text-[clamp(1.5rem,4vw,3rem)] leading-tight"
+        style={{
+          opacity: mounted ? 1 : 0,
+          transform: mounted ? "translateY(0)" : "translateY(20px)",
+          transition: "opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s",
+        }}
       >
         Oups, cette page s&apos;est{" "}
         <span className="italic text-[var(--color-accent)]">volatilisée</span>.
-      </motion.h1>
+      </h1>
 
       {/* Description */}
-      <motion.p
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.35 }}
+      <p
         className="mt-4 max-w-md text-[var(--fg-muted)]"
+        style={{
+          opacity: mounted ? 1 : 0,
+          transform: mounted ? "translateY(0)" : "translateY(20px)",
+          transition: "opacity 0.6s ease 0.35s, transform 0.6s ease 0.35s",
+        }}
       >
         Lien périmé, URL créative, ou passage secret pas encore codé.
-      </motion.p>
+      </p>
 
       {/* Mini console */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.5 }}
+      <div
         className="mt-8 w-full max-w-sm rounded-xl border p-4 text-left"
         style={{
           borderColor: "var(--border-strong)",
           background: "var(--elevated)",
+          opacity: mounted ? 1 : 0,
+          transform: mounted ? "translateY(0)" : "translateY(20px)",
+          transition: "opacity 0.6s ease 0.5s, transform 0.6s ease 0.5s",
         }}
         role="presentation"
         aria-hidden="true"
@@ -259,11 +252,9 @@ export default function NotFound() {
         {/* Lignes de console */}
         <div className="space-y-1 font-mono text-xs">
           {displayedLines.map((line, i) => (
-            <motion.div
+            <div
               key={i}
-              initial={{ opacity: 0, x: -8 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3 }}
+              style={{ animation: "not-found-line-in 0.3s ease" }}
               className={
                 i === displayedLines.length - 1 && consoleIndex >= CONSOLE_LINES.length
                   ? "text-[var(--color-accent)]"
@@ -271,27 +262,28 @@ export default function NotFound() {
               }
             >
               {line}
-            </motion.div>
+            </div>
           ))}
           {/* Curseur clignotant */}
           {consoleIndex < CONSOLE_LINES.length && (
-            <motion.span
-              animate={{ opacity: [1, 0] }}
-              transition={{ duration: 0.6, repeat: Infinity }}
+            <span
               className="inline-block text-[var(--color-accent)]"
+              style={{ animation: "not-found-blink 0.6s step-end infinite" }}
             >
               _
-            </motion.span>
+            </span>
           )}
         </div>
-      </motion.div>
+      </div>
 
       {/* Actions */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.65 }}
+      <div
         className="mt-10 flex flex-wrap items-center justify-center gap-4"
+        style={{
+          opacity: mounted ? 1 : 0,
+          transform: mounted ? "translateY(0)" : "translateY(20px)",
+          transition: "opacity 0.6s ease 0.65s, transform 0.6s ease 0.65s",
+        }}
       >
         <Link href="/" className="btn-accent">
           ← Retour à l&apos;accueil
@@ -299,14 +291,15 @@ export default function NotFound() {
         <Link href="/notes" className="btn-ghost">
           Lire les notes
         </Link>
-      </motion.div>
+      </div>
 
       {/* Hint clavier */}
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 1 }}
+      <p
         className="mt-16 font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]"
+        style={{
+          opacity: mounted ? 1 : 0,
+          transition: "opacity 0.6s ease 1s",
+        }}
       >
         Appuyez sur{" "}
         <kbd
@@ -316,9 +309,9 @@ export default function NotFound() {
           Esc
         </kbd>{" "}
         ou naviguez avec le menu
-      </motion.p>
+      </p>
 
-      {/* Glitch CSS */}
+      {/* Glitch + animations CSS */}
       <style>{`
         @keyframes glitch {
           0%, 90%, 100% {
@@ -346,6 +339,31 @@ export default function NotFound() {
           color: var(--color-accent);
           opacity: 0.3;
           animation: glitch 4s ease-in-out infinite;
+        }
+        @keyframes not-found-float {
+          0%, 100% { transform: translate(0, 0) rotate(0deg); }
+          25% { transform: translate(15px, -30px) rotate(5deg); }
+          50% { transform: translate(-10px, 10px) rotate(-5deg); }
+          75% { transform: translate(5px, -20px) rotate(3deg); }
+        }
+        @keyframes not-found-wiggle {
+          0%, 100% { transform: rotate(0deg) scale(1); }
+          15% { transform: rotate(-15deg) scale(1.1); }
+          30% { transform: rotate(15deg) scale(0.95); }
+          45% { transform: rotate(-8deg) scale(1.05); }
+          60% { transform: rotate(8deg) scale(1); }
+        }
+        @keyframes not-found-fade-in {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes not-found-line-in {
+          from { opacity: 0; transform: translateX(-8px); }
+          to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes not-found-blink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0; }
         }
       `}</style>
     </main>

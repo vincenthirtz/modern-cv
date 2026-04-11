@@ -1,15 +1,14 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const NAV_LINKS = [
-  { href: "#about", label: "À propos" },
-  { href: "#expertise", label: "Expertise" },
-  { href: "#projects", label: "Projets" },
-  { href: "#contact", label: "Contact" },
+  { href: "/projects", label: "Projets" },
   { href: "/experience", label: "Expérience" },
   { href: "/community", label: "Communauté" },
   { href: "/notes", label: "Notes" },
+  { href: "/contact", label: "Contact" },
   { href: "/cv", label: "CV en ligne" },
   { href: "/branding", label: "Branding" },
 ];
@@ -38,9 +37,9 @@ export default function Footer() {
         <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
           {/* Left : logo + tagline */}
           <div>
-            <a href="#top" className="font-mono text-xl font-bold">
+            <Link href="/" className="font-mono text-xl font-bold">
               VH<span className="text-[var(--color-accent)]">.</span>
-            </a>
+            </Link>
             <p className="mt-3 max-w-xs text-sm text-[var(--fg-muted)]">
               Vincent Hirtz — Lead Developer Front-End, basé à Lyon, disponible en remote ou sur
               site.
@@ -58,12 +57,12 @@ export default function Footer() {
             <ul className="grid grid-cols-2 gap-x-12 gap-y-2 md:grid-cols-1">
               {NAV_LINKS.map((link) => (
                 <li key={link.href}>
-                  <a
+                  <Link
                     href={link.href}
                     className="text-sm text-[var(--fg-muted)] transition-colors hover:text-[var(--color-accent)]"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

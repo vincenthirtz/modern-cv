@@ -125,7 +125,6 @@ export default function About() {
 
         {/* Valeurs */}
         <MotionInView
-          stagger={0.1}
           amount={0.2}
           className="mt-20 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
         >

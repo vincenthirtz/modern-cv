@@ -1,15 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { useState, useEffect, useRef } from "react";
 
 /**
  * Mini-sandbox interactif qui démontre l'API déclarative de Pulse JS.
- *
- * Affiche le markup HTML / le code JS Pulse à gauche, et un live preview
- * fonctionnel à droite. Le live preview est implémenté en React mais
- * mime exactement le comportement qu'aurait Pulse JS — l'idée est de
- * démontrer le mental model.
  */
 
 const HTML_SNIPPET = `<div data-pulse="counter">
@@ -31,7 +25,32 @@ type Tab = "html" | "js";
 export default function PulseSandbox() {
   const [count, setCount] = useState(0);
   const [tab, setTab] = useState<Tab>("html");
+  const [animating, setAnimating] = useState(false);
+  const countRef = useRef<HTMLSpanElement>(null);
   const snippet = tab === "html" ? HTML_SNIPPET : JS_SNIPPET;
+
+  // Trigger counter pop animation on change
+  useEffect(() => {
+    if (!countRef.current) return;
+    const el = countRef.current;
+    el.style.transform = "scale(0.7) translateY(8px)";
+    el.style.opacity = "0";
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        el.style.transform = "scale(1) translateY(0)";
+        el.style.opacity = "1";
+      });
+    });
+  }, [count]);
+
+  function handleTabChange(t: Tab) {
+    if (t === tab) return;
+    setAnimating(true);
+    setTimeout(() => {
+      setTab(t);
+      setAnimating(false);
+    }, 150);
+  }
 
   return (
     <div
@@ -50,7 +69,7 @@ export default function PulseSandbox() {
               <button
                 key={t}
                 type="button"
-                onClick={() => setTab(t)}
+                onClick={() => handleTabChange(t)}
                 className={`rounded-full px-3 py-1 font-mono text-[10px] uppercase tracking-widest transition-colors ${
                   tab === t
                     ? "bg-[var(--color-accent)] text-[var(--color-ink)]"
@@ -67,18 +86,16 @@ export default function PulseSandbox() {
         </div>
 
         <pre className="overflow-x-auto p-5 text-[12px] leading-relaxed">
-          <AnimatePresence mode="wait">
-            <motion.code
-              key={tab}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.18 }}
-              className="block font-mono text-[var(--fg)]"
-            >
-              {snippet}
-            </motion.code>
-          </AnimatePresence>
+          <code
+            className="block font-mono text-[var(--fg)]"
+            style={{
+              opacity: animating ? 0 : 1,
+              transform: animating ? "translateY(-6px)" : "translateY(0)",
+              transition: "opacity 0.15s ease, transform 0.15s ease",
+            }}
+          >
+            {snippet}
+          </code>
         </pre>
       </div>
 
@@ -108,15 +125,15 @@ export default function PulseSandbox() {
             >
               −
             </button>
-            <motion.span
-              key={count}
-              initial={{ scale: 0.7, opacity: 0, y: 8 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              transition={{ type: "spring", stiffness: 380, damping: 22 }}
+            <span
+              ref={countRef}
               className="min-w-[3ch] text-center font-serif text-5xl text-[var(--color-accent)] tabular-nums"
+              style={{
+                transition: "transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s ease",
+              }}
             >
               {count}
-            </motion.span>
+            </span>
             <button
               type="button"
               onClick={() => setCount((c) => c + 1)}

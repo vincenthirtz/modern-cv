@@ -1,18 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
 import { useAnnounce } from "./A11yAnnouncer";
 
 /**
  * Palette d'accents.
- * - color  : couleur d'accent principale (fond de pilule, bordures, hovers)
- * - soft   : variante adoucie
- * - contrast : texte à poser SUR un fond accent (ex. pilule active nav)
- * - fg     : variante utilisable comme couleur de texte sur fond clair (light mode)
- *            → plus sombre que `color` quand celle-ci est trop lumineuse
- */
-/**
  * Chaque accent dispose d'une variante `light*` ajustée pour le mode clair
  * afin de respecter un ratio de contraste WCAG AA (≥ 4.5:1 texte, ≥ 3:1 UI)
  * contre le fond paper #f5f4ee.
@@ -73,7 +65,6 @@ function applyAccent(accent: (typeof ACCENTS)[number]) {
   s.setProperty("--color-accent-soft", accent.soft);
   s.setProperty("--color-accent-contrast", accent.contrast);
   s.setProperty("--color-accent-fg", accent.fg);
-  // Variantes WCAG AA pour le mode light
   s.setProperty("--color-accent-light", accent.lightColor);
   s.setProperty("--color-accent-light-soft", accent.lightSoft);
 }
@@ -153,48 +144,44 @@ export default function AccentPicker() {
       </button>
 
       {/* Palette déroulante */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: -4 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: -4 }}
-            transition={{ duration: 0.15 }}
-            className="absolute right-0 top-full mt-2 flex gap-2 rounded-full border px-3 py-2"
-            style={{
-              background: "var(--elevated)",
-              borderColor: "var(--border-strong)",
-              boxShadow: "0 12px 40px -10px rgba(0,0,0,0.5)",
-            }}
-            role="radiogroup"
-            aria-label="Couleur d'accentuation"
-          >
-            {ACCENTS.map((accent) => {
-              const isActive = active === accent.color;
-              return (
-                <button
-                  key={accent.name}
-                  onClick={() => pick(accent)}
-                  role="radio"
-                  aria-checked={isActive}
-                  aria-label={accent.name}
-                  className="relative flex h-7 w-7 items-center justify-center rounded-full transition-transform hover:scale-110"
-                  style={{ background: accent.color }}
-                >
-                  {isActive && (
-                    <motion.span
-                      layoutId="accent-check"
-                      className="block h-2 w-2 rounded-full"
-                      style={{ background: "var(--color-ink)" }}
-                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                    />
-                  )}
-                </button>
-              );
-            })}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div
+        className="absolute right-0 top-full mt-2 flex gap-2 rounded-full border px-3 py-2"
+        style={{
+          background: "var(--elevated)",
+          borderColor: "var(--border-strong)",
+          boxShadow: "0 12px 40px -10px rgba(0,0,0,0.5)",
+          opacity: open ? 1 : 0,
+          transform: open ? "scale(1) translateY(0)" : "scale(0.9) translateY(-4px)",
+          transition: "opacity 0.15s ease, transform 0.15s ease, visibility 0.15s",
+          pointerEvents: open ? "auto" : "none",
+          visibility: open ? "visible" : "hidden",
+        }}
+        role="radiogroup"
+        aria-label="Couleur d'accentuation"
+      >
+        {ACCENTS.map((accent) => {
+          const isActive = active === accent.color;
+          return (
+            <button
+              key={accent.name}
+              onClick={() => pick(accent)}
+              role="radio"
+              aria-checked={isActive}
+              aria-label={accent.name}
+              tabIndex={open ? 0 : -1}
+              className="relative flex h-7 w-7 items-center justify-center rounded-full transition-transform hover:scale-110"
+              style={{ background: accent.color }}
+            >
+              {isActive && (
+                <span
+                  className="block h-2 w-2 rounded-full"
+                  style={{ background: "var(--color-ink)" }}
+                />
+              )}
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }

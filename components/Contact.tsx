@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
+import { useInView } from "@/hooks/useInView";
 import AnimatedText from "./AnimatedText";
 import MagneticButton from "./MagneticButton";
 
@@ -24,6 +24,8 @@ export default function Contact() {
   const [sent, setSent] = useState(false);
   const [errors, setErrors] = useState<FieldErrors>({});
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const descRef = useRef<HTMLParagraphElement>(null);
+  const descInView = useInView(descRef, { once: true });
 
   useEffect(() => {
     return () => {
@@ -47,13 +49,11 @@ export default function Contact() {
     setErrors(nextErrors);
 
     if (Object.keys(nextErrors).length > 0) {
-      // Focus le premier champ en erreur
       const firstErrorId = nextErrors.name ? "name" : nextErrors.email ? "email" : "message";
       document.getElementById(firstErrorId)?.focus();
       return;
     }
 
-    // Simulation — dans un vrai projet, brancher sur Resend / Formspree / route API.
     setSent(true);
     if (resetTimer.current) clearTimeout(resetTimer.current);
     resetTimer.current = setTimeout(() => setSent(false), 4000);
@@ -86,16 +86,18 @@ export default function Contact() {
           highlight="ensemble."
           className="font-serif text-[clamp(2.5rem,8vw,7rem)] leading-[0.95] tracking-tight"
         />
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
+        <p
+          ref={descRef}
           className="mt-6 max-w-2xl text-lg text-[var(--fg-muted)]"
+          style={{
+            opacity: descInView ? 1 : 0,
+            transform: descInView ? "translateY(0)" : "translateY(20px)",
+            transition: "opacity 0.6s ease 0.4s, transform 0.6s ease 0.4s",
+          }}
         >
           Un projet en tête ? Une équipe à structurer ? Une architecture à challenger ? Discutons-en
           — promis, je réponds vite.
-        </motion.p>
+        </p>
 
         <div className="mt-16 grid grid-cols-1 gap-12 lg:grid-cols-5">
           {/* Formulaire */}

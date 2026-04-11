@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, type Variants } from "motion/react";
-import type { CSSProperties, ReactNode } from "react";
+import { useRef, type CSSProperties, type ReactNode } from "react";
+import { useInView } from "@/hooks/useInView";
 
 type HTMLTag = "div" | "p" | "section" | "article" | "span";
 
@@ -11,8 +11,6 @@ interface MotionInViewProps {
   as?: HTMLTag;
   className?: string;
   style?: CSSProperties;
-  /** Variantes Framer Motion personnalisées */
-  variants?: Variants;
   /** Délai avant le début de l'animation */
   delay?: number;
   /** Durée de l'animation — par défaut 0.6s */
@@ -23,16 +21,14 @@ interface MotionInViewProps {
   once?: boolean;
   /** Fraction visible avant déclenchement — par défaut 0.3 */
   amount?: number;
-  /** Stagger enfants (passer les variantes parent/enfant) */
-  stagger?: number;
 }
 
 const directionMap = {
-  up: { y: 30 },
-  down: { y: -30 },
-  left: { x: 40 },
-  right: { x: -40 },
-  none: {},
+  up: "translateY(30px)",
+  down: "translateY(-30px)",
+  left: "translateX(40px)",
+  right: "translateX(-40px)",
+  none: "none",
 } as const;
 
 /**
@@ -41,48 +37,28 @@ const directionMap = {
  */
 export default function MotionInView({
   children,
-  as = "div",
+  as: Tag = "div",
   className,
   style,
-  variants,
   delay = 0,
   duration = 0.6,
   direction = "up",
   once = true,
   amount = 0.3,
-  stagger,
 }: MotionInViewProps) {
-  const Tag = motion[as] as typeof motion.div;
-
-  // Mode stagger : utilise des variantes parent/enfant
-  if (stagger || variants) {
-    return (
-      <Tag
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once, amount }}
-        variants={
-          variants ?? {
-            hidden: {},
-            visible: { transition: { staggerChildren: stagger ?? 0.1 } },
-          }
-        }
-        className={className}
-        style={style}
-      >
-        {children}
-      </Tag>
-    );
-  }
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once, amount });
 
   return (
     <Tag
-      initial={{ opacity: 0, ...directionMap[direction] }}
-      whileInView={{ opacity: 1, x: 0, y: 0 }}
-      viewport={{ once, amount }}
-      transition={{ duration, delay, ease: [0.2, 0.8, 0.2, 1] }}
+      ref={ref as React.RefObject<HTMLDivElement>}
       className={className}
-      style={style}
+      style={{
+        ...style,
+        opacity: inView ? 1 : 0,
+        transform: inView ? "none" : directionMap[direction],
+        transition: `opacity ${duration}s cubic-bezier(0.2, 0.8, 0.2, 1) ${delay}s, transform ${duration}s cubic-bezier(0.2, 0.8, 0.2, 1) ${delay}s`,
+      }}
     >
       {children}
     </Tag>
@@ -91,7 +67,7 @@ export default function MotionInView({
 
 /**
  * Item enfant pour les animations stagger.
- * À utiliser comme enfant direct de <MotionInView stagger={...}>.
+ * Chaque item observe sa propre visibilité.
  */
 export function MotionInViewItem({
   children,
@@ -104,16 +80,21 @@ export function MotionInViewItem({
   style?: CSSProperties;
   duration?: number;
 }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.3 });
+
   return (
-    <motion.div
-      variants={{
-        hidden: { opacity: 0, y: 30 },
-        visible: { opacity: 1, y: 0, transition: { duration } },
-      }}
+    <div
+      ref={ref}
       className={className}
-      style={style}
+      style={{
+        ...style,
+        opacity: inView ? 1 : 0,
+        transform: inView ? "translateY(0)" : "translateY(30px)",
+        transition: `opacity ${duration}s ease, transform ${duration}s ease`,
+      }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

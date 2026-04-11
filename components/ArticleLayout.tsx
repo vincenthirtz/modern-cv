@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { motion, useScroll, useSpring } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 import type { ArticleMeta } from "@/lib/articles";
 import AnimatedText from "./AnimatedText";
 import ShareButtons from "./ShareButtons";
@@ -19,26 +19,39 @@ interface ArticleLayoutProps {
 /**
  * Layout commun à tous les articles : header (breadcrumb, méta, titre),
  * barre de progression de lecture, contenu, footer (navigation).
- *
- * Le contenu est passé en `children` (et non en prop function) pour respecter
- * la frontière Server Component → Client Component de Next 15.
  */
 export default function ArticleLayout({ article, children, related = [] }: ArticleLayoutProps) {
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 120,
-    damping: 25,
-    mass: 0.3,
-  });
+  const progressRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Barre de progression de lecture
+  useEffect(() => {
+    function onScroll() {
+      if (!progressRef.current) return;
+      const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+      const max = scrollHeight - clientHeight;
+      const progress = max <= 0 ? 0 : scrollTop / max;
+      progressRef.current.style.transform = `scaleX(${progress})`;
+    }
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <article className="relative">
       {/* Barre de progression de lecture */}
-      <motion.div
+      <div
+        ref={progressRef}
         aria-hidden
         className="fixed top-0 left-0 right-0 z-[60] h-[2px] origin-left"
         style={{
-          scaleX,
+          transform: "scaleX(0)",
+          transition: "transform 0.1s linear",
           background: "linear-gradient(to right, var(--color-accent), var(--color-accent-soft))",
         }}
       />
@@ -47,12 +60,14 @@ export default function ArticleLayout({ article, children, related = [] }: Artic
       <header className="relative pt-32 pb-16 px-6 sm:pt-40">
         <div className="mx-auto max-w-3xl">
           {/* Breadcrumb */}
-          <motion.nav
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+          <nav
             aria-label="Fil d'ariane"
             className="mb-10 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]"
+            style={{
+              opacity: mounted ? 1 : 0,
+              transform: mounted ? "translateY(0)" : "translateY(10px)",
+              transition: "opacity 0.5s ease, transform 0.5s ease",
+            }}
           >
             <Link href="/" className="transition-colors hover:text-[var(--color-accent)]">
               ← Retour
@@ -61,14 +76,16 @@ export default function ArticleLayout({ article, children, related = [] }: Artic
             <Link href="/notes" className="transition-colors hover:text-[var(--color-accent)]">
               Notes
             </Link>
-          </motion.nav>
+          </nav>
 
           {/* Méta */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+          <div
             className="mb-6 flex flex-wrap items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em]"
+            style={{
+              opacity: mounted ? 1 : 0,
+              transform: mounted ? "translateY(0)" : "translateY(10px)",
+              transition: "opacity 0.5s ease 0.1s, transform 0.5s ease 0.1s",
+            }}
           >
             <span
               className="rounded-full border px-3 py-1 text-[var(--color-accent)]"
@@ -93,7 +110,7 @@ export default function ArticleLayout({ article, children, related = [] }: Artic
                 ))}
               </>
             )}
-          </motion.div>
+          </div>
 
           {/* Titre animé */}
           <AnimatedText
@@ -109,14 +126,16 @@ export default function ArticleLayout({ article, children, related = [] }: Artic
       {/* Contenu + TOC sidebar */}
       <div className="relative px-6 pb-32">
         <div className="mx-auto max-w-5xl lg:grid lg:grid-cols-[1fr_220px] lg:gap-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+          <div
             className="max-w-3xl"
+            style={{
+              opacity: mounted ? 1 : 0,
+              transform: mounted ? "translateY(0)" : "translateY(20px)",
+              transition: "opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s",
+            }}
           >
             {children}
-          </motion.div>
+          </div>
 
           {/* Sidebar TOC — visible uniquement sur grand écran */}
           <aside className="hidden lg:block">

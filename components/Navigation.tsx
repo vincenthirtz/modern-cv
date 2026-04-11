@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import ThemeToggle from "./ThemeToggle";
 import EffectsToggle from "./EffectsToggle";
 import AccentPicker from "./AccentPicker";
@@ -9,13 +10,11 @@ import MobileMenu from "./MobileMenu";
 import type { NavLink } from "./DesktopNav";
 
 const LINKS: NavLink[] = [
-  { href: "#about", label: "À propos", id: "about" },
-  { href: "#expertise", label: "Expertise", id: "expertise" },
-  { href: "#projects", label: "Projets", id: "projects" },
+  { href: "/projects", label: "Projets", id: "" },
   { href: "/experience", label: "Expérience", id: "" },
   { href: "/community", label: "Communauté", id: "" },
   { href: "/notes", label: "Notes", id: "" },
-  { href: "#contact", label: "Contact", id: "contact" },
+  { href: "/contact", label: "Contact", id: "" },
 ];
 
 export default function Navigation() {
@@ -94,14 +93,14 @@ export default function Navigation() {
           boxShadow: scrolled ? "0 20px 60px -30px rgba(0,0,0,0.5)" : "none",
         }}
       >
-        {/* Logo */}
-        <a
-          href="#top"
+        {/* Logo — lien vers l'accueil */}
+        <Link
+          href="/"
           className="font-mono text-lg font-bold tracking-tighter"
-          aria-label="Retour en haut"
+          aria-label="Accueil"
         >
           VH<span className="text-[var(--color-accent)]">.</span>
-        </a>
+        </Link>
 
         {/* Liens — desktop */}
         <DesktopNav links={LINKS} activeId={activeId} />

@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion, useMotionValue, useSpring } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 import { useEffectsMode } from "./EffectsProvider";
 
 /**
@@ -11,38 +10,33 @@ import { useEffectsMode } from "./EffectsProvider";
 export default function CursorFollower() {
   const [enabled, setEnabled] = useState(false);
   const { reduced } = useEffectsMode();
-  const x = useMotionValue(-200);
-  const y = useMotionValue(-200);
-
-  // Spring pour un effet "trainée" smooth
-  const sx = useSpring(x, { stiffness: 120, damping: 20, mass: 0.6 });
-  const sy = useSpring(y, { stiffness: 120, damping: 20, mass: 0.6 });
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const isTouch = window.matchMedia("(pointer: coarse)").matches;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (isTouch || reduced) return;
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (isTouch || prefersReduced) return;
     setEnabled(true);
 
     function onMove(e: MouseEvent) {
-      x.set(e.clientX);
-      y.set(e.clientY);
+      if (!ref.current) return;
+      ref.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
     }
     window.addEventListener("mousemove", onMove);
     return () => window.removeEventListener("mousemove", onMove);
-  }, [x, y]);
+  }, []);
 
   if (!enabled || reduced) return null;
 
   return (
-    <motion.div
+    <div
+      ref={ref}
       aria-hidden
       className="pointer-events-none fixed top-0 left-0 z-[1] mix-blend-screen"
       style={{
-        x: sx,
-        y: sy,
-        translateX: "-50%",
-        translateY: "-50%",
+        transform: "translate(-200px, -200px) translate(-50%, -50%)",
+        transition: "transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1)",
+        willChange: "transform",
       }}
     >
       <div
@@ -55,6 +49,6 @@ export default function CursorFollower() {
           filter: "blur(20px)",
         }}
       />
-    </motion.div>
+    </div>
   );
 }

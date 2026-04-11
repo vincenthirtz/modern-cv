@@ -1,25 +1,22 @@
 "use client";
 
-import { motion } from "motion/react";
+import { useRef } from "react";
+import { useInView } from "@/hooks/useInView";
 import SectionTitle from "./SectionTitle";
 import Marquee from "./Marquee";
 
 interface Skill {
   name: string;
-  level: number; // 0..5
+  level: number;
 }
 
 interface Category {
   title: string;
   icon: string;
   skills: Skill[];
-  /** Classes Tailwind pour le bento grid (col-span / row-span) */
   span: string;
 }
 
-// Layout bento : 6 colonnes desktop. Total 12 col-span sur 2 rangées.
-// Rang 1: Frontend(4) + Backend(2) = 6
-// Rang 2: Tests(2) + DevOps(2) + Leadership(2) = 6
 const CATEGORIES: Category[] = [
   {
     title: "Frontend",
@@ -96,7 +93,38 @@ const MARQUEE_TECHS = [
   "SASS",
 ];
 
+function SkillBar({ skill, parentInView }: { skill: Skill; parentInView: boolean }) {
+  const ref = useRef<HTMLLIElement>(null);
+  const inView = useInView(ref, { once: true });
+  const shouldAnimate = parentInView && inView;
+
+  return (
+    <li ref={ref}>
+      <div className="mb-1.5 flex items-center justify-between text-sm">
+        <span>{skill.name}</span>
+        <span className="font-mono text-[10px] text-[var(--fg-dim)]">{skill.level}/5</span>
+      </div>
+      {/* Jauge animée */}
+      <div
+        className="h-[3px] w-full overflow-hidden rounded-full"
+        style={{ background: "var(--border)" }}
+      >
+        <div
+          className="h-full bg-[var(--color-accent)]"
+          style={{
+            width: shouldAnimate ? `${(skill.level / 5) * 100}%` : "0%",
+            transition: "width 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s",
+          }}
+        />
+      </div>
+    </li>
+  );
+}
+
 export default function Expertise() {
+  const gridRef = useRef<HTMLDivElement>(null);
+  const gridInView = useInView(gridRef, { once: true, amount: 0.1 });
+
   return (
     <section id="expertise" className="relative scroll-mt-32 py-32">
       <div className="px-6">
@@ -117,24 +145,16 @@ export default function Expertise() {
       </div>
 
       <div className="mx-auto max-w-6xl px-6">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-          variants={{
-            hidden: {},
-            visible: { transition: { staggerChildren: 0.1 } },
-          }}
-          className="grid grid-cols-1 gap-5 md:grid-cols-6"
-        >
-          {CATEGORIES.map((cat) => (
-            <motion.div
+        <div ref={gridRef} className="grid grid-cols-1 gap-5 md:grid-cols-6">
+          {CATEGORIES.map((cat, i) => (
+            <div
               key={cat.title}
-              variants={{
-                hidden: { opacity: 0, y: 40 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-              }}
               className={`card group relative overflow-hidden p-6 ${cat.span}`}
+              style={{
+                opacity: gridInView ? 1 : 0,
+                transform: gridInView ? "translateY(0)" : "translateY(40px)",
+                transition: `opacity 0.6s ease ${i * 0.1}s, transform 0.6s ease ${i * 0.1}s`,
+              }}
             >
               {/* Glow accent qui apparait au hover */}
               <div
@@ -161,33 +181,13 @@ export default function Expertise() {
                   }`}
                 >
                   {cat.skills.map((skill) => (
-                    <li key={skill.name}>
-                      <div className="mb-1.5 flex items-center justify-between text-sm">
-                        <span>{skill.name}</span>
-                        <span className="font-mono text-[10px] text-[var(--fg-dim)]">
-                          {skill.level}/5
-                        </span>
-                      </div>
-                      {/* Jauge animée */}
-                      <div
-                        className="h-[3px] w-full overflow-hidden rounded-full"
-                        style={{ background: "var(--border)" }}
-                      >
-                        <motion.div
-                          initial={{ width: 0 }}
-                          whileInView={{ width: `${(skill.level / 5) * 100}%` }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 1.2, ease: [0.2, 0.8, 0.2, 1], delay: 0.1 }}
-                          className="h-full bg-[var(--color-accent)]"
-                        />
-                      </div>
-                    </li>
+                    <SkillBar key={skill.name} skill={skill} parentInView={gridInView} />
                   ))}
                 </ul>
               </div>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "motion/react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
+import { useInView } from "@/hooks/useInView";
 import AnimatedText from "./AnimatedText";
 
 interface SectionTitleProps {
@@ -30,22 +30,46 @@ export default function SectionTitle({
   bigNumber = true,
 }: SectionTitleProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  // Parallax : le numéro géant se déplace plus lentement que le contenu
-  const numberY = useTransform(scrollYProgress, [0, 1], [80, -80]);
-  const numberOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 0.6, 0.6, 0]);
+  const bigNumRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const descRef = useRef<HTMLParagraphElement>(null);
+  const headerInView = useInView(headerRef, { once: true, amount: 0.5 });
+  const descInView = useInView(descRef, { once: true });
+
+  // Scroll-linked parallax pour le numéro géant
+  useEffect(() => {
+    if (!bigNumber) return;
+    function onScroll() {
+      if (!ref.current || !bigNumRef.current) return;
+      const rect = ref.current.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const total = vh + rect.height;
+      const current = vh - rect.top;
+      const progress = Math.max(0, Math.min(1, current / total));
+      // y: 80 → -80
+      const y = 80 - progress * 160;
+      // opacity: 0→0.6→0.6→0 aux stops [0, 0.3, 0.7, 1]
+      let opacity: number;
+      if (progress < 0.3) opacity = (progress / 0.3) * 0.6;
+      else if (progress < 0.7) opacity = 0.6;
+      else opacity = 0.6 * (1 - (progress - 0.7) / 0.3);
+      bigNumRef.current.style.transform = `translateY(${y}px)`;
+      bigNumRef.current.style.opacity = String(opacity);
+    }
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [bigNumber]);
 
   return (
     <div ref={ref} className="relative mb-16 max-w-3xl">
       {/* Numéro géant en background — outline serif, parallaxé */}
       {bigNumber && (
-        <motion.div
+        <div
+          ref={bigNumRef}
           aria-hidden
-          style={{ y: numberY, opacity: numberOpacity }}
           className="pointer-events-none absolute -top-32 -right-8 select-none font-serif leading-none md:-right-16 lg:-right-32"
+          style={{ opacity: 0 }}
         >
           <span
             className="block text-[clamp(10rem,22vw,22rem)] font-normal"
@@ -57,23 +81,25 @@ export default function SectionTitle({
           >
             {number}
           </span>
-        </motion.div>
+        </div>
       )}
 
       {/* En-tête classique */}
-      <motion.div
-        initial={{ opacity: 0, x: -20 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true, amount: 0.5 }}
-        transition={{ duration: 0.6 }}
+      <div
+        ref={headerRef}
         className="relative z-10 mb-6 flex items-center gap-3"
+        style={{
+          opacity: headerInView ? 1 : 0,
+          transform: headerInView ? "translateX(0)" : "translateX(-20px)",
+          transition: "opacity 0.6s ease, transform 0.6s ease",
+        }}
       >
         <span className="font-mono text-xs text-[var(--color-accent)]">{number}</span>
         <span className="block h-[1px] w-10 bg-[var(--border-strong)]" />
         <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
           {label}
         </span>
-      </motion.div>
+      </div>
       <div className="relative z-10">
         <AnimatedText
           el="h2"
@@ -84,15 +110,17 @@ export default function SectionTitle({
         />
       </div>
       {description && (
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
+        <p
+          ref={descRef}
           className="relative z-10 mt-6 max-w-2xl text-lg text-[var(--fg-muted)]"
+          style={{
+            opacity: descInView ? 1 : 0,
+            transform: descInView ? "translateY(0)" : "translateY(20px)",
+            transition: "opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s",
+          }}
         >
           {description}
-        </motion.p>
+        </p>
       )}
     </div>
   );

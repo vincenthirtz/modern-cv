@@ -1,24 +1,34 @@
 "use client";
 
-import { motion, useScroll, useSpring } from "motion/react";
+import { useEffect, useRef } from "react";
 
 /**
  * Barre de progression de scroll fine en haut de page.
  */
 export default function ScrollProgress() {
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 120,
-    damping: 25,
-    mass: 0.3,
-  });
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function onScroll() {
+      if (!ref.current) return;
+      const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+      const max = scrollHeight - clientHeight;
+      const progress = max <= 0 ? 0 : scrollTop / max;
+      ref.current.style.transform = `scaleX(${progress})`;
+    }
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <motion.div
+    <div
+      ref={ref}
       aria-hidden
       className="fixed top-0 left-0 right-0 z-[60] h-[2px] origin-left"
       style={{
-        scaleX,
+        transform: "scaleX(0)",
+        transition: "transform 0.1s linear",
         background: "linear-gradient(to right, var(--color-accent), var(--color-accent-soft))",
       }}
     />

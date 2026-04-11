@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useInView } from "motion/react";
+import { useInView } from "@/hooks/useInView";
 
 interface CounterProps {
   to: number;

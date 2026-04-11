@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "motion/react";
 import { useAnnounce } from "./A11yAnnouncer";
 
 /**
@@ -27,7 +26,6 @@ export default function ThemeToggle() {
   }
 
   if (theme === null) {
-    // Rendu placeholder avant hydratation pour éviter le mismatch
     return (
       <span
         className="relative inline-flex h-9 w-16 items-center rounded-full border"
@@ -48,18 +46,16 @@ export default function ThemeToggle() {
         background: "var(--elevated)",
       }}
     >
-      <motion.span
-        layout
-        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+      <span
         className="absolute flex h-7 w-7 items-center justify-center rounded-full"
         style={{
           left: isDark ? 4 : "calc(100% - 32px)",
           background: isDark ? "var(--color-bone)" : "var(--color-accent)",
           color: "var(--color-ink)",
+          transition: "left 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.3s ease",
         }}
       >
         {isDark ? (
-          // Icône lune
           <svg
             width="14"
             height="14"
@@ -73,7 +69,6 @@ export default function ThemeToggle() {
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
           </svg>
         ) : (
-          // Icône soleil
           <svg
             width="14"
             height="14"
@@ -88,7 +83,7 @@ export default function ThemeToggle() {
             <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
           </svg>
         )}
-      </motion.span>
+      </span>
     </button>
   );
 }

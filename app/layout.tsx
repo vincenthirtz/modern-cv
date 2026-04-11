@@ -4,6 +4,9 @@ import EffectsProvider from "@/components/EffectsProvider";
 import PageTransition from "@/components/PageTransition";
 import A11yAnnouncer from "@/components/A11yAnnouncer";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
+import Navigation from "@/components/Navigation";
+import ClientEffects from "@/components/ClientEffects";
+import Footer from "@/components/Footer";
 import "./globals.css";
 
 // Polices Google — chargées via next/font pour optimisation
@@ -197,8 +200,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Provider global des effets visuels (mode lecture / reduced effects) */}
         <A11yAnnouncer>
           <EffectsProvider>
+            <ClientEffects />
             <ServiceWorkerRegister />
+            <Navigation />
             <PageTransition>{children}</PageTransition>
+            <Footer />
           </EffectsProvider>
         </A11yAnnouncer>
       </body>

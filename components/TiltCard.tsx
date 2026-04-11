@@ -1,6 +1,5 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
 import { useRef, type MouseEvent, type ReactNode } from "react";
 
 interface TiltCardProps {
@@ -14,11 +13,7 @@ interface TiltCardProps {
 
 /**
  * Wrapper qui applique un effet de tilt 3D sur le contenu en suivant le curseur.
- * Utilise des springs pour un mouvement naturel.
- *
- * - Désactivé sur prefers-reduced-motion
- * - GPU-accéléré (transform + will-change)
- * - Spotlight optionnel : un halo lumineux qui suit la souris à l'intérieur
+ * Désactivé sur prefers-reduced-motion, GPU-accéléré.
  */
 export default function TiltCard({
   children,
@@ -27,66 +22,50 @@ export default function TiltCard({
   spotlight = true,
 }: TiltCardProps) {
   const ref = useRef<HTMLDivElement>(null);
-
-  // Position normalisée [-0.5, 0.5] sur les deux axes
-  const px = useMotionValue(0);
-  const py = useMotionValue(0);
-
-  const sx = useSpring(px, { stiffness: 200, damping: 20, mass: 0.5 });
-  const sy = useSpring(py, { stiffness: 200, damping: 20, mass: 0.5 });
-
-  // Inversion sur Y pour que le haut "se lève" et le bas "s'enfonce"
-  const rotateX = useTransform(sy, [-0.5, 0.5], [intensity, -intensity]);
-  const rotateY = useTransform(sx, [-0.5, 0.5], [-intensity, intensity]);
-
-  // Position du spotlight en pourcentage
-  const spotX = useTransform(sx, [-0.5, 0.5], ["0%", "100%"]);
-  const spotY = useTransform(sy, [-0.5, 0.5], ["0%", "100%"]);
-
-  // Gradient dérivé pour le spotlight (motion template)
-  const spotlightBg = useTransform(
-    [spotX, spotY] as never,
-    ([x, y]: string[]) =>
-      `radial-gradient(400px circle at ${x} ${y}, rgba(200,255,0,0.12), transparent 60%)`,
-  );
+  const spotRef = useRef<HTMLDivElement>(null);
 
   function handleMouseMove(e: MouseEvent<HTMLDivElement>) {
     if (!ref.current) return;
     if (typeof window === "undefined") return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const rect = ref.current.getBoundingClientRect();
-    px.set((e.clientX - rect.left) / rect.width - 0.5);
-    py.set((e.clientY - rect.top) / rect.height - 0.5);
+    const px = (e.clientX - rect.left) / rect.width - 0.5;
+    const py = (e.clientY - rect.top) / rect.height - 0.5;
+    const rotateX = -py * intensity * 2;
+    const rotateY = px * intensity * 2;
+    ref.current.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    if (spotRef.current) {
+      const spotX = (px + 0.5) * 100;
+      const spotY = (py + 0.5) * 100;
+      spotRef.current.style.background = `radial-gradient(400px circle at ${spotX}% ${spotY}%, rgba(200,255,0,0.12), transparent 60%)`;
+    }
   }
 
   function handleMouseLeave() {
-    px.set(0);
-    py.set(0);
+    if (!ref.current) return;
+    ref.current.style.transform = "perspective(1200px) rotateX(0deg) rotateY(0deg)";
   }
 
   return (
-    <motion.div
+    <div
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       className={`relative ${className}`}
       style={{
-        rotateX,
-        rotateY,
-        transformPerspective: 1200,
         transformStyle: "preserve-3d",
         willChange: "transform",
+        transition: "transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1)",
       }}
     >
       {children}
-      {/* Spotlight qui suit le curseur — pointer-events:none pour ne pas bloquer */}
       {spotlight && (
-        <motion.div
+        <div
+          ref={spotRef}
           aria-hidden
           className="pointer-events-none absolute inset-0 rounded-[inherit]"
-          style={{ background: spotlightBg }}
         />
       )}
-    </motion.div>
+    </div>
   );
 }

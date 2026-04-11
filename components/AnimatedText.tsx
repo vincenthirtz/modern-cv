@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, type Variants } from "motion/react";
+import { useRef } from "react";
+import { useInView } from "@/hooks/useInView";
 import type { ElementType } from "react";
 
 interface AnimatedTextProps {
@@ -13,24 +14,6 @@ interface AnimatedTextProps {
   highlight?: string;
   highlightClassName?: string;
 }
-
-const child: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 24,
-    filter: "blur(12px)",
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: {
-      opacity: { type: "spring", damping: 14, stiffness: 100 },
-      y: { type: "spring", damping: 14, stiffness: 100 },
-      filter: { type: "tween", duration: 0.4, ease: "easeOut" },
-    },
-  },
-};
 
 /**
  * Texte animé apparaissant mot par mot ou lettre par lettre,
@@ -46,48 +29,39 @@ export default function AnimatedText({
   highlight,
   highlightClassName = "text-[var(--color-accent)] italic",
 }: AnimatedTextProps) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.3 });
   const tokens = splitBy === "word" ? text.split(" ") : Array.from(text);
 
-  // Variants conteneur construit dynamiquement pour permettre un délai paramétré
-  const container: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren, delayChildren: delay },
-    },
-  };
+  const norm = (s: string) => s.toLowerCase().replace(/[^a-zàâäéèêëîïôöùûüÿ]/gi, "");
 
   return (
     <Wrapper className={className}>
-      <motion.span
-        style={{ display: "inline-block" }}
-        variants={container}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-        aria-label={text}
-      >
+      <span ref={ref} style={{ display: "inline-block" }} aria-label={text}>
         {tokens.map((token, i) => {
-          // Normalisation pour matcher un mot peu importe la ponctuation/casse
-          const norm = (s: string) => s.toLowerCase().replace(/[^a-zàâäéèêëîïôöùûüÿ]/gi, "");
-          const isHighlight = !!highlight && splitBy === "word" && norm(token) === norm(highlight);
+          const isHighlight =
+            !!highlight && splitBy === "word" && norm(token) === norm(highlight);
+          const tokenDelay = delay + i * staggerChildren;
           return (
-            <motion.span
+            <span
               key={`${token}-${i}`}
-              variants={child}
               style={{
                 display: "inline-block",
                 whiteSpace: "pre",
                 willChange: "transform, opacity, filter",
+                opacity: inView ? 1 : 0,
+                transform: inView ? "translateY(0)" : "translateY(24px)",
+                filter: inView ? "blur(0px)" : "blur(12px)",
+                transition: `opacity 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) ${tokenDelay}s, transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) ${tokenDelay}s, filter 0.4s ease ${tokenDelay}s`,
               }}
               className={isHighlight ? highlightClassName : undefined}
             >
               {token}
               {splitBy === "word" && i < tokens.length - 1 ? "\u00A0" : ""}
-            </motion.span>
+            </span>
           );
         })}
-      </motion.span>
+      </span>
     </Wrapper>
   );
 }

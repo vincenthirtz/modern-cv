@@ -11,7 +11,7 @@ Site en français, déployé sur Vercel : https://vincenthirtz.fr
 - **Langage** : TypeScript (strict mode)
 - **Styles** : Tailwind CSS v4 (`@import "tailwindcss"` + `@theme`)
 - **Contenu** : MDX via `@next/mdx` (articles dans `lib/articles/`)
-- **Animations** : Framer Motion
+- **Animations** : CSS transitions, keyframes & IntersectionObserver
 - **Scroll** : Lenis (smooth scroll)
 - **Polices** : DM Sans, Instrument Serif, JetBrains Mono (via `next/font/google`)
 
@@ -70,7 +70,8 @@ Le projet a des exigences fortes en accessibilité :
 ## Performance
 
 - Score Lighthouse performance minimum : **0.90** (warning)
-- Tree-shaking agressif sur `framer-motion` et `lenis` (`optimizePackageImports`)
+- Animations en CSS pur (transitions, keyframes, IntersectionObserver) — pas de Framer Motion
+- Tree-shaking agressif sur `lenis` (`optimizePackageImports`)
 - Images : formats `avif`/`webp`, utiliser `next/image` pour les nouvelles images
 - Pas de source maps en production
 - Cache long sur les assets statiques
