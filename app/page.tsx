@@ -4,19 +4,11 @@ import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Expertise from "@/components/Expertise";
 import Projects from "@/components/Projects";
-import Experience from "@/components/Experience";
 import Footer from "@/components/Footer";
 import ClientEffects from "@/components/ClientEffects";
 import SectionDivider from "@/components/SectionDivider";
 import SectionTransition from "@/components/SectionTransition";
 
-/**
- * Sections below-the-fold — chargées dynamiquement côté client.
- * Le JS de ces composants n'est téléchargé que lorsque le navigateur
- * est prêt, réduisant le bundle initial de la page.
- */
-const Community = dynamic(() => import("@/components/Community"));
-const Blog = dynamic(() => import("@/components/Blog"));
 const Contact = dynamic(() => import("@/components/Contact"));
 
 export default function Home() {
@@ -46,23 +38,7 @@ export default function Home() {
           <Projects />
         </SectionTransition>
 
-        <SectionDivider number="04" next="expérience" />
-        <SectionTransition>
-          <Experience />
-        </SectionTransition>
-
-        {/* Sections below-the-fold — lazy loaded */}
-        <SectionDivider number="05" next="communauté" />
-        <SectionTransition>
-          <Community />
-        </SectionTransition>
-
-        <SectionDivider number="06" next="notes" />
-        <SectionTransition>
-          <Blog />
-        </SectionTransition>
-
-        <SectionDivider number="07" next="contact" />
+        <SectionDivider number="04" next="contact" />
         <SectionTransition>
           <Contact />
         </SectionTransition>

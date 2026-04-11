@@ -6,10 +6,10 @@ const NAV_LINKS = [
   { href: "#about", label: "À propos" },
   { href: "#expertise", label: "Expertise" },
   { href: "#projects", label: "Projets" },
-  { href: "#experience", label: "Expérience" },
-  { href: "#community", label: "Communauté" },
-  { href: "#blog", label: "Notes" },
   { href: "#contact", label: "Contact" },
+  { href: "/experience", label: "Expérience" },
+  { href: "/community", label: "Communauté" },
+  { href: "/notes", label: "Notes" },
   { href: "/cv", label: "CV en ligne" },
   { href: "/branding", label: "Branding" },
 ];

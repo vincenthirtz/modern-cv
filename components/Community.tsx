@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "motion/react";
 import SectionTitle from "./SectionTitle";
 
@@ -148,12 +149,12 @@ export default function Community() {
         >
           <span className="text-[var(--color-accent)]">→</span> Vous organisez un meetup ou une
           conférence sur React, Vue, Cypress ou les frameworks DOM ?{" "}
-          <a
-            href="#contact"
+          <Link
+            href="/#contact"
             className="underline decoration-[var(--color-accent)] underline-offset-4 hover:text-[var(--color-accent)]"
           >
             On peut en parler
-          </a>
+          </Link>
           .
         </motion.p>
       </div>

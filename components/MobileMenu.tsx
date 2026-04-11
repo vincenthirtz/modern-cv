@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import type { NavLink } from "./DesktopNav";
 
@@ -85,20 +86,28 @@ export default function MobileMenu({ links, open, setOpen, burgerRef }: MobileMe
           }}
         >
           <ul className="flex flex-col gap-1" role="list">
-            {links.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  onClick={() => {
-                    setOpen(false);
-                    burgerRef.current?.focus();
-                  }}
-                  className="block rounded-xl px-4 py-3 text-sm hover:bg-[var(--bg)]"
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
+            {links.map((link) => {
+              const props = {
+                className: "block rounded-xl px-4 py-3 text-sm hover:bg-[var(--bg)]",
+                onClick: () => {
+                  setOpen(false);
+                  burgerRef.current?.focus();
+                },
+              };
+              return (
+                <li key={link.href}>
+                  {link.href.startsWith("/") ? (
+                    <Link href={link.href} {...props}>
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <a href={link.href} {...props}>
+                      {link.label}
+                    </a>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </motion.div>
       )}

@@ -30,6 +30,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: `${base}/experience`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.7,
+    },
+    {
+      url: `${base}/community`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
       url: `${base}/cv`,
       lastModified: now,
       changeFrequency: "yearly",

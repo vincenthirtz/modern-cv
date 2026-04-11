@@ -12,9 +12,9 @@ const LINKS: NavLink[] = [
   { href: "#about", label: "À propos", id: "about" },
   { href: "#expertise", label: "Expertise", id: "expertise" },
   { href: "#projects", label: "Projets", id: "projects" },
-  { href: "#experience", label: "Expérience", id: "experience" },
-  { href: "#community", label: "Communauté", id: "community" },
-  { href: "#blog", label: "Notes", id: "blog" },
+  { href: "/experience", label: "Expérience", id: "" },
+  { href: "/community", label: "Communauté", id: "" },
+  { href: "/notes", label: "Notes", id: "" },
   { href: "#contact", label: "Contact", id: "contact" },
 ];
 
@@ -48,9 +48,9 @@ export default function Navigation() {
 
   // Indicateur de section active basé sur IntersectionObserver
   useEffect(() => {
-    const sections = LINKS.map((link) => document.getElementById(link.id)).filter(
-      (el): el is HTMLElement => el !== null,
-    );
+    const sections = LINKS.filter((link) => link.id)
+      .map((link) => document.getElementById(link.id))
+      .filter((el): el is HTMLElement => el !== null);
     if (sections.length === 0) return;
 
     const observer = new IntersectionObserver(

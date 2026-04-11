@@ -22,7 +22,7 @@ export default function Hero() {
   // Parallax subtil sur le contenu et les blobs
   const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
   const blobY = useTransform(scrollYProgress, [0, 1], [0, -150]);
-  const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+  const opacity = useTransform(scrollYProgress, [0, 0.9], [1, 0]);
 
   return (
     <section
