@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import type { NavLink } from "./DesktopNav";
 
 interface MobileMenuProps {
@@ -13,6 +14,24 @@ interface MobileMenuProps {
 
 export default function MobileMenu({ links, open, setOpen, burgerRef }: MobileMenuProps) {
   const menuRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+
+  // Fermer le menu au changement de route (back/forward navigateur)
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname, setOpen]);
+
+  // Scroll lock quand le menu est ouvert
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
 
   // Focus trap : verrouille Tab/Shift+Tab à l'intérieur du menu mobile
   const handleMenuKeyDown = useCallback(
@@ -85,21 +104,29 @@ export default function MobileMenu({ links, open, setOpen, burgerRef }: MobileMe
       }}
     >
       <ul className="flex flex-col gap-1" role="list">
-        {links.map((link) => (
-          <li key={link.href}>
-            <Link
-              href={link.href}
-              tabIndex={open ? 0 : -1}
-              onClick={() => {
-                setOpen(false);
-                burgerRef.current?.focus();
-              }}
-              className="block rounded-xl px-4 py-3 text-sm hover:bg-[var(--bg)]"
-            >
-              {link.label}
-            </Link>
-          </li>
-        ))}
+        {links.map((link) => {
+          const isActive = pathname === link.href;
+          return (
+            <li key={link.href}>
+              <Link
+                href={link.href}
+                tabIndex={open ? 0 : -1}
+                aria-current={isActive ? "page" : undefined}
+                onClick={() => {
+                  setOpen(false);
+                  burgerRef.current?.focus();
+                }}
+                className="block rounded-xl px-4 py-3 text-sm transition-colors"
+                style={{
+                  background: isActive ? "var(--color-accent)" : undefined,
+                  color: isActive ? "var(--color-accent-contrast)" : undefined,
+                }}
+              >
+                {link.label}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

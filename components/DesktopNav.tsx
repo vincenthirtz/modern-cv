@@ -6,12 +6,10 @@ import { usePathname } from "next/navigation";
 export interface NavLink {
   href: string;
   label: string;
-  id: string;
 }
 
 interface DesktopNavProps {
   links: NavLink[];
-  activeId: string;
 }
 
 export default function DesktopNav({ links }: DesktopNavProps) {

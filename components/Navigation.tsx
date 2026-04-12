@@ -10,63 +10,62 @@ import MobileMenu from "./MobileMenu";
 import type { NavLink } from "./DesktopNav";
 
 const LINKS: NavLink[] = [
-  { href: "/projects", label: "Projets", id: "" },
-  { href: "/experience", label: "Expérience", id: "" },
-  { href: "/community", label: "Communauté", id: "" },
-  { href: "/notes", label: "Notes", id: "" },
-  { href: "/contact", label: "Contact", id: "" },
+  { href: "/projects", label: "Projets" },
+  { href: "/experience", label: "Expérience" },
+  { href: "/community", label: "Communauté" },
+  { href: "/notes", label: "Notes" },
+  { href: "/contact", label: "Contact" },
 ];
+
+/** Seuil en pixels avant de considérer la page comme scrollée */
+const SCROLL_THRESHOLD = 40;
+/** Padding max du header (en haut de page) */
+const PADDING_MAX = 20;
+/** Padding min du header (après scroll) */
+const PADDING_MIN = 12;
+/** Plage de scroll sur laquelle le padding s'interpole */
+const PADDING_SCROLL_RANGE = 200;
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [activeId, setActiveId] = useState<string>("");
-  const [padding, setPadding] = useState(20);
+  const [padding, setPadding] = useState(PADDING_MAX);
   const [entered, setEntered] = useState(false);
 
   const burgerRef = useRef<HTMLButtonElement>(null);
 
-  // Scroll handler : détecte le scroll et ajuste le padding
+  // Scroll handler throttlé via requestAnimationFrame
   useEffect(() => {
-    function onScroll() {
+    let rafId = 0;
+    let ticking = false;
+
+    function update() {
       const y = window.scrollY;
-      setScrolled(y > 40);
-      // Interpolation linéaire du padding : 20px → 12px entre 0 et 200px de scroll
-      setPadding(Math.max(12, 20 - (y / 200) * 8));
+      setScrolled(y > SCROLL_THRESHOLD);
+      const delta = (PADDING_MAX - PADDING_MIN) * (y / PADDING_SCROLL_RANGE);
+      setPadding(Math.max(PADDING_MIN, PADDING_MAX - delta));
+      ticking = false;
     }
-    onScroll();
+
+    function onScroll() {
+      if (!ticking) {
+        rafId = requestAnimationFrame(update);
+        ticking = true;
+      }
+    }
+
+    update();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(rafId);
+    };
   }, []);
 
-  // Animation d'entrée via CSS (remplace motion.header initial/animate)
+  // Animation d'entrée via CSS
   useEffect(() => {
     const raf = requestAnimationFrame(() => setEntered(true));
     return () => cancelAnimationFrame(raf);
-  }, []);
-
-  // Indicateur de section active basé sur IntersectionObserver
-  useEffect(() => {
-    const sections = LINKS.filter((link) => link.id)
-      .map((link) => document.getElementById(link.id))
-      .filter((el): el is HTMLElement => el !== null);
-    if (sections.length === 0) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        if (visible[0]) setActiveId(visible[0].target.id);
-      },
-      {
-        rootMargin: "-30% 0px -55% 0px",
-        threshold: [0, 0.25, 0.5, 0.75, 1],
-      },
-    );
-
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
   }, []);
 
   return (
@@ -82,6 +81,7 @@ export default function Navigation() {
       }}
     >
       <nav
+        aria-label="Navigation principale"
         className="mx-auto flex max-w-6xl items-center justify-between rounded-full border px-4 sm:px-6 py-3 transition-all"
         style={{
           backdropFilter: "blur(20px) saturate(140%)",
@@ -103,24 +103,32 @@ export default function Navigation() {
         </Link>
 
         {/* Liens — desktop */}
-        <DesktopNav links={LINKS} activeId={activeId} />
+        <DesktopNav links={LINKS} />
 
         {/* Disponible + toggles + burger */}
         <div className="flex items-center gap-3">
           <div
             className="hidden items-center gap-2 rounded-full border px-3 py-1.5 lg:flex"
             style={{ borderColor: "var(--border-strong)" }}
+            aria-hidden="true"
           >
             <span className="pulse-dot inline-block h-2 w-2 rounded-full bg-green-500" />
             <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-muted)]">
               Disponible pour missions
             </span>
           </div>
-          <EffectsToggle />
-          <AccentPicker />
-          <ThemeToggle />
 
-          {/* Burger mobile */}
+          <div
+            role="group"
+            aria-label="Préférences d'affichage"
+            className="flex items-center gap-3"
+          >
+            <EffectsToggle />
+            <AccentPicker />
+            <ThemeToggle />
+          </div>
+
+          {/* Burger mobile — animé en X à l'ouverture */}
           <button
             ref={burgerRef}
             className="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-full border"
@@ -130,9 +138,19 @@ export default function Navigation() {
             aria-expanded={open}
             aria-controls="mobile-nav-menu"
           >
-            <span className="flex flex-col gap-1">
-              <span className="block h-[1.5px] w-4 bg-current" />
-              <span className="block h-[1.5px] w-4 bg-current" />
+            <span className="flex w-4 flex-col items-center justify-center gap-1">
+              <span
+                className="block h-[1.5px] w-4 bg-current transition-transform duration-200"
+                style={{
+                  transform: open ? "translateY(2.5px) rotate(45deg)" : "translateY(0) rotate(0)",
+                }}
+              />
+              <span
+                className="block h-[1.5px] w-4 bg-current transition-transform duration-200"
+                style={{
+                  transform: open ? "translateY(-2.5px) rotate(-45deg)" : "translateY(0) rotate(0)",
+                }}
+              />
             </span>
           </button>
         </div>
