@@ -1,4 +1,5 @@
 npm run typecheck || exit 1
 npm run lint || exit 1
 npm run format:check || exit 1
+npm run test:unit || exit 1
 npx playwright test || exit 1

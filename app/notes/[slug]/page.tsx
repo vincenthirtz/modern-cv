@@ -100,20 +100,34 @@ export default async function NotePage({ params }: PageProps) {
 
   const articleJsonLd = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "BlogPosting",
     headline: article.title,
     description: article.excerpt,
     datePublished: article.date,
+    dateModified: article.date,
     author: {
       "@type": "Person",
       name: "Vincent Hirtz",
       url: "https://vincenthirtz.fr",
+      jobTitle: "Lead Developer Front-End",
     },
     publisher: {
       "@type": "Person",
       name: "Vincent Hirtz",
+      url: "https://vincenthirtz.fr",
     },
-    mainEntityOfPage: `https://vincenthirtz.fr/notes/${article.slug}`,
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `https://vincenthirtz.fr/notes/${article.slug}`,
+    },
+    image: `https://vincenthirtz.fr/notes/${article.slug}/opengraph-image`,
+    keywords: [article.category, ...article.tags],
+    inLanguage: "fr",
+    isPartOf: {
+      "@type": "Blog",
+      name: "Vincent Hirtz — Notes",
+      url: "https://vincenthirtz.fr/notes",
+    },
   };
 
   return (

@@ -1,6 +1,7 @@
 import { getStore } from "@netlify/blobs";
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { join } from "node:path";
+import { env } from "@/lib/env";
 
 /**
  * Store persistant pour les likes d'articles.
@@ -10,7 +11,7 @@ import { join } from "node:path";
  * - **Local (dev)** : fichier JSON dans data/likes.json.
  */
 
-const isNetlify = !!process.env.NETLIFY;
+const isNetlify = !!env.NETLIFY;
 
 // ---------------------------------------------------------------------------
 // Netlify Blobs

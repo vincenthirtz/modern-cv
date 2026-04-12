@@ -1,4 +1,5 @@
 import type { MDXComponents } from "mdx/types";
+import type { ReactNode } from "react";
 import {
   CodeBlock,
   Divider,
@@ -26,18 +27,18 @@ import LinkPreview from "@/components/LinkPreview";
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     // Markdown → ProseElements
-    h2: ({ children }) => <H2>{children}</H2>,
-    h3: ({ children }) => <H3>{children}</H3>,
-    p: ({ children }) => <P>{children}</P>,
-    strong: ({ children }) => <Strong>{children}</Strong>,
-    ul: ({ children }) => <UList>{children}</UList>,
-    li: ({ children }) => <LI>{children}</LI>,
+    h2: ({ children }: { children?: ReactNode }) => <H2>{children}</H2>,
+    h3: ({ children }: { children?: ReactNode }) => <H3>{children}</H3>,
+    p: ({ children }: { children?: ReactNode }) => <P>{children}</P>,
+    strong: ({ children }: { children?: ReactNode }) => <Strong>{children}</Strong>,
+    ul: ({ children }: { children?: ReactNode }) => <UList>{children}</UList>,
+    li: ({ children }: { children?: ReactNode }) => <LI>{children}</LI>,
     hr: () => <Divider />,
     // `code` peut être inline OU dans un <pre>. On rend l'inline ici ;
     // les blocs sont écrits via <CodeBlock> dans les .mdx (pas via ```).
-    code: ({ children }) => <InlineCode>{children}</InlineCode>,
+    code: ({ children }: { children?: ReactNode }) => <InlineCode>{children}</InlineCode>,
     // Liens : on garde le style cohérent avec les articles existants.
-    a: ({ href, children }) => (
+    a: ({ href, children }: { href?: string; children?: ReactNode }) => (
       <a
         href={href}
         target={href?.startsWith("http") ? "_blank" : undefined}

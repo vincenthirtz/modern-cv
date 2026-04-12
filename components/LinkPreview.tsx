@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useRef, useEffect, type ReactNode } from "react";
+import Image from "next/image";
 
 interface OGData {
   title: string | null;
@@ -119,8 +120,14 @@ export default function LinkPreview({ href, children }: LinkPreviewProps) {
             <span className="flex gap-3 p-3">
               {og.image && (
                 <span className="link-preview-img-wrapper">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={og.image} alt="" className="link-preview-img" loading="lazy" />
+                  <Image
+                    src={og.image}
+                    alt=""
+                    className="link-preview-img"
+                    fill
+                    unoptimized
+                    sizes="80px"
+                  />
                 </span>
               )}
               <span className="flex min-w-0 flex-1 flex-col gap-1">
