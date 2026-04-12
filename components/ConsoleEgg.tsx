@@ -20,7 +20,10 @@ export default function ConsoleEgg() {
   ╚═══╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝╚══════╝╚═╝  ╚═══╝   ╚═╝
 `;
 
-    const accent = "color:#c8ff00;font-family:ui-monospace,monospace;";
+    const accentColor =
+      getComputedStyle(document.documentElement).getPropertyValue("--color-accent").trim() ||
+      "#c8ff00";
+    const accent = `color:${accentColor};font-family:ui-monospace,monospace;`;
     const muted = "color:#a8a79f;font-family:ui-monospace,monospace;font-size:11px;";
     const bold = "color:#f0efe9;font-family:ui-monospace,monospace;font-weight:700;font-size:13px;";
 

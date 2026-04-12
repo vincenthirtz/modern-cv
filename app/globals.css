@@ -232,6 +232,61 @@ a {
   color: var(--color-accent);
 }
 
+/* Konami Code — barrel roll */
+@keyframes konamiBarrelRoll {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.konami-barrel-roll {
+  animation: konamiBarrelRoll 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Konami Code — rainbow accent cycling */
+@keyframes konamiRainbow {
+  0% {
+    --color-accent: #ff00d4;
+  }
+  16% {
+    --color-accent: #ff6b00;
+  }
+  33% {
+    --color-accent: #c8ff00;
+  }
+  50% {
+    --color-accent: #00d4ff;
+  }
+  66% {
+    --color-accent: #a855f7;
+  }
+  83% {
+    --color-accent: #f43f5e;
+  }
+  100% {
+    --color-accent: #ff00d4;
+  }
+}
+
+@property --color-accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #c8ff00;
+}
+
+.konami-rainbow {
+  animation: konamiRainbow 2s linear infinite;
+}
+
+.konami-barrel-roll.konami-rainbow {
+  animation:
+    konamiBarrelRoll 1.2s cubic-bezier(0.2, 0.8, 0.2, 1),
+    konamiRainbow 2s linear infinite;
+}
+
 /* Réduction de mouvement */
 @media (prefers-reduced-motion: reduce) {
   *,
