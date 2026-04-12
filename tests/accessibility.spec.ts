@@ -87,9 +87,7 @@ test.describe("Accessibilité", () => {
     await page.goto("/projects");
     await page.waitForLoadState("networkidle");
 
-    // Le breadcrumb devrait contenir un lien vers l'accueil
-    const breadcrumb = page.locator('nav[aria-label*="readcrumb"], nav[aria-label*="il d"]');
-    // Si pas de breadcrumb explicite, vérifier qu'il y a un moyen de revenir
+    // Vérifier qu'il y a un moyen de revenir à l'accueil
     const homeLink = page.locator('a[href="/"]');
     const homeLinkCount = await homeLink.count();
     expect(homeLinkCount).toBeGreaterThanOrEqual(1);

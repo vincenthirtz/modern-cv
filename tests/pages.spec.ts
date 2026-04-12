@@ -47,10 +47,6 @@ test.describe("Page CV", () => {
     await page.goto("/cv");
     await page.waitForLoadState("networkidle");
 
-    // Le bouton d'impression doit être présent
-    const printButton = page.getByText(/imprimer|print/i);
-    // Ou un bouton avec une icône d'impression
-    const anyPrintAction = page.locator("button").first();
     const pageContent = await page.locator("main").textContent();
     expect(pageContent?.length).toBeGreaterThan(100);
   });

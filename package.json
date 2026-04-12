@@ -19,6 +19,15 @@
     "analyze": "ANALYZE=true next build",
     "prepare": "husky"
   },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --max-warnings=0",
+      "prettier --check"
+    ],
+    "*.{js,jsx,mjs,json,md,css}": [
+      "prettier --check"
+    ]
+  },
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",

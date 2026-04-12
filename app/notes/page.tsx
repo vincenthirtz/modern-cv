@@ -47,7 +47,7 @@ const breadcrumbJsonLd = {
 
 /** Extrait les méta sérialisables (sans le composant Content). */
 function toMeta(article: (typeof ARTICLES)[number]): ArticleMeta {
-  const { Content, ...meta } = article;
+  const { Content: _, ...meta } = article;
   return meta;
 }
 

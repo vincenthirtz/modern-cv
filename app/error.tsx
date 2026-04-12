@@ -36,6 +36,8 @@ export default function GlobalError({ error, reset }: ErrorProps) {
         <button onClick={reset} className="btn-accent rounded-full px-6 py-3 text-sm font-medium">
           Réessayer
         </button>
+        {/* <a> intentionnel : le router client peut être cassé dans un Error Boundary */}
+        {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
         <a href="/" className="btn-ghost rounded-full px-6 py-3 text-sm font-medium">
           Retour à l&apos;accueil
         </a>

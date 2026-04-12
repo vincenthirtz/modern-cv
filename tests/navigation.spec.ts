@@ -1,4 +1,4 @@
-import { test, expect, type ConsoleMessage } from "@playwright/test";
+import { test, expect, type ConsoleMessage, type Page } from "@playwright/test";
 
 /**
  * Tests de navigation entre pages.
@@ -20,7 +20,7 @@ const NAV_LINKS = [
 const EXTRA_ROUTES = ["/cv", "/branding", "/expertise"];
 
 /** Collecte les erreurs console pendant une action */
-function collectErrors(page: import("@playwright/test").Page) {
+function collectErrors(page: Page) {
   const errors: string[] = [];
   const handler = (msg: ConsoleMessage) => {
     if (msg.type() === "error") {
@@ -65,7 +65,7 @@ function hasBlockingError(errors: string[]): string | undefined {
 }
 
 /** Vérifie qu'une page a bien fini de charger (plus d'état role="status"). */
-async function expectMainVisible(page: import("@playwright/test").Page) {
+async function expectMainVisible(page: Page) {
   const main = page.locator("main").first();
   await main.waitFor({ state: "attached", timeout: 5_000 });
 

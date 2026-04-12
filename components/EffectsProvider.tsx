@@ -22,7 +22,6 @@ const EffectsContext = createContext<EffectsContextValue | null>(null);
  */
 export default function EffectsProvider({ children }: { children: ReactNode }) {
   const [reduced, setReduced] = useState(false);
-  const [hydrated, setHydrated] = useState(false);
 
   // Lecture initiale depuis localStorage côté client
   useEffect(() => {
@@ -35,7 +34,6 @@ export default function EffectsProvider({ children }: { children: ReactNode }) {
     } catch {
       /* localStorage indisponible */
     }
-    setHydrated(true);
   }, []);
 
   const toggle = useCallback(() => {

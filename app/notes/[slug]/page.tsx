@@ -12,7 +12,7 @@ import {
 
 /** Extrait la partie sérialisable d'un article (sans le composant Content). */
 function toMeta(article: Article): ArticleMeta {
-  const { Content, ...meta } = article;
+  const { Content: _, ...meta } = article;
   return meta;
 }
 
