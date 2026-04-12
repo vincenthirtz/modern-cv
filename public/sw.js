@@ -61,6 +61,18 @@ self.addEventListener("fetch", (event) => {
   if (request.method !== "GET") return;
   if (url.origin !== self.location.origin) return;
 
+  // Ne JAMAIS intercepter les requêtes RSC (navigation client-side Next.js).
+  // Le router Next.js envoie ces headers pour récupérer un payload RSC,
+  // pas du HTML. Si on renvoie du HTML caché, la navigation plante.
+  if (
+    request.headers.get("RSC") === "1" ||
+    request.headers.get("Next-Router-State-Tree") ||
+    request.headers.get("Next-Router-Prefetch") ||
+    url.searchParams.has("_rsc")
+  ) {
+    return;
+  }
+
   // API — toujours réseau, pas de cache
   if (url.pathname.startsWith("/api/")) return;
 
@@ -70,7 +82,7 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Articles déjà lus — cache-first avec mise à jour en arrière-plan
+  // Articles déjà lus — stale-while-revalidate
   if (url.pathname.startsWith("/notes/") && url.pathname !== "/notes") {
     event.respondWith(staleWhileRevalidate(request, ARTICLES_CACHE));
     return;
@@ -82,8 +94,8 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Next.js data/chunks — cache-first
-  if (url.pathname.startsWith("/_next/")) {
+  // Next.js static chunks/CSS/media — cache-first (hashes dans le nom)
+  if (url.pathname.startsWith("/_next/static/")) {
     event.respondWith(cacheFirst(request, ASSETS_CACHE));
     return;
   }

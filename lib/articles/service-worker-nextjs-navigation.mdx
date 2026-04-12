@@ -1,0 +1,210 @@
+export const meta = {
+  slug: "service-worker-nextjs-navigation-cassee",
+  title: "Quand le Service Worker casse la navigation Next.js (et que les tests ne voient rien)",
+  excerpt:
+    "Le clic qui ne marche qu'une fois sur deux en production. Analyse d'un bug invisible en dev, causé par un Service Worker qui intercepte les requêtes RSC de Next.js App Router.",
+  category: "Debug",
+  tags: ["nextjs", "service-worker", "debug", "retour-experience", "react"],
+  date: "2026-04-12",
+  dateLabel: "Avril 2026",
+  readTime: "~10 min",
+};
+
+<Lead>
+  Le bug parfait : la navigation fonctionne en dev, les 18 tests Playwright passent au vert, mais en
+  production il faut cliquer deux fois sur les liens du menu. Retour sur un diagnostic en 3 couches
+  — Service Worker, Lenis, et un error handler trop zélé — et pourquoi vos tests E2E ne peuvent pas
+  tout attraper.
+</Lead>
+
+## Le symptôme
+
+En production, sur [vincenthirtz.fr](https://vincenthirtz.fr), la navigation client-side plante de manière intermittente. Le premier clic sur un lien du menu ne fait rien. Le deuxième fonctionne. Pas d'erreur visible dans la console, pas de crash, pas de page blanche. Juste un clic perdu dans le vide.
+
+Le plus frustrant : **18 tests Playwright** couvrent la navigation de long en large — séquentielle, rapide, back/forward, mobile, stress test. Tous passent.
+
+## La piste Service Worker : le coupable principal
+
+Le site utilise un Service Worker pour le support offline (PWA). Voici la règle qui posait problème :
+
+<CodeBlock lang="JavaScript">{`// ❌ AVANT — sw.js intercepte TOUT
+self.addEventListener("fetch", (event) => {
+  // ...
+
+  // App shell — stale-while-revalidate
+  if (isShellUrl(url.pathname)) {
+    event.respondWith(staleWhileRevalidate(request, SHELL_CACHE));
+    return;
+  }
+
+  // Next.js data/chunks — cache-first
+  if (url.pathname.startsWith("/_next/")) {
+    event.respondWith(cacheFirst(request, ASSETS_CACHE));
+    return;
+  }
+});`}</CodeBlock>
+
+### Pourquoi ça casse la navigation
+
+Quand l'utilisateur clique un lien dans Next.js App Router, le framework ne fait **pas** un chargement de page classique. Il envoie une requête `fetch` vers l'URL de destination avec des headers spéciaux :
+
+- `RSC: 1` — indique que le serveur doit renvoyer un **payload React Server Component**, pas du HTML
+- `Next-Router-State-Tree` — l'état actuel de l'arbre de routes
+- `Next-Router-Prefetch` — pour le prefetching
+
+Le serveur répond avec un flux binaire RSC que le router interprète pour mettre à jour le DOM de manière granulaire. C'est ce qui rend la navigation quasi-instantanée.
+
+Mais le Service Worker ne connaît pas ces headers. Quand il voit un `GET /` ou `GET /notes`, il pense que c'est un chargement de page normal et renvoie le **HTML complet depuis le cache**. Le router Next.js reçoit du HTML au lieu d'un payload RSC. Il ne sait pas quoi en faire. La navigation échoue silencieusement.
+
+Au deuxième clic, le router détecte l'échec et fait un fallback vers un chargement complet de page, ce qui fonctionne.
+
+### Le fix
+
+<CodeBlock lang="JavaScript">{`// ✅ APRÈS — sw.js laisse passer les requêtes RSC
+self.addEventListener("fetch", (event) => {
+  const { request } = event;
+  const url = new URL(request.url);
+
+  if (request.method !== "GET") return;
+  if (url.origin !== self.location.origin) return;
+
+  // Ne JAMAIS intercepter les requêtes RSC
+  if (
+    request.headers.get("RSC") === "1" ||
+    request.headers.get("Next-Router-State-Tree") ||
+    request.headers.get("Next-Router-Prefetch") ||
+    url.searchParams.has("_rsc")
+  ) {
+    return; // Laisser la requête aller au serveur
+  }
+
+  // ... reste du routing SW
+});`}</CodeBlock>
+
+4 vérifications, une seule suffit. La ceinture et les bretelles, parce que les versions de Next.js n'envoient pas toujours les mêmes headers.
+
+## La couche Lenis : scroll désynchronisé
+
+Le site utilise [Lenis](https://lenis.darkroom.engineering/) pour le smooth scroll. L'instance était créée une seule fois au mount du layout :
+
+<CodeBlock lang="TypeScript">{`// ❌ AVANT — Lenis ne sait pas qu'on a changé de page
+useEffect(() => {
+  const lenis = new Lenis({ duration: 1.2, smoothWheel: true });
+  // ... boucle rAF
+  return () => lenis.destroy();
+}, []); // ← tableau vide, ne réagit jamais aux navigations`}</CodeBlock>
+
+Lenis maintient un état de scroll interne (`animatedScroll`, `targetScroll`). Quand Next.js navigue vers une autre page, le contenu change mais Lenis pense être toujours en train de scroller l'ancien contenu. Le scroll ne revient pas en haut, l'utilisateur arrive au milieu du néant, et ça ressemble à une navigation cassée.
+
+### Le fix
+
+<CodeBlock lang="TypeScript">{`// ✅ APRÈS — Reset Lenis à chaque navigation
+const lenisRef = useRef<Lenis | null>(null);
+const pathname = usePathname();
+
+useEffect(() => {
+  const lenis = new Lenis({ duration: 1.2, smoothWheel: true });
+  lenisRef.current = lenis;
+  // ... boucle rAF
+  return () => { lenis.destroy(); lenisRef.current = null; };
+}, []);
+
+// Reset scroll en haut à chaque changement de route
+useEffect(() => {
+  lenisRef.current?.scrollTo(0, { immediate: true, force: true });
+}, [pathname]);`}</CodeBlock>
+
+`force: true` est important — sans ça, si Lenis est dans un état "stoppé" (par exemple à cause d'un `overflow: hidden` sur le body pendant l'ouverture du menu mobile), le `scrollTo` est ignoré.
+
+## La couche error handler : trop de zèle
+
+L'article précédent expliquait comment on gère le bug `removeChild` de React 19. Voici le handler qu'on avait en place :
+
+<CodeBlock lang="JavaScript">{`// ❌ AVANT — stopImmediatePropagation bloque tout le monde
+window.addEventListener("error", function(e) {
+  if (e.message && e.message.includes("removeChild")) {
+    e.preventDefault();
+    e.stopImmediatePropagation(); // ← le problème
+    return false;
+  }
+}, true);`}</CodeBlock>
+
+`stopImmediatePropagation()` empêche **tous** les autres error handlers de voir l'erreur. Y compris ceux de Next.js qui pourraient déclencher un retry ou un fallback de navigation. En bloquant la propagation, on empêchait le router de se remettre d'une erreur de réconciliation.
+
+### Le fix
+
+<CodeBlock lang="JavaScript">{`// ✅ APRÈS — preventDefault seul, pas de blocage de propagation
+window.addEventListener("error", function(e) {
+  if (e.message && (e.message.includes("removeChild") || e.message.includes("insertBefore"))) {
+    e.preventDefault();
+    return false;
+  }
+}, true);`}</CodeBlock>
+
+`preventDefault()` suffit pour empêcher l'erreur d'apparaître dans la console. Les autres handlers reçoivent toujours l'événement et peuvent réagir. Et on ajoute `insertBefore` au passage — même famille de bugs React 19.
+
+## Pourquoi les tests ne voyaient rien
+
+C'est la leçon la plus importante de ce debug.
+
+### Le Service Worker n'existe qu'en production
+
+<CodeBlock lang="TypeScript">{`// components/ServiceWorkerRegister.tsx
+useEffect(() => {
+  if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") {
+    navigator.serviceWorker.register("/sw.js");
+  }
+}, []);`}</CodeBlock>
+
+En dev, pas de SW. Les tests Playwright lancent `npm run dev`. Le bug n'existe littéralement pas dans l'environnement de test.
+
+### `waitForURL` est trop indulgent
+
+<CodeBlock lang="TypeScript">{`// Le test attend patiemment que l'URL change — même si ça prend 5 secondes
+await page.click(\`nav >> a[href="\${link.href}"]\`);
+await page.waitForURL(\`**\${link.href}\`); // timeout par défaut : 30s`}</CodeBlock>
+
+Si le premier clic échoue et que le router retente automatiquement, `waitForURL` finit par passer. Le test ne sait pas que ça a pris 2 clics — il voit juste que l'URL a fini par changer.
+
+### Les nouveaux tests
+
+<CodeBlock lang="TypeScript">{`// Test 19 : UN SEUL clic doit suffire — timeout agressif
+await page.click(\`nav >> a[href="\${link.href}"]\`);
+await page.waitForURL(\`**\${link.href}\`, { timeout: 2_000 });
+// ↑ Échoue si la navigation ne se produit pas en < 2s
+
+// Test 20 : Le scroll doit revenir à 0 après navigation
+await page.evaluate(() => window.scrollTo(0, 600));
+await page.click('nav >> a[href="/projects"]');
+// ...
+const scrollY = await page.evaluate(() => window.scrollY);
+expect(scrollY).toBeLessThanOrEqual(10);
+
+// Test 21 : Les requêtes RSC ne doivent pas être bloquées
+page.on("response", (response) => {
+  const req = response.request();
+  if (req.headers()["rsc"] === "1") {
+    rscResponses.push({ url: response.url(), ok: response.ok() });
+  }
+});`}</CodeBlock>
+
+## Checklist pour les Service Workers avec Next.js App Router
+
+Si vous avez un Service Worker sur un site Next.js App Router, vérifiez ces points :
+
+- **Requêtes RSC** — Le SW doit détecter les headers `RSC`, `Next-Router-State-Tree`, `Next-Router-Prefetch` et les laisser passer au serveur
+- **Scope `/_next/`** — Ne cacher que `/_next/static/` (assets hashés). Ne pas cacher `/_next/data/` (Pages Router) ou les RSC payloads
+- **Versioning** — Incrémenter la version du cache à chaque déploiement pour éviter les chunks JS obsolètes
+- **Tests en production** — Au minimum un smoke test sur un build de production avec le SW actif
+
+## En résumé
+
+| Couche | Problème | Impact |
+|---|---|---|
+| Service Worker | Intercepte les requêtes RSC, renvoie du HTML caché | Navigation échoue au 1er clic |
+| Lenis (smooth scroll) | Ne reset pas le scroll sur navigation | Page semble bloquée au mauvais endroit |
+| Error handler `removeChild` | `stopImmediatePropagation` bloque le recovery de Next.js | Le router ne peut pas se remettre des erreurs |
+
+Trois bugs indépendants qui se cumulent pour produire un symptôme unique : "il faut cliquer deux fois". En dev, aucun des trois ne se manifeste. En production, les trois se déclenchent en même temps.
+
+La morale : **testez en production build**. `npm run dev` et `npm run build && npm start` ne sont pas le même logiciel.

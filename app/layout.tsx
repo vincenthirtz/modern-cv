@@ -107,10 +107,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             qui se produit lors de la navigation client-side quand React essaie
             de supprimer des metadata (<title>, <link>, <meta>) dont le parentNode
             est devenu null. C'est un bug connu de React 19 + Next.js App Router.
-            Ref: vercel/next.js#58055 */}
+            Ref: vercel/next.js#58055
+            IMPORTANT : on ne bloque PAS stopImmediatePropagation pour laisser
+            les autres error handlers (Next.js, monitoring) fonctionner. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `window.addEventListener("error",function(e){if(e.message&&e.message.includes("removeChild")){e.preventDefault();e.stopImmediatePropagation();return false}},true);`,
+            __html: `window.addEventListener("error",function(e){if(e.message&&(e.message.includes("removeChild")||e.message.includes("insertBefore"))){e.preventDefault();return false}},true);`,
           }}
         />
         {/* Évite le flash en chargeant la préférence avant le rendu React */}

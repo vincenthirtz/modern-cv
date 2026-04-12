@@ -5,6 +5,11 @@ import { test, expect, type ConsoleMessage, type Page } from "@playwright/test";
  *
  * Objectif : détecter les erreurs "removeChild" et autres TypeError
  * qui apparaissent lors de la navigation client-side via le menu.
+ *
+ * NOTE : ces tests tournent en mode dev. Pour couvrir les bugs liés au
+ * Service Worker (qui n'est actif qu'en production), utiliser la suite
+ * de tests dédiée au SW ou lancer `npm run build && npm start` avant
+ * d'exécuter les tests avec `reuseExistingServer: true`.
  */
 
 // Toutes les routes accessibles depuis le menu desktop
@@ -608,4 +613,109 @@ test("stress navigation : 3 boucles sur toutes les pages", async ({ page }) => {
   expect(err, "Erreur après stress test").toBeUndefined();
 
   collector.stop();
+});
+
+// =============================================================================
+// Test 19 : Un seul clic suffit — la navigation démarre immédiatement
+// =============================================================================
+test("un seul clic sur chaque lien déclenche la navigation sans besoin de re-cliquer", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+
+  const collector = collectErrors(page);
+
+  for (const link of NAV_LINKS) {
+    // Revenir à l'accueil entre chaque test pour partir d'un état propre
+    if (new URL(page.url()).pathname !== "/") {
+      await page.goto("/");
+      await page.waitForLoadState("networkidle");
+    }
+
+    // UN SEUL clic — la navigation doit se produire dans un délai court
+    await page.click(`nav >> a[href="${link.href}"]`);
+
+    // L'URL doit changer en moins de 2s (en pratique c'est quasi-instantané).
+    // Si le bug « clic double » est présent, cette assertion échoue.
+    await page.waitForURL(`**${link.href}`, { timeout: 2_000 });
+
+    await expectMainVisible(page);
+
+    const err = hasBlockingError(collector.errors);
+    expect(err, `Navigation ${link.href} nécessite plus d'un clic`).toBeUndefined();
+  }
+
+  collector.stop();
+});
+
+// =============================================================================
+// Test 20 : Le scroll revient en haut après chaque navigation
+// =============================================================================
+test("le scroll se remet à zéro après navigation client-side", async ({ page }) => {
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+
+  // Scroller vers le bas
+  await page.evaluate(() => window.scrollTo(0, 600));
+  await page.waitForTimeout(200);
+
+  // Naviguer vers une autre page
+  await page.click('nav >> a[href="/projects"]');
+  await page.waitForURL("**/projects");
+  await page.waitForLoadState("networkidle");
+  await page.waitForTimeout(500);
+
+  // Le scroll doit être revenu en haut
+  const scrollY = await page.evaluate(() => window.scrollY);
+  expect(scrollY, "Le scroll n'est pas revenu en haut après navigation").toBeLessThanOrEqual(10);
+
+  // Scroller de nouveau puis naviguer vers une autre page
+  await page.evaluate(() => window.scrollTo(0, 600));
+  await page.waitForTimeout(200);
+
+  await page.click('nav >> a[href="/notes"]');
+  await page.waitForURL("**/notes");
+  await page.waitForLoadState("networkidle");
+  await page.waitForTimeout(500);
+
+  const scrollY2 = await page.evaluate(() => window.scrollY);
+  expect(scrollY2, "Le scroll n'est pas revenu en haut (2ème navigation)").toBeLessThanOrEqual(10);
+});
+
+// =============================================================================
+// Test 21 : Le Service Worker ne bloque pas les requêtes RSC
+// =============================================================================
+test("les requêtes RSC (navigation client-side) ne sont pas interceptées par le SW", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+
+  // Vérifier que les requêtes de navigation contiennent le header RSC
+  // et qu'elles aboutissent (pas de réponse HTML stale depuis le cache SW)
+  const rscResponses: { url: string; ok: boolean; contentType: string }[] = [];
+
+  page.on("response", (response) => {
+    const req = response.request();
+    if (req.headers()["rsc"] === "1" || req.headers()["next-router-state-tree"]) {
+      rscResponses.push({
+        url: response.url(),
+        ok: response.ok(),
+        contentType: response.headers()["content-type"] || "",
+      });
+    }
+  });
+
+  // Naviguer client-side
+  for (const link of NAV_LINKS.slice(0, 3)) {
+    await page.click(`nav >> a[href="${link.href}"]`);
+    await page.waitForURL(`**${link.href}`);
+    await page.waitForLoadState("networkidle");
+  }
+
+  // En mode dev, les requêtes RSC doivent toutes aboutir sans erreur
+  for (const resp of rscResponses) {
+    expect(resp.ok, `Requête RSC échouée : ${resp.url}`).toBe(true);
+  }
 });
