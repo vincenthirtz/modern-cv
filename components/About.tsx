@@ -1,12 +1,7 @@
-import Image from "next/image";
+import Link from "next/link";
 import SectionTitle from "./SectionTitle";
 import MotionInView, { MotionInViewItem } from "./MotionInView";
-
-/**
- * Active la vraie photo. Mets `true` quand tu auras déposé `public/avatar.jpg`.
- * Sinon le gradient stylisé reste affiché.
- */
-const HAS_AVATAR = false;
+import { ARTICLES } from "@/lib/articles";
 
 const VALUES = [
   {
@@ -73,52 +68,47 @@ export default function About() {
             </MotionInView>
           </div>
 
-          {/* Photo 40% */}
+          {/* Dernières notes */}
           <MotionInView direction="none" duration={0.8} className="relative lg:col-span-2">
             <div
-              className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl border"
-              style={{ borderColor: "var(--border-strong)" }}
+              className="flex h-full flex-col rounded-2xl border p-6"
+              style={{ borderColor: "var(--border-strong)", background: "var(--elevated)" }}
             >
-              {/* Toujours affiché en fallback / arrière-plan stylisé */}
-              <div
-                className="absolute inset-0"
-                style={{
-                  background:
-                    "radial-gradient(120% 120% at 0% 0%, #1a1a20 0%, #0a0a0b 60%), linear-gradient(135deg, rgba(200,255,0,0.15), transparent)",
-                }}
-              />
-              <div className="absolute inset-0 bg-grid opacity-30" />
-
-              {/* Vraie photo si HAS_AVATAR — overlay accent appliqué dessus */}
-              {HAS_AVATAR && (
-                <Image
-                  src="/avatar.jpg"
-                  alt="Vincent Hirtz, Lead Developer Front-End"
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 80vw, 40vw"
-                  className="object-cover grayscale-[20%] mix-blend-luminosity"
-                />
-              )}
-
-              <div
-                className="absolute inset-0 mix-blend-overlay"
-                style={{
-                  background: "linear-gradient(180deg, transparent 40%, rgba(200,255,0,0.25))",
-                }}
-              />
-              <div className="absolute inset-x-0 bottom-0 p-6">
-                <div className="font-serif text-7xl text-[var(--color-accent)]">VH</div>
-                <div className="mt-1 font-mono text-[10px] uppercase tracking-widest text-[var(--fg-muted)]">
-                  Lyon · Remote-friendly
-                </div>
-              </div>
-              {/* Bordure accent décalée */}
-              <div
-                aria-hidden
-                className="pointer-events-none absolute -right-2 -top-2 h-full w-full rounded-2xl border"
-                style={{ borderColor: "var(--color-accent)", opacity: 0.25 }}
-              />
+              <h3 className="mb-5 font-mono text-[11px] uppercase tracking-widest text-[var(--fg-muted)]">
+                Dernières notes
+              </h3>
+              <ul className="flex flex-1 flex-col gap-4">
+                {ARTICLES.slice(0, 4).map((article) => (
+                  <li key={article.slug}>
+                    <Link
+                      href={`/notes/${article.slug}`}
+                      className="group flex flex-col gap-1.5 rounded-xl border p-4 transition-colors hover:border-[var(--color-accent)]"
+                      style={{ borderColor: "var(--border)" }}
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <span
+                          className="rounded-full border px-2 py-0.5 font-mono text-[9px] uppercase tracking-widest text-[var(--color-accent)]"
+                          style={{ borderColor: "var(--color-accent)" }}
+                        >
+                          {article.category}
+                        </span>
+                        <span className="font-mono text-[9px] text-[var(--fg-dim)]">
+                          {article.readTime}
+                        </span>
+                      </div>
+                      <span className="text-sm font-medium leading-snug transition-colors group-hover:text-[var(--color-accent)]">
+                        {article.title}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <Link
+                href="/notes"
+                className="mt-5 inline-flex items-center gap-1.5 self-end font-mono text-[10px] uppercase tracking-widest text-[var(--fg-muted)] transition-colors hover:text-[var(--color-accent)]"
+              >
+                Toutes les notes <span>→</span>
+              </Link>
             </div>
           </MotionInView>
         </div>
