@@ -63,14 +63,30 @@ const PROJECTS: Project[] = [
   },
 ];
 
+const COUNT_LABELS = [
+  "Zéro",
+  "Une",
+  "Deux",
+  "Trois",
+  "Quatre",
+  "Cinq",
+  "Six",
+  "Sept",
+  "Huit",
+  "Neuf",
+  "Dix",
+] as const;
+
 export default function Projects() {
+  const countLabel = COUNT_LABELS[PROJECTS.length] ?? `${PROJECTS.length}`;
+
   return (
     <section id="projects" className="relative scroll-mt-32 py-32 px-6">
       <div className="mx-auto max-w-6xl">
         <SectionTitle
           number="03"
           label="Projets sélectionnés"
-          title="Cinq histoires que je suis fier d'avoir écrites."
+          title={`${countLabel} histoires que je suis fier d'avoir écrites.`}
           highlight="fier"
           description="Une sélection de projets sur lesquels j'ai eu un impact technique et humain réel — du cadrage à la mise en production."
         />
