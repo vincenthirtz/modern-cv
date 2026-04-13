@@ -55,7 +55,7 @@ export default function PulseSandbox() {
   return (
     <div
       className="grid grid-cols-1 overflow-hidden rounded-xl border md:grid-cols-2"
-      style={{ borderColor: "var(--border-strong)", background: "var(--color-ink-soft)" }}
+      style={{ borderColor: "var(--border-strong)", background: "var(--elevated)" }}
     >
       {/* CODE */}
       <div className="border-b md:border-b-0 md:border-r" style={{ borderColor: "var(--border)" }}>

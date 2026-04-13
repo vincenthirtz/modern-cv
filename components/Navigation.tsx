@@ -313,7 +313,7 @@ export default function Navigation() {
             background: "color-mix(in oklab, var(--bg) 65%, transparent)",
             borderColor: "var(--border-strong)",
             boxShadow:
-              "0 8px 32px -8px rgba(0,0,0,0.5), 0 0 0 0.5px var(--border), inset 0 1px 0 0 rgba(255,255,255,0.05)",
+              "0 8px 32px -8px var(--dock-shadow, rgba(0,0,0,0.5)), 0 0 0 0.5px var(--border), inset 0 1px 0 0 rgba(255,255,255,0.05)",
           }}
         >
           {DOCK_ITEMS.map((item, index) => {

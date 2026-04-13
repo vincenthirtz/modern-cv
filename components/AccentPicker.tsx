@@ -149,7 +149,7 @@ export default function AccentPicker() {
         style={{
           background: "var(--elevated)",
           borderColor: "var(--border-strong)",
-          boxShadow: "0 12px 40px -10px rgba(0,0,0,0.5)",
+          boxShadow: "0 12px 40px -10px var(--dock-shadow, rgba(0,0,0,0.5))",
           opacity: open ? 1 : 0,
           transform: open ? "scale(1) translateY(0)" : "scale(0.9) translateY(-4px)",
           transition: "opacity 0.15s ease, transform 0.15s ease, visibility 0.15s",

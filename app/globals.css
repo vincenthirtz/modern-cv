@@ -46,6 +46,7 @@
   --elevated: #ffffff;
   --border: rgba(10, 10, 11, 0.1);
   --border-strong: rgba(10, 10, 11, 0.2);
+  --dock-shadow: rgba(0, 0, 0, 0.12);
   /* Contraste WCAG AA : en mode light, utiliser les variantes sombres de l'accent.
      Fallback = Lime light (#4a7a00), écrasé par JS si un autre accent est choisi. */
   --color-accent: var(--color-accent-light, #4a7a00);
@@ -106,6 +107,10 @@ body {
 .bg-noise {
   background-image: url("/grain.svg");
 }
+:root.light .bg-noise {
+  opacity: 0.06 !important;
+  mix-blend-mode: multiply;
+}
 
 /* Texte avec gradient subtil */
 .text-gradient {
@@ -120,6 +125,11 @@ body {
   background:
     radial-gradient(800px circle at 15% 10%, rgba(200, 255, 0, 0.08), transparent 50%),
     radial-gradient(600px circle at 85% 80%, rgba(200, 255, 0, 0.05), transparent 50%);
+}
+:root.light .bg-aurora {
+  background:
+    radial-gradient(800px circle at 15% 10%, rgba(74, 122, 0, 0.06), transparent 50%),
+    radial-gradient(600px circle at 85% 80%, rgba(74, 122, 0, 0.04), transparent 50%);
 }
 
 /* Bouton magnétique réutilisable */
@@ -141,6 +151,11 @@ body {
   box-shadow:
     0 0 0 6px rgba(200, 255, 0, 0.15),
     0 0 40px rgba(200, 255, 0, 0.4);
+}
+:root.light .btn-accent:hover {
+  box-shadow:
+    0 0 0 6px rgba(74, 122, 0, 0.12),
+    0 0 40px rgba(74, 122, 0, 0.15);
 }
 
 .btn-ghost {
@@ -177,6 +192,12 @@ body {
     0 30px 60px -20px rgba(0, 0, 0, 0.4),
     0 0 0 1px var(--color-accent) inset,
     0 0 60px -20px rgba(200, 255, 0, 0.25);
+}
+:root.light .card:hover {
+  box-shadow:
+    0 30px 60px -20px rgba(0, 0, 0, 0.1),
+    0 0 0 1px var(--color-accent) inset,
+    0 0 60px -20px rgba(74, 122, 0, 0.12);
 }
 
 /* Pulse vert "disponible" */
@@ -437,6 +458,11 @@ a {
     0 0 0 1px var(--border);
   pointer-events: none;
   animation: linkPreviewIn 0.2s ease-out;
+}
+:root.light .link-preview-popover {
+  box-shadow:
+    0 20px 40px -12px rgba(0, 0, 0, 0.1),
+    0 0 0 1px var(--border);
 }
 .link-preview-below {
   bottom: auto;
