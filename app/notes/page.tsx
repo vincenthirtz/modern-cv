@@ -57,7 +57,7 @@ export default function NotesIndexPage() {
   return (
     <main className="relative z-[2] px-6 pt-32 pb-32 sm:pt-40">
       <JsonLd data={breadcrumbJsonLd} />
-      <div className="mx-auto max-w-4xl">
+      <div className="mx-auto max-w-6xl">
         {/* Breadcrumb */}
         <nav
           aria-label="Fil d'ariane"
@@ -69,7 +69,9 @@ export default function NotesIndexPage() {
           <span className="text-[var(--fg-dim)]">/</span>
           <span className="text-[var(--color-accent)]">Notes</span>
         </nav>
+      </div>
 
+      <div className="mx-auto max-w-6xl">
         {/* En-tête */}
         <div className="mb-16 max-w-2xl">
           <div className="mb-6 flex items-center gap-3">
