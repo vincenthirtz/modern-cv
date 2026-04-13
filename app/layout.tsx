@@ -98,14 +98,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
         {/* Patch DOM pour éviter le crash React 19 HostHoistable (case 26).
-            Pendant la navigation, React tente de retirer des <title>/<link>/<meta>
-            dont le parentNode est devenu null (le navigateur les a déjà retirés).
-            Sans ce patch, le TypeError crash le commit phase et avorte la
-            transition : l'URL change mais le contenu ne se met pas à jour.
-            Ref: vercel/next.js#58055 */}
+            Pendant la navigation, React appelle parentNode.removeChild(n)
+            sur des <title>/<link>/<meta>/<style> dont le parentNode est null
+            (le navigateur les a déjà retirés). Comme parentNode est null,
+            null.removeChild() throw un TypeError qui crash le commit phase
+            et avorte la transition de page.
+
+            Fix : on override le getter parentNode pour les éléments hoistable
+            afin de retourner un objet no-op au lieu de null. On patche aussi
+            removeChild/insertBefore pour le cas "wrong parent" (NotFoundError).
+            Ref: vercel/next.js#58055, github.com/vercel/next.js/discussions/70048 */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){var o=Node.prototype.removeChild;Node.prototype.removeChild=function(c){if(c.parentNode!==this)return c;return o.call(this,c)};var i=Node.prototype.insertBefore;Node.prototype.insertBefore=function(n,r){if(r&&r.parentNode!==this)return n;return i.call(this,n,r)}})();`,
+            __html: `(function(){var H={TITLE:1,LINK:1,META:1,STYLE:1};var noop={removeChild:function(c){return c},insertBefore:function(n){return n}};var d=Object.getOwnPropertyDescriptor(Node.prototype,"parentNode");if(d&&d.get){var g=d.get;Object.defineProperty(Node.prototype,"parentNode",{get:function(){var p=g.call(this);if(p===null&&this.nodeName&&H[this.nodeName])return noop;return p},configurable:true})}var o=Node.prototype.removeChild;Node.prototype.removeChild=function(c){if(c.parentNode!==this)return c;return o.call(this,c)};var i=Node.prototype.insertBefore;Node.prototype.insertBefore=function(n,r){if(r&&r.parentNode!==this)return n;return i.call(this,n,r)}})();`,
           }}
         />
         {/* Flux RSS & Atom */}
