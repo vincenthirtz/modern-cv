@@ -45,7 +45,7 @@ export default function CursorFollower() {
           height: 480,
           borderRadius: "9999px",
           background:
-            "radial-gradient(circle, var(--cursor-glow-inner) 0%, var(--cursor-glow-outer) 30%, transparent 65%)",
+            "radial-gradient(circle, color-mix(in oklab, var(--color-accent) 18%, transparent) 0%, color-mix(in oklab, var(--color-accent) 5%, transparent) 30%, transparent 65%)",
           filter: "blur(20px)",
         }}
       />
