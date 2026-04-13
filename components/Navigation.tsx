@@ -142,6 +142,29 @@ export default function Navigation() {
   const [entered, setEntered] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [dockVisible, setDockVisible] = useState(true);
+
+  // Charger la préférence dock depuis localStorage
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem("dock-visible");
+      if (stored === "false") setDockVisible(false);
+    } catch {
+      /* SSR ou localStorage indisponible */
+    }
+  }, []);
+
+  const toggleDock = useCallback(() => {
+    setDockVisible((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem("dock-visible", String(next));
+      } catch {
+        /* localStorage indisponible */
+      }
+      return next;
+    });
+  }, []);
 
   // Animation d'entrée
   useEffect(() => {
@@ -230,6 +253,34 @@ export default function Navigation() {
               aria-label="Préférences d'affichage"
               className="flex items-center gap-2"
             >
+              <button
+                type="button"
+                onClick={toggleDock}
+                aria-label={dockVisible ? "Masquer le dock" : "Afficher le dock"}
+                title={dockVisible ? "Masquer le dock" : "Afficher le dock"}
+                className="flex h-8 w-8 items-center justify-center rounded-full border transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+                style={{
+                  borderColor: "var(--border-strong)",
+                  color: dockVisible ? "var(--fg)" : "var(--fg-dim)",
+                }}
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-4 w-4"
+                  aria-hidden="true"
+                >
+                  <rect x="2" y="6" width="20" height="12" rx="2" />
+                  <line x1="6" y1="14" x2="18" y2="14" />
+                  <line x1="8" y1="14" x2="8" y2="18" />
+                  <line x1="12" y1="14" x2="12" y2="18" />
+                  <line x1="16" y1="14" x2="16" y2="18" />
+                </svg>
+              </button>
               <EffectsToggle />
               <AccentPicker />
               <ThemeToggle />
@@ -244,12 +295,14 @@ export default function Navigation() {
         className="dock-container fixed bottom-4 left-1/2 z-50 sm:bottom-6"
         onMouseLeave={handleDockMouseLeave}
         style={{
-          opacity: entered ? 1 : 0,
-          transform: entered
-            ? "translateX(-50%) translateY(0)"
-            : "translateX(-50%) translateY(60px)",
+          opacity: entered && dockVisible ? 1 : 0,
+          transform:
+            entered && dockVisible
+              ? "translateX(-50%) translateY(0)"
+              : "translateX(-50%) translateY(60px)",
+          pointerEvents: dockVisible ? "auto" : "none",
           transition:
-            "opacity 0.6s cubic-bezier(0.2,0.8,0.2,1) 0.3s, transform 0.6s cubic-bezier(0.2,0.8,0.2,1) 0.3s",
+            "opacity 0.4s cubic-bezier(0.2,0.8,0.2,1), transform 0.4s cubic-bezier(0.2,0.8,0.2,1)",
         }}
       >
         <div
