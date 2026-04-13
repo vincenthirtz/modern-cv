@@ -97,6 +97,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             __html: `if("serviceWorker"in navigator){navigator.serviceWorker.getRegistrations().then(function(r){r.forEach(function(s){s.unregister()})})}`,
           }}
         />
+        {/* Patch DOM pour éviter le crash React 19 HostHoistable (case 26).
+            Pendant la navigation, React tente de retirer des <title>/<link>/<meta>
+            dont le parentNode est devenu null (le navigateur les a déjà retirés).
+            Sans ce patch, le TypeError crash le commit phase et avorte la
+            transition : l'URL change mais le contenu ne se met pas à jour.
+            Ref: vercel/next.js#58055 */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var o=Node.prototype.removeChild;Node.prototype.removeChild=function(c){if(c.parentNode!==this)return c;return o.call(this,c)};var i=Node.prototype.insertBefore;Node.prototype.insertBefore=function(n,r){if(r&&r.parentNode!==this)return n;return i.call(this,n,r)}})();`,
+          }}
+        />
         {/* Flux RSS & Atom */}
         <link
           rel="alternate"
