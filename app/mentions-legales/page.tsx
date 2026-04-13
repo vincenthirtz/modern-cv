@@ -95,21 +95,21 @@ export default function MentionsLegalesPage() {
             </h2>
             <ul className="space-y-1 text-sm leading-relaxed">
               <li>
-                <strong className="text-[var(--fg)]">Hébergeur :</strong> Vercel Inc.
+                <strong className="text-[var(--fg)]">Hébergeur :</strong> Netlify, Inc.
               </li>
               <li>
-                <strong className="text-[var(--fg)]">Adresse :</strong> 440 N Barranca Ave #4133,
-                Covina, CA 91723, États-Unis
+                <strong className="text-[var(--fg)]">Adresse :</strong> 512 2nd Street, Suite 200,
+                San Francisco, CA 94107, États-Unis
               </li>
               <li>
                 <strong className="text-[var(--fg)]">Site :</strong>{" "}
                 <a
-                  href="https://vercel.com"
+                  href="https://www.netlify.com"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[var(--color-accent)] transition-colors hover:underline"
                 >
-                  vercel.com
+                  netlify.com
                 </a>
               </li>
             </ul>
@@ -174,12 +174,12 @@ export default function MentionsLegalesPage() {
               </a>{" "}
               et hébergé sur{" "}
               <a
-                href="https://vercel.com"
+                href="https://www.netlify.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-[var(--color-accent)] transition-colors hover:underline"
               >
-                Vercel
+                Netlify
               </a>
               . Typographies : DM Sans, Instrument Serif, JetBrains Mono (Google Fonts).
             </p>
