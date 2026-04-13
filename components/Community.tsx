@@ -46,6 +46,46 @@ const ITEMS: CommunityItem[] = [
     href: "https://github.com/vincenthirtz/rally",
     meta: "JavaScript · PWA",
   },
+  {
+    type: "open-source",
+    typeLabel: "Side project",
+    title: "Syndic — Gestion de copropriété",
+    role: "Créateur",
+    description:
+      "Application desktop de gestion de copropriété construite avec Electron et React. Gestion des lots, des charges et des assemblées générales.",
+    href: "https://github.com/vincenthirtz/syndic",
+    meta: "JavaScript · Electron · React",
+  },
+  {
+    type: "open-source",
+    typeLabel: "Side project",
+    title: "Pokecon — Jeu MMO Yu-Gi-Oh!",
+    role: "Créateur",
+    description:
+      "Jeu MMO inspiré de Yu-Gi-Oh! construit avec Electron et TypeScript. Système de combats, échanges de cartes et exploration en temps réel.",
+    href: "https://github.com/vincenthirtz/pokecon",
+    meta: "TypeScript · Electron",
+  },
+  {
+    type: "open-source",
+    typeLabel: "Side project",
+    title: "React Library — Design System",
+    role: "Créateur",
+    description:
+      "Monorepo Lerna proposant une bibliothèque de composants React réutilisables avec système de templating intégré.",
+    href: "https://github.com/vincenthirtz/react-library",
+    meta: "JavaScript · Lerna · React",
+  },
+  {
+    type: "open-source",
+    typeLabel: "Side project",
+    title: "Docker Box",
+    role: "Créateur",
+    description:
+      "Outil de gestion et d'orchestration de conteneurs Docker. Interface simplifiée pour le déploiement et le monitoring de services conteneurisés.",
+    href: "https://github.com/vincenthirtz/docker-box",
+    meta: "JavaScript · Docker",
+  },
 ];
 
 const TYPE_ICON: Record<CommunityItem["type"], string> = {
