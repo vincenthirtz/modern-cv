@@ -70,12 +70,16 @@ export default function ArticleLayout({ article, children, related = [] }: Artic
             }}
           >
             <Link href="/" className="transition-colors hover:text-[var(--color-accent)]">
-              ← Retour
+              Accueil
             </Link>
             <span className="text-[var(--fg-dim)]">/</span>
             <Link href="/notes" className="transition-colors hover:text-[var(--color-accent)]">
               Notes
             </Link>
+            <span className="text-[var(--fg-dim)]">/</span>
+            <span className="text-[var(--color-accent)] normal-case tracking-normal">
+              {article.title}
+            </span>
           </nav>
 
           {/* Méta */}

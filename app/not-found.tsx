@@ -286,7 +286,7 @@ export default function NotFound() {
         }}
       >
         <Link href="/" className="btn-accent">
-          ← Retour à l&apos;accueil
+          Retour à l&apos;accueil
         </Link>
         <Link href="/notes" className="btn-ghost">
           Lire les notes

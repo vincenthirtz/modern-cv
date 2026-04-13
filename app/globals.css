@@ -595,6 +595,19 @@ a {
   }
 }
 
+/* ─── macOS Dock ─── */
+.dock-icon:hover {
+  background: color-mix(in oklab, var(--fg) 15%, transparent) !important;
+}
+.dock-icon[aria-current="page"]:hover {
+  background: var(--color-accent) !important;
+}
+
+/* Espace en bas pour le dock fixe */
+body {
+  padding-bottom: 100px;
+}
+
 /* Skip-to-content : caché jusqu'au focus clavier */
 .skip-link {
   position: fixed;

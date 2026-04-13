@@ -59,13 +59,15 @@ export default function NotesIndexPage() {
       <JsonLd data={breadcrumbJsonLd} />
       <div className="mx-auto max-w-4xl">
         {/* Breadcrumb */}
-        <nav aria-label="Fil d'ariane" className="mb-10">
-          <Link
-            href="/"
-            className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)] transition-colors hover:text-[var(--color-accent)]"
-          >
-            ← Retour au portfolio
+        <nav
+          aria-label="Fil d'ariane"
+          className="mb-10 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]"
+        >
+          <Link href="/" className="transition-colors hover:text-[var(--color-accent)]">
+            Accueil
           </Link>
+          <span className="text-[var(--fg-dim)]">/</span>
+          <span className="text-[var(--color-accent)]">Notes</span>
         </nav>
 
         {/* En-tête */}

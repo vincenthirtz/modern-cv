@@ -1,10 +1,16 @@
 import { test, expect } from "@playwright/test";
 
 /**
- * Tests du menu mobile et du responsive.
+ * Tests du responsive et du dock macOS en viewport mobile.
  */
 
-test.describe("Menu mobile", () => {
+/** Sélecteur du dock */
+const DOCK = 'nav[aria-label="Navigation principale"]';
+
+/** Sélecteur de la top bar */
+const TOP_BAR = 'nav[aria-label="Barre de menu"]';
+
+test.describe("Mobile — dock et responsive", () => {
   test.use({ viewport: { width: 375, height: 812 } }); // iPhone viewport
 
   test.beforeEach(async ({ page }) => {
@@ -12,69 +18,56 @@ test.describe("Menu mobile", () => {
     await page.waitForLoadState("networkidle");
   });
 
-  test("le burger menu est visible en mobile", async ({ page }) => {
-    const burger = page.locator('button[aria-controls="mobile-nav-menu"]');
-    await expect(burger).toBeVisible();
+  test("le dock est visible en mobile", async ({ page }) => {
+    const dock = page.locator(DOCK);
+    await expect(dock).toBeVisible();
+
+    // Les 6 items sont présents
+    const linkCount = await dock.locator("a").count();
+    expect(linkCount).toBe(6);
   });
 
-  test("ouvrir le menu mobile affiche les liens de navigation", async ({ page }) => {
-    const burger = page.locator('button[aria-controls="mobile-nav-menu"]');
-    await burger.click();
-    await page.waitForTimeout(300);
+  test("la top bar est visible en mobile avec le logo", async ({ page }) => {
+    const topBar = page.locator(TOP_BAR);
+    await expect(topBar).toBeVisible();
 
-    const mobileMenu = page.locator("#mobile-nav-menu");
-    await expect(mobileMenu).toHaveAttribute("aria-hidden", "false");
-
-    await expect(mobileMenu.getByText("Projets")).toBeVisible();
-    await expect(mobileMenu.getByText("Expérience")).toBeVisible();
-    await expect(mobileMenu.getByText("Notes")).toBeVisible();
-    await expect(mobileMenu.getByText("Contact")).toBeVisible();
+    const logo = topBar.locator('a[aria-label="Accueil"]');
+    await expect(logo).toBeVisible();
   });
 
-  test("le menu mobile se ferme avec Escape", async ({ page }) => {
-    const burger = page.locator('button[aria-controls="mobile-nav-menu"]');
-    await burger.click();
-    await page.waitForTimeout(300);
+  test("les items du dock ont les bons aria-label", async ({ page }) => {
+    const dock = page.locator(DOCK);
+    const labels = ["Accueil", "Projets", "Expérience", "Communauté", "Notes", "Contact"];
 
-    // Menu ouvert
-    await expect(page.locator("#mobile-nav-menu")).toHaveAttribute("aria-hidden", "false");
-
-    // Appuyer sur Escape
-    await page.keyboard.press("Escape");
-    await page.waitForTimeout(200);
-
-    // Menu fermé
-    await expect(page.locator("#mobile-nav-menu")).toHaveAttribute("aria-hidden", "true");
+    for (const label of labels) {
+      const link = dock.locator(`a[aria-label="${label}"]`);
+      await expect(link, `Item dock manquant : ${label}`).toBeVisible();
+    }
   });
 
-  test("cliquer sur un lien du menu mobile navigue et ferme le menu", async ({ page }) => {
-    const burger = page.locator('button[aria-controls="mobile-nav-menu"]');
-    await burger.click();
-    await page.waitForTimeout(300);
+  test("cliquer sur un item du dock navigue vers la bonne page", async ({ page }) => {
+    const dock = page.locator(DOCK);
 
-    // Vérifier que le menu est ouvert
-    await expect(page.locator("#mobile-nav-menu")).toHaveAttribute("aria-hidden", "false");
-
-    // Cliquer sur le lien Notes
-    await page.locator('#mobile-nav-menu a[href="/notes"]').click();
+    await dock.locator('a[aria-label="Notes"]').click();
     await page.waitForURL("**/notes");
 
     expect(page.url()).toContain("/notes");
   });
 
-  test("le burger a les attributs ARIA corrects", async ({ page }) => {
-    const burger = page.locator('button[aria-controls="mobile-nav-menu"]');
+  test("l'item actif du dock a aria-current='page' sur mobile", async ({ page }) => {
+    const dock = page.locator(DOCK);
 
-    // Fermé par défaut
-    await expect(burger).toHaveAttribute("aria-expanded", "false");
-    await expect(burger).toHaveAttribute("aria-label", "Ouvrir le menu");
+    // Sur la homepage, l'item Accueil est actif
+    const homeLink = dock.locator('a[aria-label="Accueil"]');
+    await expect(homeLink).toHaveAttribute("aria-current", "page");
 
-    // Ouvrir
-    await burger.click();
-    await page.waitForTimeout(300);
+    // Sur /projects, l'item Projets est actif
+    await page.goto("/projects");
+    await page.waitForLoadState("networkidle");
 
-    await expect(burger).toHaveAttribute("aria-expanded", "true");
-    await expect(burger).toHaveAttribute("aria-label", "Fermer le menu");
+    const projetsLink = dock.locator('a[aria-label="Projets"]');
+    await expect(projetsLink).toHaveAttribute("aria-current", "page");
+    await expect(homeLink).not.toHaveAttribute("aria-current", "page");
   });
 
   test("les pages s'affichent correctement en viewport mobile", async ({ page }) => {
@@ -82,8 +75,6 @@ test.describe("Menu mobile", () => {
 
     for (const path of pages) {
       await page.goto(path, { waitUntil: "domcontentloaded" });
-      // Petite stabilisation pour laisser le layout se poser sans
-      // attendre networkidle (peu fiable sous charge en pre-commit).
       await page.waitForTimeout(300);
 
       // Pas de scroll horizontal significatif (tolérance de 10px)
@@ -95,5 +86,18 @@ test.describe("Menu mobile", () => {
         `Scroll horizontal de ${overflow}px détecté sur ${path}`,
       ).toBeLessThanOrEqual(10);
     }
+  });
+
+  test("le dock reste en bas après scroll sur mobile", async ({ page }) => {
+    await page.evaluate(() => window.scrollTo(0, 1000));
+    await page.waitForTimeout(500);
+
+    const dock = page.locator(DOCK);
+    const box = await dock.boundingBox();
+    expect(box).toBeTruthy();
+
+    // Le dock doit être dans le bas du viewport
+    const viewportHeight = page.viewportSize()!.height;
+    expect(box!.y).toBeGreaterThan(viewportHeight / 2);
   });
 });

@@ -38,19 +38,19 @@ test.describe("Homepage", () => {
     await expect(skipLink).toBeVisible();
   });
 
-  test("la navigation principale est visible en desktop", async ({ page }) => {
-    const nav = page.locator("nav").first();
-    await expect(nav).toBeVisible();
+  test("le dock de navigation est visible avec les 6 items", async ({ page }) => {
+    const dock = page.locator('nav[aria-label="Navigation principale"]');
+    await expect(dock).toBeVisible();
 
-    // Vérifie les liens principaux
-    const links = ["Projets", "Expérience", "Communauté", "Notes", "Contact"];
-    for (const label of links) {
-      await expect(nav.getByText(label, { exact: true }).first()).toBeVisible();
+    // Vérifie les items du dock via aria-label
+    const labels = ["Accueil", "Projets", "Expérience", "Communauté", "Notes", "Contact"];
+    for (const label of labels) {
+      await expect(dock.locator(`a[aria-label="${label}"]`)).toBeVisible();
     }
   });
 
   test("le logo redirige vers la page d'accueil", async ({ page }) => {
-    const logo = page.locator('a[aria-label="Accueil"]');
+    const logo = page.locator('nav[aria-label="Barre de menu"] a[aria-label="Accueil"]');
     await expect(logo).toBeVisible();
     await expect(logo).toHaveAttribute("href", "/");
   });

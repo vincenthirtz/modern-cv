@@ -88,8 +88,8 @@ test.describe("Formulaire de contact", () => {
   });
 
   test("les liens sociaux sont présents", async ({ page }) => {
-    await expect(page.getByRole("link", { name: "GitHub" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "LinkedIn" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "Email" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "GitHub" }).first()).toBeVisible();
+    await expect(page.getByRole("link", { name: "LinkedIn" }).first()).toBeVisible();
+    await expect(page.getByRole("link", { name: "Email" }).first()).toBeVisible();
   });
 });
