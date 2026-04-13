@@ -3,6 +3,7 @@ import { DM_Sans, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import EffectsProvider from "@/components/EffectsProvider";
 import A11yAnnouncer from "@/components/A11yAnnouncer";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
+import ScrollReset from "@/components/ScrollReset";
 import Navigation from "@/components/Navigation";
 import ClientEffects from "@/components/ClientEffects";
 import Footer from "@/components/Footer";
@@ -213,6 +214,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <EffectsProvider>
             <ClientEffects />
             <ServiceWorkerRegister />
+            <ScrollReset />
             <Navigation />
             {children}
             <Footer />

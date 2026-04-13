@@ -658,29 +658,35 @@ test("le scroll se remet à zéro après navigation client-side", async ({ page 
 
   // Scroller vers le bas
   await page.evaluate(() => window.scrollTo(0, 600));
-  await page.waitForTimeout(200);
+  await page.waitForTimeout(300);
 
   // Naviguer vers une autre page
   await page.click('nav >> a[href="/projects"]');
   await page.waitForURL("**/projects");
   await page.waitForLoadState("networkidle");
-  await page.waitForTimeout(500);
 
-  // Le scroll doit être revenu en haut
-  const scrollY = await page.evaluate(() => window.scrollY);
-  expect(scrollY, "Le scroll n'est pas revenu en haut après navigation").toBeLessThanOrEqual(10);
+  // Le scroll doit revenir en haut (poll car le useEffect est async)
+  await expect
+    .poll(() => page.evaluate(() => window.scrollY), {
+      message: "Le scroll n'est pas revenu en haut après navigation vers /projects",
+      timeout: 3_000,
+    })
+    .toBeLessThanOrEqual(10);
 
   // Scroller de nouveau puis naviguer vers une autre page
   await page.evaluate(() => window.scrollTo(0, 600));
-  await page.waitForTimeout(200);
+  await page.waitForTimeout(300);
 
   await page.click('nav >> a[href="/notes"]');
   await page.waitForURL("**/notes");
   await page.waitForLoadState("networkidle");
-  await page.waitForTimeout(500);
 
-  const scrollY2 = await page.evaluate(() => window.scrollY);
-  expect(scrollY2, "Le scroll n'est pas revenu en haut (2ème navigation)").toBeLessThanOrEqual(10);
+  await expect
+    .poll(() => page.evaluate(() => window.scrollY), {
+      message: "Le scroll n'est pas revenu en haut après navigation vers /notes",
+      timeout: 3_000,
+    })
+    .toBeLessThanOrEqual(10);
 });
 
 // =============================================================================

@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 
 // Effets décoratifs chargés en lazy (ssr: false) pour alléger le First Load JS.
 // Aucun n'est nécessaire au first paint ni au SEO.
-const SmoothScroll = dynamic(() => import("@/components/SmoothScroll"), { ssr: false });
 const BackgroundShift = dynamic(() => import("@/components/BackgroundShift"), { ssr: false });
 const CursorFollower = dynamic(() => import("@/components/CursorFollower"), { ssr: false });
 const ScrollProgress = dynamic(() => import("@/components/ScrollProgress"), { ssr: false });
@@ -22,7 +21,6 @@ const DynamicFavicon = dynamic(() => import("@/components/DynamicFavicon"), { ss
 export default function ClientEffects() {
   return (
     <>
-      <SmoothScroll />
       <BackgroundShift />
       <CursorFollower />
       <ScrollProgress />

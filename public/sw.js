@@ -10,7 +10,7 @@
  *  - API & autres : network-only (pas de cache)
  */
 
-const CACHE_VERSION = "v1";
+const CACHE_VERSION = "v2";
 const SHELL_CACHE = `shell-${CACHE_VERSION}`;
 const ARTICLES_CACHE = `articles-${CACHE_VERSION}`;
 const ASSETS_CACHE = `assets-${CACHE_VERSION}`;

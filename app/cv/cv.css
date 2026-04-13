@@ -225,7 +225,6 @@
   .pulse-dot,
   .bg-noise,
   .bg-grid,
-  [data-lenis-prevent],
   [aria-hidden="true"] {
     display: none !important;
   }

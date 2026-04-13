@@ -85,7 +85,7 @@ self.addEventListener("fetch", (event) => {
 
 ## La couche Lenis : scroll désynchronisé
 
-Le site utilise [Lenis](https://lenis.darkroom.engineering/) pour le smooth scroll. L'instance était créée une seule fois au mount du layout :
+Le site utilisait [Lenis](https://lenis.darkroom.engineering/) pour le smooth scroll. L'instance était créée une seule fois au mount du layout :
 
 <CodeBlock lang="TypeScript">{`// ❌ AVANT — Lenis ne sait pas qu'on a changé de page
 useEffect(() => {
@@ -96,23 +96,32 @@ useEffect(() => {
 
 Lenis maintient un état de scroll interne (`animatedScroll`, `targetScroll`). Quand Next.js navigue vers une autre page, le contenu change mais Lenis pense être toujours en train de scroller l'ancien contenu. Le scroll ne revient pas en haut, l'utilisateur arrive au milieu du néant, et ça ressemble à une navigation cassée.
 
-### Le fix
+### Le fix : supprimer Lenis
 
-<CodeBlock lang="TypeScript">{`// ✅ APRÈS — Reset Lenis à chaque navigation
-const lenisRef = useRef<Lenis | null>(null);
-const pathname = usePathname();
+Plutôt que de patcher Lenis pour chaque changement de route, on l'a supprimé. Le smooth scroll natif du navigateur (`scroll-behavior: smooth` en CSS) fait le même travail sans couche d'abstraction, sans rAF loop, sans désynchronisation avec le router.
 
+Pour garantir le scroll-to-top sur chaque navigation — y compris quand les erreurs `removeChild` de React 19 cassent les hooks — on utilise un patch natif sur `history.pushState` :
+
+<CodeBlock lang="TypeScript">{`// ✅ APRÈS — scroll reset au niveau navigateur, immunisé React
 useEffect(() => {
-  const lenis = new Lenis({ duration: 1.2, smoothWheel: true });
-  lenisRef.current = lenis;
-  // ... boucle rAF
-  return () => { lenis.destroy(); lenisRef.current = null; };
-}, []);
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  };
 
-// Reset scroll en haut à chaque changement de route
-useEffect(() => {
-  lenisRef.current?.scrollTo(0, { immediate: true, force: true });
-}, [pathname]);`}</CodeBlock>
+  const originalPushState = history.pushState.bind(history);
+  history.pushState = function (...args) {
+    originalPushState(...args);
+    scrollToTop();
+  };
+
+  window.addEventListener("popstate", scrollToTop);
+  return () => {
+    history.pushState = originalPushState;
+    window.removeEventListener("popstate", scrollToTop);
+  };
+}, []);`}</CodeBlock>
+
+Ce patch fonctionne même quand `usePathname()` ne se met plus à jour (ce qui arrive quand React 19 corrompt son arbre interne via les erreurs `removeChild`).
 
 `force: true` est important — sans ça, si Lenis est dans un état "stoppé" (par exemple à cause d'un `overflow: hidden` sur le body pendant l'ouverture du menu mobile), le `scrollTo` est ignoré.
 
