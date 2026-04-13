@@ -182,7 +182,7 @@ export default function BrandingGrid() {
                 className="border-t px-5 py-3 transition-all duration-300"
                 style={{
                   borderColor: `${theme.color}20`,
-                  maxHeight: hoveredIndex === i ? "80px" : "0px",
+                  maxHeight: hoveredIndex === i ? "120px" : "0px",
                   opacity: hoveredIndex === i ? 1 : 0,
                   paddingTop: hoveredIndex === i ? "12px" : "0px",
                   paddingBottom: hoveredIndex === i ? "12px" : "0px",
