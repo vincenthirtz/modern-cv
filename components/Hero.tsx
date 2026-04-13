@@ -31,7 +31,7 @@ export default function Hero() {
       }
       if (contentRef.current) {
         contentRef.current.style.transform = `translateY(${progress * 200}px) translateZ(0)`;
-        contentRef.current.style.opacity = String(Math.max(0, 1 - progress / 0.9));
+        contentRef.current.style.opacity = String(Math.max(0, 1 - progress / 1.2));
       }
       ticking = false;
     }
@@ -52,7 +52,7 @@ export default function Hero() {
     <section
       id="top"
       ref={sectionRef}
-      className="relative flex min-h-screen items-center overflow-hidden pt-32 pb-20 sm:pt-40"
+      className="relative flex min-h-screen items-center overflow-hidden pt-32 pb-40 sm:pt-40 sm:pb-48"
     >
       {/* Grille graph paper en filigrane */}
       <div aria-hidden className="bg-grid pointer-events-none absolute inset-0 opacity-60" />
