@@ -32,7 +32,7 @@ export default function CursorFollower() {
     <div
       ref={ref}
       aria-hidden
-      className="pointer-events-none fixed top-0 left-0 z-[1] mix-blend-screen"
+      className="pointer-events-none fixed top-0 left-0 z-[1] cursor-glow"
       style={{
         transform: "translate(-200px, -200px) translate(-50%, -50%)",
         transition: "transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1)",
@@ -45,7 +45,7 @@ export default function CursorFollower() {
           height: 480,
           borderRadius: "9999px",
           background:
-            "radial-gradient(circle, rgba(200,255,0,0.18) 0%, rgba(200,255,0,0.05) 30%, transparent 65%)",
+            "radial-gradient(circle, var(--cursor-glow-inner) 0%, var(--cursor-glow-outer) 30%, transparent 65%)",
           filter: "blur(20px)",
         }}
       />

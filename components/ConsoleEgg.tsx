@@ -20,12 +20,13 @@ export default function ConsoleEgg() {
   ╚═══╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝╚══════╝╚═╝  ╚═══╝   ╚═╝
 `;
 
+    const isLight = document.documentElement.classList.contains("light");
     const accentColor =
       getComputedStyle(document.documentElement).getPropertyValue("--color-accent").trim() ||
-      "#c8ff00";
+      (isLight ? "#4a7a00" : "#c8ff00");
     const accent = `color:${accentColor};font-family:ui-monospace,monospace;`;
-    const muted = "color:#a8a79f;font-family:ui-monospace,monospace;font-size:11px;";
-    const bold = "color:#f0efe9;font-family:ui-monospace,monospace;font-weight:700;font-size:13px;";
+    const muted = `color:${isLight ? "#5a5a54" : "#a8a79f"};font-family:ui-monospace,monospace;font-size:11px;`;
+    const bold = `color:${isLight ? "#0a0a0b" : "#f0efe9"};font-family:ui-monospace,monospace;font-weight:700;font-size:13px;`;
 
     console.log(`%c${banner}`, accent);
 

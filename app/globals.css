@@ -35,6 +35,8 @@
   --elevated: var(--color-ink-elevated);
   --border: var(--color-border);
   --border-strong: var(--color-border-strong);
+  --cursor-glow-inner: rgba(200, 255, 0, 0.18);
+  --cursor-glow-outer: rgba(200, 255, 0, 0.05);
 }
 
 :root.light {
@@ -47,6 +49,8 @@
   --border: rgba(10, 10, 11, 0.1);
   --border-strong: rgba(10, 10, 11, 0.2);
   --dock-shadow: rgba(0, 0, 0, 0.12);
+  --cursor-glow-inner: rgba(74, 122, 0, 0.1);
+  --cursor-glow-outer: rgba(74, 122, 0, 0.03);
   /* Contraste WCAG AA : en mode light, utiliser les variantes sombres de l'accent.
      Fallback = Lime light (#4a7a00), écrasé par JS si un autre accent est choisi. */
   --color-accent: var(--color-accent-light, #4a7a00);
@@ -619,6 +623,14 @@ a {
   50% {
     transform: scaleX(1);
   }
+}
+
+/* Cursor glow */
+.cursor-glow {
+  mix-blend-mode: screen;
+}
+:root.light .cursor-glow {
+  mix-blend-mode: multiply;
 }
 
 /* ─── macOS Dock ─── */
