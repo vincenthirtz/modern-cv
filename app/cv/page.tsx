@@ -10,6 +10,33 @@ export const metadata: Metadata = {
     "CV en ligne de Vincent Hirtz, Lead Developer Front-End basé à Lyon. 10+ ans d'expérience React, Vue et Angular.",
   alternates: { canonical: "https://vincenthirtz.fr/cv" },
   robots: { index: true, follow: true },
+  openGraph: {
+    type: "profile",
+    url: "https://vincenthirtz.fr/cv",
+    title: "CV — Vincent Hirtz, Lead Developer Front-End",
+    description:
+      "CV en ligne de Vincent Hirtz, Lead Developer Front-End basé à Lyon. 10+ ans d'expérience React, Vue et Angular.",
+    siteName: "Vincent Hirtz",
+    locale: "fr_FR",
+    firstName: "Vincent",
+    lastName: "Hirtz",
+    images: [
+      {
+        url: "/cv/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "CV de Vincent Hirtz — Lead Developer Front-End",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CV — Vincent Hirtz, Lead Developer Front-End",
+    description:
+      "CV en ligne de Vincent Hirtz, Lead Developer Front-End basé à Lyon. 10+ ans d'expérience React, Vue et Angular.",
+    creator: "@vincenthirtz",
+    images: ["/cv/opengraph-image"],
+  },
 };
 
 /**
