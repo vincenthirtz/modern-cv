@@ -47,6 +47,23 @@ export const metadata: Metadata = {
  *
  * Imprime joliment en A4 grâce aux règles `@media print` dans cv.css.
  */
+const profilePageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "@id": "https://vincenthirtz.fr/cv#profilepage",
+  name: "CV — Vincent Hirtz, Lead Developer Front-End",
+  description:
+    "CV en ligne de Vincent Hirtz, Lead Developer Front-End basé à Lyon. 10+ ans d'expérience React, Vue et Angular.",
+  url: "https://vincenthirtz.fr/cv",
+  mainEntity: {
+    "@id": "https://vincenthirtz.fr/#person",
+  },
+  isPartOf: {
+    "@id": "https://vincenthirtz.fr/#website",
+  },
+  inLanguage: "fr",
+};
+
 const breadcrumbJsonLd = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -69,6 +86,7 @@ const breadcrumbJsonLd = {
 export default function CVPage() {
   return (
     <main id="main" className="cv-page relative z-[2] min-h-screen px-6 pt-32 pb-12">
+      <JsonLd data={profilePageJsonLd} />
       <JsonLd data={breadcrumbJsonLd} />
       {/* Fil d'Ariane + actions — masqués à l'impression */}
       <div className="cv-actions mx-auto mb-10 flex max-w-3xl items-center justify-between">

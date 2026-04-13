@@ -148,15 +148,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebSite",
+              "@id": "https://vincenthirtz.fr/#website",
               url: "https://vincenthirtz.fr",
               name: "Vincent Hirtz — Lead Developer & Architecte Logiciel",
               description:
                 "Lead Developer basé à Lyon. Créateur de Pulse JS Framework. Curiosité infinie pour les nouvelles technos.",
               inLanguage: "fr",
               author: {
-                "@type": "Person",
-                name: "Vincent Hirtz",
-                url: "https://vincenthirtz.fr",
+                "@id": "https://vincenthirtz.fr/#person",
+              },
+              publisher: {
+                "@id": "https://vincenthirtz.fr/#person",
               },
             }),
           }}
@@ -168,6 +170,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Person",
+              "@id": "https://vincenthirtz.fr/#person",
               name: "Vincent Hirtz",
               jobTitle: "Lead Developer Front-End",
               description:
