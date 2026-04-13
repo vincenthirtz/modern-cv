@@ -12,9 +12,9 @@ export const meta = {
 
 <Lead>
   Si vous utilisez Next.js 15+ avec React 19 et le App Router, vous avez probablement vu cette
-  erreur en naviguant entre vos pages : `Uncaught TypeError: Cannot read properties of null
-  (reading 'removeChild')`. Voici le résultat de plusieurs jours d'investigation, la cause racine
-  exacte dans le code de React, et la solution qui fait passer tous les tests.
+  erreur en naviguant entre vos pages : `Uncaught TypeError: Cannot read properties of null (reading
+  'removeChild')`. Voici le résultat de plusieurs jours d'investigation, la cause racine exacte dans
+  le code de React, et la solution qui fait passer tous les tests.
 </Lead>
 
 ## Le symptôme
@@ -84,30 +84,81 @@ export default function JsonLd({ data }: { data: Record<string, unknown> }) {
   return null;
 }`}</CodeBlock>
 
-## La solution définitive
+## Ce qui ne marche pas non plus : `addEventListener("error")`
 
-Le bug est **dans React lui-même** — on ne peut pas le corriger sans patcher `react-dom`. Mais on peut le **supprimer proprement** avec un event listener en capture qui intercepte l'erreur avant qu'elle ne remonte :
+La deuxième fausse piste (que j'ai moi-même suivie) : intercepter l'erreur avec un event listener en capture :
 
-<CodeBlock lang="HTML">{`<!-- Dans le <head> du layout racine, AVANT tout script React -->
+<CodeBlock lang="HTML">{`<!-- ❌ NE RÉSOUT PAS le crash de navigation -->
 <script>
   window.addEventListener("error", function(e) {
     if (e.message && e.message.includes("removeChild")) {
       e.preventDefault();
-      e.stopImmediatePropagation();
       return false;
     }
   }, true);
 </script>`}</CodeBlock>
 
+Ça **masque l'erreur** dans la console, mais ça **n'empêche pas le crash**. L'erreur est un `TypeError` synchrone dans le commit phase de React. Quand `null.removeChild(n)` throw, la call stack se déroule immédiatement — le commit phase est avorté, le fiber tree reste dans un état incohérent, et la transition de page n'aboutit jamais. Le event listener ne s'exécute qu'après, quand le mal est fait.
+
+**Résultat** : l'URL change (pushState a déjà été appelé), mais le contenu de la page ne se met pas à jour. L'erreur est silencieuse dans la console. On perd des heures à chercher ailleurs.
+
+## La solution définitive : patcher le getter `parentNode`
+
+Le bug est **dans React lui-même** — on ne peut pas le corriger sans patcher `react-dom`. Mais on peut **empêcher l'erreur d'être lancée** en interceptant l'accès à `parentNode` sur les éléments hoistable.
+
+L'idée : quand `parentNode` retourne `null` pour un `<title>`, `<link>`, `<meta>` ou `<style>`, on retourne un objet no-op avec des méthodes `removeChild`/`insertBefore` qui ne font rien. React appelle `parentNode.removeChild(n)` — au lieu de crasher sur `null.removeChild(n)`, il appelle `noop.removeChild(n)` qui retourne silencieusement.
+
+<CodeBlock lang="HTML">{`<!-- Dans le <head> du layout racine, AVANT tout script React -->
+<script>
+(function() {
+  // Seuls les éléments hoistable sont concernés
+  var H = { TITLE: 1, LINK: 1, META: 1, STYLE: 1 };
+  var noop = {
+    removeChild: function(c) { return c; },
+    insertBefore: function(n) { return n; }
+  };
+
+// 1. Patcher le getter parentNode pour les hoistables
+var desc = Object.getOwnPropertyDescriptor(Node.prototype, "parentNode");
+if (desc && desc.get) {
+var originalGet = desc.get;
+Object.defineProperty(Node.prototype, "parentNode", {
+get: function() {
+var p = originalGet.call(this);
+// Si parentNode est null ET c'est un élément hoistable → no-op
+if (p === null && this.nodeName && H[this.nodeName]) return noop;
+return p;
+},
+configurable: true
+});
+}
+
+// 2. Patcher removeChild pour le cas "wrong parent" (NotFoundError)
+var origRemove = Node.prototype.removeChild;
+Node.prototype.removeChild = function(c) {
+if (c.parentNode !== this) return c;
+return origRemove.call(this, c);
+};
+
+// 3. Patcher insertBefore pour le même cas
+var origInsert = Node.prototype.insertBefore;
+Node.prototype.insertBefore = function(n, r) {
+if (r && r.parentNode !== this) return n;
+return origInsert.call(this, n, r);
+};
+})();
+
+</script>`}</CodeBlock>
+
 ### Pourquoi c'est safe
 
-1. **L'erreur est cosmétique** — React a déjà terminé sa réconciliation quand l'erreur est lancée. Le DOM final est correct, la page fonctionne.
-2. **On ne masque que cette erreur spécifique** — le filtre sur `"removeChild"` est ciblé. Les autres erreurs remontent normalement.
-3. **C'est en capture** (`true` en 3e argument) — l'erreur est interceptée avant même que les Error Boundaries React ne la voient.
+1. **Ciblé** — Le getter `parentNode` ne retourne le no-op que pour `<title>`, `<link>`, `<meta>` et `<style>` dont le `parentNode` est `null`. Tous les autres éléments gardent le comportement natif.
+2. **Prévient le crash** — L'erreur n'est jamais lancée, donc le commit phase de React continue normalement et la transition de page aboutit.
+3. **Pas d'effet de bord visible** — Les éléments concernés sont déjà détachés du DOM. Le no-op ne fait que "réussir" une suppression qui a déjà eu lieu.
 
 ### Pourquoi pas un Error Boundary ?
 
-Un Error Boundary React attraperait l'erreur mais **démonterait tout l'arbre** et afficherait un fallback. C'est pire que l'erreur elle-même, qui est invisible pour l'utilisateur.
+Un Error Boundary React attraperait l'erreur mais **démonterait tout l'arbre** et afficherait un fallback. C'est pire que l'erreur elle-même.
 
 ## Comment j'ai trouvé
 
@@ -118,34 +169,35 @@ test("navigation séquentielle sans erreur removeChild", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", (err) => errors.push(err.message));
 
-  await page.goto("/");
-  for (const route of ["/projects", "/experience", "/community", "/notes"]) {
-    await page.click(\`nav >> a[href="\${route}"]\`);
-    await page.waitForURL(\`**\${route}\`);
-    await page.waitForTimeout(500);
-  }
+await page.goto("/");
+for (const route of ["/projects", "/experience", "/community", "/notes"]) {
+await page.click(\`nav >> a[href="\${route}"]\`);
+await page.waitForURL(\`\*\*\${route}\`);
+await page.waitForTimeout(500);
+}
 
-  const err = errors.find(e => e.includes("removeChild"));
-  expect(err).toBeUndefined();
+const err = errors.find(e => e.includes("removeChild"));
+expect(err).toBeUndefined();
 });`}</CodeBlock>
 
-Le test de diagnostic avec `addInitScript` qui patch `removeChild` avant React a prouvé que le patch `Node.prototype` n'interceptait jamais l'erreur — confirmant que React appelait `.removeChild` sur `null`, pas sur un Node.
+Le test de diagnostic avec `addInitScript` qui patch `removeChild` avant React a prouvé que le patch `Node.prototype.removeChild` seul n'interceptait jamais l'erreur — confirmant que React appelait `.removeChild` sur `null`, pas sur un Node. C'est ce qui a orienté vers le patch du getter `parentNode`.
 
 La lecture du code source de `react-dom` bundlé (ligne 8045 du chunk) a révélé le case 26 (HostHoistable) et la ligne fautive `finishedRoot.parentNode.removeChild(finishedRoot)`.
 
 ## En résumé
 
-| Ce qui ne marche pas | Pourquoi |
-|---|---|
-| Patcher `Node.prototype.removeChild` | React appelle `.removeChild` sur `null`, pas sur un Node |
-| `suppressHydrationWarning` | Traite l'hydratation, pas la réconciliation |
-| Retirer Framer Motion | Bonne idée, mais pas la cause ici |
-| Error Boundary | Démonte tout l'arbre pour une erreur invisible |
+| Ce qui ne marche pas                           | Pourquoi                                                    |
+| ---------------------------------------------- | ----------------------------------------------------------- |
+| Patcher `Node.prototype.removeChild` seul      | React appelle `.removeChild` sur `null`, pas sur un Node    |
+| `addEventListener("error")` + `preventDefault` | Masque l'erreur mais n'empêche pas le crash du commit phase |
+| `suppressHydrationWarning`                     | Traite l'hydratation, pas la réconciliation                 |
+| Retirer Framer Motion                          | Bonne idée, mais pas la cause ici                           |
+| Error Boundary                                 | Démonte tout l'arbre pour une erreur invisible              |
 
-| Ce qui marche | |
-|---|---|
-| Event listener `"error"` en capture | Intercepte l'erreur avant React |
-| Composant `JsonLd` via DOM direct | Évite les HostHoistable dans les pages |
-| Supprimer les `<script dangerouslySetInnerHTML>` des pages | Réduit les HostHoistable orphelins |
+| Ce qui marche                                                   |                                                          |
+| --------------------------------------------------------------- | -------------------------------------------------------- |
+| Patcher le getter `parentNode` + `removeChild` + `insertBefore` | Empêche l'erreur d'être lancée, le commit phase continue |
+| Composant `JsonLd` via DOM direct                               | Évite les HostHoistable dans les pages                   |
+| Supprimer les `<script dangerouslySetInnerHTML>` des pages      | Réduit les HostHoistable orphelins                       |
 
-Le bug est ouvert chez React/Next.js. En attendant un fix upstream, le listener est la solution la plus propre et la plus ciblée.
+Le bug est ouvert chez React/Next.js ([#58055](https://github.com/vercel/next.js/issues/58055)). En attendant un fix upstream, le patch `parentNode` est la solution la plus propre — elle empêche le crash au lieu de le masquer.

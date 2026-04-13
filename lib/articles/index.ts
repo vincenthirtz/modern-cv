@@ -1,12 +1,8 @@
 import type { ComponentType } from "react";
 import CypressArticle, { meta as cypressMeta } from "./cypress.mdx";
 import PulseJsArticle, { meta as pulseJsMeta } from "./pulse-js.mdx";
-import React19RemovechildArticle, {
-  meta as react19RemovechildMeta,
-} from "./react19-removechild.mdx";
-import ServiceWorkerNextjsNavigationArticle, {
-  meta as serviceWorkerNextjsNavigationMeta,
-} from "./service-worker-nextjs-navigation.mdx";
+import React19RemovechildArticle, { meta as react19RemovechildMeta } from "./react19-removechild.mdx";
+import ServiceWorkerNextjsNavigationArticle, { meta as serviceWorkerNextjsNavigationMeta } from "./service-worker-nextjs-navigation.mdx";
 import VueLaravelArticle, { meta as vueLaravelMeta } from "./vue-laravel.mdx";
 
 export interface ArticleMeta {
