@@ -28,7 +28,7 @@ export default function MentionsLegalesPage() {
   return (
     <main className="relative z-[2] px-6 pt-32 pb-32 sm:pt-40">
       <JsonLd data={breadcrumbJsonLd} />
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-6xl">
         {/* Fil d'Ariane */}
         <nav
           aria-label="Fil d'ariane"
