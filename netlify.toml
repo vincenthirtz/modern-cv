@@ -4,3 +4,19 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+# Empêcher le CDN Netlify de cacher les réponses HTML/RSC.
+# Le plugin @netlify/plugin-nextjs varie le cache par "RSC" (majuscule)
+# mais Next.js 16 envoie le header "rsc" (minuscule). Si le CDN est
+# case-sensitive, il sert du HTML caché au lieu du payload RSC,
+# ce qui casse la navigation client-side.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Netlify-CDN-Cache-Control = "no-store"
+
+# Assets statiques Next.js : cache long (content-hashed)
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Netlify-CDN-Cache-Control = "public, max-age=31536000, immutable"
