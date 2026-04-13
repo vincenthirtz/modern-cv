@@ -6,20 +6,17 @@ import ScrollReset from "@/components/ScrollReset";
 const scrollToSpy = vi.fn();
 
 let originalPushState: typeof history.pushState;
-let originalReplaceState: typeof history.replaceState;
 
 beforeEach(() => {
   vi.clearAllMocks();
   window.scrollTo = scrollToSpy as unknown as typeof window.scrollTo;
   originalPushState = history.pushState.bind(history);
-  originalReplaceState = history.replaceState.bind(history);
 });
 
 afterEach(() => {
   cleanup();
-  // Restaurer les méthodes originales au cas où le cleanup du composant ne l'a pas fait
+  // Restaurer la méthode originale au cas où le cleanup du composant ne l'a pas fait
   history.pushState = originalPushState;
-  history.replaceState = originalReplaceState;
 });
 
 describe("ScrollReset", () => {
@@ -36,12 +33,12 @@ describe("ScrollReset", () => {
     expect(scrollToSpy).toHaveBeenCalledWith({ top: 0, behavior: "instant" });
   });
 
-  it("scrolle en haut lors d'un replaceState (redirection Next.js)", () => {
+  it("ne scrolle PAS lors d'un replaceState (appels internes Next.js)", () => {
     render(<ScrollReset />);
 
     history.replaceState({}, "", "/notes");
 
-    expect(scrollToSpy).toHaveBeenCalledWith({ top: 0, behavior: "instant" });
+    expect(scrollToSpy).not.toHaveBeenCalled();
   });
 
   it("scrolle en haut lors d'un événement popstate (back/forward)", () => {
@@ -72,13 +69,13 @@ describe("ScrollReset", () => {
     expect(scrollToSpy).toHaveBeenCalledTimes(1);
   });
 
-  it("propage correctement les arguments au replaceState original", () => {
+  it("ne scrolle pas lors d'un replaceState", () => {
     render(<ScrollReset />);
 
     const state = { redirect: true };
     history.replaceState(state, "", "/redirected");
 
-    expect(scrollToSpy).toHaveBeenCalledTimes(1);
+    expect(scrollToSpy).not.toHaveBeenCalled();
   });
 
   it("appelle scrollTo une seule fois par navigation", () => {
@@ -90,27 +87,25 @@ describe("ScrollReset", () => {
     history.pushState({}, "", "/page2");
     expect(scrollToSpy).toHaveBeenCalledTimes(2);
 
+    // replaceState ne doit PAS déclencher scrollTo
     history.replaceState({}, "", "/page3");
-    expect(scrollToSpy).toHaveBeenCalledTimes(3);
+    expect(scrollToSpy).toHaveBeenCalledTimes(2);
 
     window.dispatchEvent(new PopStateEvent("popstate"));
-    expect(scrollToSpy).toHaveBeenCalledTimes(4);
+    expect(scrollToSpy).toHaveBeenCalledTimes(3);
   });
 
-  it("restaure pushState et replaceState originaux au démontage", () => {
+  it("restaure pushState original au démontage", () => {
     const pushBefore = history.pushState;
-    const replaceBefore = history.replaceState;
 
     const { unmount } = render(<ScrollReset />);
 
-    // Pendant le montage, les méthodes sont patchées
+    // Pendant le montage, pushState est patché
     expect(history.pushState).not.toBe(pushBefore);
-    expect(history.replaceState).not.toBe(replaceBefore);
 
     unmount();
 
-    // Après démontage, les méthodes originales sont restaurées
-    // Vérifier que pushState ne déclenche plus scrollTo
+    // Après démontage, pushState ne déclenche plus scrollTo
     scrollToSpy.mockClear();
     history.pushState({}, "", "/after-unmount");
     expect(scrollToSpy).not.toHaveBeenCalled();
