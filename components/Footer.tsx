@@ -140,8 +140,8 @@ export default function Footer() {
             </a>
           </div>
           <div>
-            Fait avec <span className="text-[var(--color-accent)]">&hearts;</span> et beaucoup de
-            caf&eacute;.
+            Fait avec <span className="text-[var(--color-accent)]">&hearts;</span>
+            {" et beaucoup de café."}
           </div>
         </div>
       </div>
