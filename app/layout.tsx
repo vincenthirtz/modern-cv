@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { DM_Sans, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import EffectsProvider from "@/components/EffectsProvider";
 import A11yAnnouncer from "@/components/A11yAnnouncer";
-import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 
 import Navigation from "@/components/Navigation";
 import ClientEffects from "@/components/ClientEffects";
@@ -91,6 +90,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       suppressHydrationWarning
     >
       <head>
+        {/* Dé-enregistrement du Service Worker (supprimé — causait des bugs de navigation).
+            Nettoie les SW existants chez les visiteurs qui l'avaient déjà installé. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `if("serviceWorker"in navigator){navigator.serviceWorker.getRegistrations().then(function(r){r.forEach(function(s){s.unregister()})})}`,
+          }}
+        />
         {/* Flux RSS & Atom */}
         <link
           rel="alternate"
@@ -213,7 +219,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <A11yAnnouncer>
           <EffectsProvider>
             <ClientEffects />
-            <ServiceWorkerRegister />
             <Navigation />
             {children}
             <Footer />
