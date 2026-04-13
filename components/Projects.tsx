@@ -89,6 +89,7 @@ export default function Projects() {
           title={`${countLabel} histoires que je suis fier d'avoir écrites.`}
           highlight="fier"
           description="Une sélection de projets sur lesquels j'ai eu un impact technique et humain réel — du cadrage à la mise en production."
+          bigSymbol="git"
         />
 
         <div className="space-y-8">

@@ -70,7 +70,11 @@ export default function BackgroundShift() {
       ref={ref}
       aria-hidden
       className="pointer-events-none fixed inset-0 z-0"
-      style={{ backgroundColor: colors[0] }}
+      style={{
+        backgroundColor: colors[0],
+        willChange: "background-color",
+        transform: "translateZ(0)",
+      }}
     />
   );
 }

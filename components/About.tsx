@@ -35,6 +35,7 @@ export default function About() {
           label="À propos"
           title="Designer de systèmes, pas seulement de features."
           highlight="systèmes"
+          bigSymbol="</>"
         />
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-5">

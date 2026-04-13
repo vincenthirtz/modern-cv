@@ -12,6 +12,8 @@ interface SectionTitleProps {
   description?: string;
   /** Affiche le numéro géant en background, parallaxé. true par défaut. */
   bigNumber?: boolean;
+  /** Symbole affiché en fond à la place du numéro (ex: "</>", "{ }"). */
+  bigSymbol?: string;
 }
 
 /**
@@ -28,6 +30,7 @@ export default function SectionTitle({
   highlight,
   description,
   bigNumber = true,
+  bigSymbol,
 }: SectionTitleProps) {
   const ref = useRef<HTMLDivElement>(null);
   const bigNumRef = useRef<HTMLDivElement>(null);
@@ -63,12 +66,12 @@ export default function SectionTitle({
 
   return (
     <div ref={ref} className="relative mb-16 max-w-3xl">
-      {/* Numéro géant en background — outline serif, parallaxé */}
+      {/* Symbole géant en background — outline, parallaxé */}
       {bigNumber && (
         <div
           ref={bigNumRef}
           aria-hidden
-          className="pointer-events-none absolute -top-32 -right-8 select-none font-serif leading-none md:-right-16 lg:-right-32"
+          className={`pointer-events-none absolute -top-32 -right-8 select-none leading-none md:-right-16 lg:-right-32 ${bigSymbol ? "font-mono" : "font-serif"}`}
           style={{ opacity: 0 }}
         >
           <span
@@ -79,7 +82,7 @@ export default function SectionTitle({
               textShadow: "none",
             }}
           >
-            {number}
+            {bigSymbol ?? number}
           </span>
         </div>
       )}

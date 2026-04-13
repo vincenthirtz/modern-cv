@@ -47,6 +47,7 @@ export default function Experience() {
           title="Dix ans, 3 entreprises, une obsession."
           highlight="obsession."
           description="Du junior qui découvrait le monitoring au lead qui forme la prochaine génération. Voilà le parcours."
+          bigSymbol=">>>"
         />
 
         <ExperienceTimeline jobs={JOBS} />

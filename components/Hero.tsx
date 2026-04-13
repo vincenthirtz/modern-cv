@@ -16,23 +16,34 @@ export default function Hero() {
   const blobRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  // Parallax on scroll
+  // Parallax on scroll — throttlé via rAF pour éviter les reflows sur vieux iOS
   useEffect(() => {
-    function onScroll() {
+    let ticking = false;
+
+    function update() {
       if (!sectionRef.current) return;
       const rect = sectionRef.current.getBoundingClientRect();
       const h = sectionRef.current.offsetHeight;
       const progress = Math.max(0, Math.min(1, -rect.top / h));
 
       if (blobRef.current) {
-        blobRef.current.style.transform = `translateY(${progress * -150}px)`;
+        blobRef.current.style.transform = `translateY(${progress * -150}px) translateZ(0)`;
       }
       if (contentRef.current) {
-        contentRef.current.style.transform = `translateY(${progress * 200}px)`;
+        contentRef.current.style.transform = `translateY(${progress * 200}px) translateZ(0)`;
         contentRef.current.style.opacity = String(Math.max(0, 1 - progress / 0.9));
       }
+      ticking = false;
     }
-    onScroll();
+
+    function onScroll() {
+      if (!ticking) {
+        requestAnimationFrame(update);
+        ticking = true;
+      }
+    }
+
+    update();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);

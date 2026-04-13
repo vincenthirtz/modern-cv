@@ -135,6 +135,7 @@ export default function Expertise() {
             title="Une stack maîtrisée, pas juste essayée."
             highlight="maîtrisée,"
             description="Dix ans à explorer, casser et rebâtir. Voici ce que je manie au quotidien — sans buzzwords."
+            bigSymbol="{ }"
           />
         </div>
       </div>

@@ -109,6 +109,7 @@ export default function Community() {
           title="Au-delà du code de bureau."
           highlight="Au-delà"
           description="Quand le client n'attend rien, je code quand même. Open source, contributions, expérimentations — voilà ce qui vit en parallèle."
+          bigSymbol="npm"
         />
 
         <ul ref={listRef} className="divide-y" style={{ borderColor: "var(--border)" }}>

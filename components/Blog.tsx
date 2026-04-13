@@ -25,6 +25,7 @@ export default function Blog() {
           title="J'écris pour penser plus clairement."
           highlight="penser"
           description="Quelques notes longues sur le métier. Pas de hot takes — juste du retour d'expérience."
+          bigSymbol="/**"
         />
 
         <div ref={ref} className="grid grid-cols-1 gap-6 md:grid-cols-3">
