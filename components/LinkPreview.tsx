@@ -83,6 +83,13 @@ export default function LinkPreview({ href, children }: LinkPreviewProps) {
 
   const hasData = og && (og.title || og.description);
 
+  const tooltipId = `link-preview-${href.replace(/[^a-z0-9]/gi, "-")}`;
+  const announcement = loading
+    ? "Chargement de l'aperçu du lien"
+    : hasData
+      ? `Aperçu : ${[og.siteName, og.title, og.description].filter(Boolean).join(". ")}`
+      : "";
+
   return (
     <span className="link-preview-wrapper">
       <a
@@ -90,6 +97,7 @@ export default function LinkPreview({ href, children }: LinkPreviewProps) {
         href={href}
         target="_blank"
         rel="noopener noreferrer"
+        aria-describedby={visible && hasData ? tooltipId : undefined}
         className="underline decoration-[var(--color-accent)] underline-offset-4 hover:text-[var(--color-accent)]"
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
@@ -99,14 +107,21 @@ export default function LinkPreview({ href, children }: LinkPreviewProps) {
         {children}
       </a>
 
+      <span role="status" aria-live="polite" className="sr-only">
+        {visible ? announcement : ""}
+      </span>
+
       {visible && (
         <span
+          id={tooltipId}
           role="tooltip"
+          aria-hidden={!hasData}
           className={`link-preview-popover ${position === "below" ? "link-preview-below" : ""}`}
         >
           {loading && (
             <span className="flex items-center gap-2 p-4">
               <span
+                aria-hidden="true"
                 className="h-2 w-2 animate-pulse rounded-full"
                 style={{ background: "var(--color-accent)" }}
               />

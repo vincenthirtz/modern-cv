@@ -85,7 +85,12 @@ export default function PulseSandbox() {
           </span>
         </div>
 
-        <pre className="overflow-x-auto p-5 text-[12px] leading-relaxed">
+        <pre
+          className="overflow-x-auto p-5 text-[12px] leading-relaxed"
+          tabIndex={0}
+          role="region"
+          aria-label="Extrait de code Pulse"
+        >
           <code
             className="block font-mono text-[var(--fg)]"
             style={{

@@ -130,10 +130,7 @@ export default function BrandingGrid() {
                   >
                     {theme.name}
                   </div>
-                  <div
-                    className="font-mono text-[9px] tracking-wide"
-                    style={{ color: theme.soft, opacity: 0.5 }}
-                  >
+                  <div className="font-mono text-[9px] tracking-wide" style={{ color: theme.soft }}>
                     {theme.subtitle}
                   </div>
                 </div>
@@ -170,7 +167,7 @@ export default function BrandingGrid() {
                   />
                   <span
                     className="ml-auto font-mono text-[9px] tracking-wider"
-                    style={{ color: theme.soft, opacity: 0.4 }}
+                    style={{ color: theme.soft }}
                   >
                     {theme.color}
                   </span>
@@ -248,7 +245,7 @@ export default function BrandingGrid() {
             { name: "elevated", var: "--color-ink-elevated", value: "#16161a" },
             { name: "bone", var: "--color-bone", value: "#f0efe9" },
             { name: "bone-muted", var: "--color-bone-muted", value: "#a8a79f" },
-            { name: "bone-dim", var: "--color-bone-dim", value: "#6b6a64" },
+            { name: "bone-dim", var: "--color-bone-dim", value: "#8a8980" },
           ].map((token) => (
             <div key={token.name} className="space-y-2">
               <div

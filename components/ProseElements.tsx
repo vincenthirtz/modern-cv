@@ -86,6 +86,9 @@ export function CodeBlock({ children, lang }: CodeBlockProps) {
           background: "var(--elevated)",
           borderColor: "var(--border-strong)",
         }}
+        tabIndex={0}
+        role="region"
+        aria-label={lang ? `Bloc de code ${lang}` : "Bloc de code"}
       >
         {lang && (
           <div className="mb-3 font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]">

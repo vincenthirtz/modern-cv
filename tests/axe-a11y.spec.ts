@@ -3,7 +3,7 @@ import AxeBuilder from "@axe-core/playwright";
 
 /**
  * Tests d'accessibilité automatisés via axe-core.
- * Détecte les violations WCAG 2.1 AA sur chaque page.
+ * Détecte les violations WCAG 2.2 AA sur chaque page.
  */
 
 const PAGES = [
@@ -16,19 +16,24 @@ const PAGES = [
   { name: "CV", path: "/cv" },
   { name: "Branding", path: "/branding" },
   { name: "Expertise", path: "/expertise" },
+  { name: "Mentions légales", path: "/mentions-legales" },
+  { name: "Accessibilité", path: "/accessibilite" },
 ];
 
 for (const { name, path } of PAGES) {
-  test(`${name} (${path}) — aucune violation WCAG 2.1 AA`, async ({ page }) => {
+  test(`${name} (${path}) — aucune violation WCAG 2.2 AA`, async ({ page }) => {
+    // Neutralise les animations : les styles inline avec opacity/filter en cours
+    // de transition font faussement échouer la vérification de contraste sur
+    // un état transitoire. En mode reduced-motion, les animations sont stoppées
+    // (durée 0.001ms dans globals.css), ce qui fige le rendu final.
+    await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto(path);
     await page.waitForLoadState("networkidle");
 
     const results = await new AxeBuilder({ page })
-      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
       // Exclure le grain overlay (élément décoratif sans sémantique)
       .exclude(".bg-noise")
-      // TODO: corriger ces violations pré-existantes puis retirer ces exclusions
-      .disableRules(["color-contrast", "scrollable-region-focusable"])
       .analyze();
 
     const violations = results.violations.map((v) => ({

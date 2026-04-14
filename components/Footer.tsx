@@ -135,6 +135,12 @@ export default function Footer() {
             >
               Mentions l&eacute;gales
             </Link>
+            <Link
+              href="/accessibilite"
+              className="transition-colors hover:text-[var(--color-accent)]"
+            >
+              Accessibilit&eacute;
+            </Link>
             <a href="/sitemap.xml" className="transition-colors hover:text-[var(--color-accent)]">
               Plan du site
             </a>

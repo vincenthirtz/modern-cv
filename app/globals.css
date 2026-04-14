@@ -7,7 +7,7 @@
   --color-ink-elevated: #16161a;
   --color-bone: #f0efe9;
   --color-bone-muted: #a8a79f;
-  --color-bone-dim: #6b6a64;
+  --color-bone-dim: #8a8980;
   --color-accent: #c8ff00;
   --color-accent-soft: #d9ff4d;
   --color-accent-contrast: #1a1a1a;
@@ -42,7 +42,7 @@
   --bg: var(--color-paper);
   --fg: #0a0a0b;
   --fg-muted: #4a4a44;
-  --fg-dim: #75746e;
+  --fg-dim: #5a5a54;
   --elevated: #ffffff;
   --border: rgba(10, 10, 11, 0.1);
   --border-strong: rgba(10, 10, 11, 0.2);
