@@ -1,16 +1,14 @@
 # Vincent Hirtz — Portfolio
 
 Site personnel / portfolio de **Vincent Hirtz**, Lead Developer Front-End basé
-à Lyon. Construit avec **Next.js 15**, **React 19**, **Tailwind CSS v4** et
-**Framer Motion**.
+à Lyon. Construit avec **Next.js 15**, **React 19** et **Tailwind CSS v4**.
 
 ## ✨ Features
 
 - **Next.js 15** App Router + TypeScript strict
 - **React 19** stable
 - **Tailwind CSS v4** (configuration via `@theme` dans le CSS)
-- **Framer Motion** pour toutes les animations
-- **Lenis** pour le smooth scroll
+- **Animations CSS natives** (transitions, keyframes, IntersectionObserver)
 - **Dark mode** par défaut + toggle dark/light persisté
 - **Responsive** mobile-first
 - **Cursor follower** lumineux qui suit le curseur

@@ -136,11 +136,10 @@ export default function LinkPreview({ href, children }: LinkPreviewProps) {
               {og.image && (
                 <span className="link-preview-img-wrapper">
                   <Image
-                    src={og.image}
+                    src={`/api/og-image?url=${encodeURIComponent(og.image)}`}
                     alt=""
                     className="link-preview-img"
                     fill
-                    unoptimized
                     sizes="80px"
                   />
                 </span>

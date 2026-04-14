@@ -12,7 +12,6 @@ Site en français, déployé sur Vercel : https://vincenthirtz.fr
 - **Styles** : Tailwind CSS v4 (`@import "tailwindcss"` + `@theme`)
 - **Contenu** : MDX via `@next/mdx` (articles dans `lib/articles/`)
 - **Animations** : CSS transitions, keyframes & IntersectionObserver
-- **Scroll** : Lenis (smooth scroll)
 - **Polices** : DM Sans, Instrument Serif, JetBrains Mono (via `next/font/google`)
 
 ## Commandes
