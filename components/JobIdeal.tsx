@@ -70,13 +70,83 @@ const BONUS: DealBreaker[] = [
   { icon: "♥", label: "Lyon ou full remote" },
 ];
 
+const HYBRID_SKILLS: string[] = [
+  "Design Systems",
+  "Figma → Code",
+  "Design Tokens",
+  "Prototypage",
+  "Micro-interactions",
+  "Motion design",
+  "WCAG 2.2 AA",
+  "Typographie",
+  "Responsive & fluid design",
+  "User research",
+  "Wireframing",
+  "Tests d'usabilité",
+];
+
+interface HybridSkill {
+  title: string;
+  description: string;
+}
+
+const UI_SKILLS: HybridSkill[] = [
+  {
+    title: "Design systems & tokens",
+    description:
+      "Mise en place de systèmes cohérents (Figma + code), tokens CSS, thématisation, dark mode et accent colors. De la variable Figma au composant React.",
+  },
+  {
+    title: "Micro-interactions & motion",
+    description:
+      "Animations CSS pures, IntersectionObserver, transitions fluides. Le détail qui transforme une interface correcte en interface mémorable.",
+  },
+  {
+    title: "Typographie & hiérarchie",
+    description:
+      "Choix de fontes, rythme vertical, contraste, lisibilité. Une bonne typo, c'est 50 % du design réussi — et trop souvent négligé par les devs.",
+  },
+  {
+    title: "Figma → Code fidèle",
+    description:
+      "Je lis un Figma comme je lis du code : je sais ce qui est un token, ce qui est une exception, et ce qui mérite d'être challengé avant l'intégration.",
+  },
+];
+
+const UX_SKILLS: HybridSkill[] = [
+  {
+    title: "Parcours & wireframes",
+    description:
+      "Avant de coder, je réfléchis au parcours. Storyboard, wireframes basse-fi, validation des flows. Éviter de construire la mauvaise chose proprement.",
+  },
+  {
+    title: "Accessibilité (WCAG 2.2 AA)",
+    description:
+      "Focus management, sémantique HTML, ARIA, lecteurs d'écran. L'accessibilité n'est pas une option, c'est un pilier de l'UX — et de la qualité front.",
+  },
+  {
+    title: "Tests d'usabilité & itération",
+    description:
+      "Observer de vrais utilisateurs, mesurer ce qui coince, itérer. La donnée bat l'intuition, surtout pour les parcours critiques.",
+  },
+  {
+    title: "Dialogue designer ↔ dev",
+    description:
+      "Je parle les deux langues. Je challenge un design avec les bons arguments tech, et je défends un choix UX face à une contrainte technique.",
+  },
+];
+
 export default function JobIdeal() {
+  const skillsRef = useRef<HTMLDivElement>(null);
   const criteriaRef = useRef<HTMLDivElement>(null);
+  const hybridRef = useRef<HTMLDivElement>(null);
   const dealbreakersRef = useRef<HTMLDivElement>(null);
   const bonusRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
 
+  const skillsInView = useInView(skillsRef, { once: true, amount: 0.3 });
   const criteriaInView = useInView(criteriaRef, { once: true, amount: 0.1 });
+  const hybridInView = useInView(hybridRef, { once: true, amount: 0.1 });
   const dealbreakersInView = useInView(dealbreakersRef, { once: true, amount: 0.3 });
   const bonusInView = useInView(bonusRef, { once: true, amount: 0.3 });
   const ctaInView = useInView(ctaRef, { once: true });
@@ -92,6 +162,34 @@ export default function JobIdeal() {
           description="Après 10+ ans dans le front-end, je sais ce qui me fait avancer — et ce qui me freine. Voici ce que je recherche dans mon prochain poste de Lead Developer."
           bigSymbol="~/"
         />
+
+        {/* Bande de compétences hybrides (Dev + Design) */}
+        <div
+          ref={skillsRef}
+          className="mt-10 flex flex-wrap gap-2"
+          aria-label="Compétences hybrides dev et design"
+          style={{
+            opacity: skillsInView ? 1 : 0,
+            transform: skillsInView ? "translateY(0)" : "translateY(10px)",
+            transition: "opacity 0.6s ease, transform 0.6s ease",
+          }}
+        >
+          {HYBRID_SKILLS.map((skill, i) => (
+            <span
+              key={skill}
+              className="rounded-full border px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.15em] text-[var(--fg-muted)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+              style={{
+                borderColor: "var(--border)",
+                background: "color-mix(in oklab, var(--elevated) 40%, transparent)",
+                opacity: skillsInView ? 1 : 0,
+                transform: skillsInView ? "translateY(0)" : "translateY(8px)",
+                transition: `opacity 0.4s ease ${i * 0.04}s, transform 0.4s ease ${i * 0.04}s, border-color 0.3s, color 0.3s`,
+              }}
+            >
+              {skill}
+            </span>
+          ))}
+        </div>
 
         {/* Critères principaux */}
         <div ref={criteriaRef} className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -117,6 +215,90 @@ export default function JobIdeal() {
               <p className="text-sm leading-relaxed text-[var(--fg-muted)]">{item.description}</p>
             </article>
           ))}
+        </div>
+
+        {/* Ma double casquette — UI / UX */}
+        <div ref={hybridRef} className="mt-24">
+          <div
+            className="mb-10 flex flex-col gap-3"
+            style={{
+              opacity: hybridInView ? 1 : 0,
+              transform: hybridInView ? "translateY(0)" : "translateY(20px)",
+              transition: "opacity 0.6s ease, transform 0.6s ease",
+            }}
+          >
+            <span className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
+              <span className="text-[var(--color-accent)]">✦</span>
+              <span className="block h-[1px] w-6 bg-[var(--color-accent)]/40" />
+              Ma double casquette
+            </span>
+            <h3 className="font-serif text-3xl leading-tight md:text-4xl">
+              Dev qui pense <span className="text-[var(--color-accent)]">design</span>.
+            </h3>
+            <p className="max-w-2xl text-[var(--fg-muted)]">
+              Un Lead front n'est pas qu'un architecte technique. Je porte aussi une sensibilité UI
+              & UX forte — parce qu'un produit réussi se joue autant dans l'expérience que dans le
+              code.
+            </p>
+          </div>
+
+          <div className="grid gap-10 md:grid-cols-2">
+            {/* UI */}
+            <div
+              className="rounded-2xl border p-6 md:p-8"
+              style={{
+                borderColor: "var(--border-strong)",
+                background: "color-mix(in oklab, var(--elevated) 40%, transparent)",
+                opacity: hybridInView ? 1 : 0,
+                transform: hybridInView ? "translateX(0)" : "translateX(-20px)",
+                transition: "opacity 0.6s ease 0.1s, transform 0.6s ease 0.1s",
+              }}
+            >
+              <h4 className="mb-6 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)]">
+                <span>UI</span>
+                <span className="block h-[1px] w-8 bg-[var(--color-accent)]/40" />
+                <span className="text-[var(--fg-muted)]">Interface & Systems</span>
+              </h4>
+              <ul className="space-y-5">
+                {UI_SKILLS.map((item) => (
+                  <li key={item.title}>
+                    <h5 className="mb-1 font-serif text-lg leading-tight">{item.title}</h5>
+                    <p className="text-sm leading-relaxed text-[var(--fg-muted)]">
+                      {item.description}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* UX */}
+            <div
+              className="rounded-2xl border p-6 md:p-8"
+              style={{
+                borderColor: "var(--border-strong)",
+                background: "color-mix(in oklab, var(--elevated) 40%, transparent)",
+                opacity: hybridInView ? 1 : 0,
+                transform: hybridInView ? "translateX(0)" : "translateX(20px)",
+                transition: "opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s",
+              }}
+            >
+              <h4 className="mb-6 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)]">
+                <span>UX</span>
+                <span className="block h-[1px] w-8 bg-[var(--color-accent)]/40" />
+                <span className="text-[var(--fg-muted)]">Parcours & Usage</span>
+              </h4>
+              <ul className="space-y-5">
+                {UX_SKILLS.map((item) => (
+                  <li key={item.title}>
+                    <h5 className="mb-1 font-serif text-lg leading-tight">{item.title}</h5>
+                    <p className="text-sm leading-relaxed text-[var(--fg-muted)]">
+                      {item.description}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
 
         {/* Dealbreakers + Bonus */}
