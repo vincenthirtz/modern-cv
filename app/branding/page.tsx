@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import BrandingGrid from "@/components/BrandingGrid";
+import ComponentStories from "@/components/ComponentStories";
 import JsonLd from "@/components/JsonLd";
 
 export const metadata: Metadata = {
@@ -65,6 +66,11 @@ export default function BrandingPage() {
 
         {/* Grille Adobe-style */}
         <BrandingGrid />
+
+        {/* Storybook des composants phares */}
+        <div className="mt-24">
+          <ComponentStories />
+        </div>
       </div>
     </main>
   );
