@@ -87,6 +87,7 @@ export default function TableOfContents({ headings: provided }: Props) {
           <li key={id}>
             <button
               onClick={() => scrollTo(id)}
+              aria-current={activeId === id ? "location" : undefined}
               className={`toc-link ${level === 3 ? "toc-link--h3" : ""} ${
                 activeId === id ? "toc-link--active" : ""
               }`}
