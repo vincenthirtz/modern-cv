@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import AccentPicker from "../AccentPicker";
 import EffectsToggle from "../EffectsToggle";
 import ThemeToggle from "../ThemeToggle";
@@ -18,6 +19,8 @@ interface Props {
  */
 export default function TopBar({ entered, dockVisible, onToggleDock }: Props) {
   const scrolled = useScrolled(40);
+  const pathname = usePathname();
+  const isHome = pathname === "/";
 
   return (
     <header
@@ -46,6 +49,7 @@ export default function TopBar({ entered, dockVisible, onToggleDock }: Props) {
           href="/"
           className="font-mono text-lg font-bold tracking-tighter"
           aria-label="Accueil"
+          aria-current={isHome ? "page" : undefined}
         >
           VH<span className="text-[var(--color-accent)]">.</span>
         </Link>

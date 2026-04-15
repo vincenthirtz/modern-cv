@@ -1,16 +1,7 @@
 import Link from "next/link";
 import FooterClock from "./FooterClock";
 import BackToTopButton from "./BackToTopButton";
-
-const NAV_LINKS = [
-  { href: "/projects", label: "Projets" },
-  { href: "/experience", label: "Expérience" },
-  { href: "/community", label: "Communauté" },
-  { href: "/notes", label: "Notes" },
-  { href: "/contact", label: "Contact" },
-  { href: "/cv", label: "CV en ligne" },
-  { href: "/branding", label: "Branding" },
-];
+import FooterNav from "./navigation/FooterNav";
 
 const SOCIALS = [
   {
@@ -75,20 +66,7 @@ export default function Footer() {
           </div>
 
           {/* Centre : nav */}
-          <nav aria-label="Navigation du pied de page">
-            <ul className="grid grid-cols-2 gap-x-12 gap-y-2 md:grid-cols-1">
-              {NAV_LINKS.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-[var(--fg-muted)] transition-colors hover:text-[var(--color-accent)]"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          <FooterNav />
 
           {/* Droite : réseaux + retour en haut */}
           <div className="flex flex-col items-start gap-4 md:items-end">
