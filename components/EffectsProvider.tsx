@@ -23,17 +23,32 @@ const EffectsContext = createContext<EffectsContextValue | null>(null);
 export default function EffectsProvider({ children }: { children: ReactNode }) {
   const [reduced, setReduced] = useState(false);
 
-  // Lecture initiale depuis localStorage côté client
+  // Initialisation : préférence stockée > média système. Puis écoute les
+  // changements de `prefers-reduced-motion` tant que l'utilisateur n'a pas
+  // posé d'override manuel via localStorage.
   useEffect(() => {
+    let stored: string | null = null;
     try {
-      const stored = localStorage.getItem("reducedEffects");
-      if (stored === "true") {
-        setReduced(true);
-        document.documentElement.classList.add("reduced-effects");
-      }
+      stored = localStorage.getItem("reducedEffects");
     } catch {
       /* localStorage indisponible */
     }
+
+    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const applyReduced = (value: boolean) => {
+      setReduced(value);
+      document.documentElement.classList.toggle("reduced-effects", value);
+    };
+
+    if (stored === "true" || stored === "false") {
+      applyReduced(stored === "true");
+      return;
+    }
+
+    applyReduced(mql.matches);
+    const onChange = (e: MediaQueryListEvent) => applyReduced(e.matches);
+    mql.addEventListener("change", onChange);
+    return () => mql.removeEventListener("change", onChange);
   }, []);
 
   const toggle = useCallback(() => {

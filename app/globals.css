@@ -315,7 +315,7 @@ a {
     konamiRainbow 2s linear infinite;
 }
 
-/* Réduction de mouvement */
+/* Réduction de mouvement : media query système + toggle manuel `.reduced-effects` */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -325,6 +325,16 @@ a {
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+.reduced-effects,
+.reduced-effects *,
+.reduced-effects *::before,
+.reduced-effects *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
 }
 
 /* Focus visible élégant */
