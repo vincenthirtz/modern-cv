@@ -23,6 +23,9 @@ export default function Dock({ entered, visible }: Props) {
   return (
     <nav
       aria-label="Navigation principale"
+      aria-hidden={!visible}
+      // @ts-expect-error : `inert` est un attribut HTML standard mais pas encore typé par React 19
+      inert={!visible ? "" : undefined}
       className="dock-container fixed bottom-4 left-1/2 z-50 sm:bottom-6"
       onMouseLeave={handleLeave}
       style={{
