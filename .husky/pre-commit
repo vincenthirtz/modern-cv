@@ -3,6 +3,7 @@
 # committé sans index/stats à jour).
 if git diff --cached --name-only | grep -q '^lib/articles/.*\.mdx$'; then
   npm run articles:generate || exit 1
+  npx prettier --write lib/articles/index.ts lib/articles/stats.generated.ts || exit 1
   git add lib/articles/index.ts lib/articles/stats.generated.ts
 fi
 

@@ -154,6 +154,14 @@ export interface ArticleMeta {
   updatedAt?: string;
   /** Date de révision affichée au format français */
   updatedAtLabel?: string;
+  /** URL de l'image de couverture (ex: images.unsplash.com/photo-...) */
+  cover?: string;
+  /** Texte alternatif pour l'accessibilité */
+  coverAlt?: string;
+  /** Nom du photographe pour le crédit */
+  coverCredit?: string;
+  /** URL du profil du photographe (typiquement unsplash.com/@username) */
+  coverCreditUrl?: string;
   readTime: string;
 }
 

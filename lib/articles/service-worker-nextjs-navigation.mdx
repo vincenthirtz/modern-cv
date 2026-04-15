@@ -8,6 +8,11 @@ export const meta = {
   date: "2026-04-12",
   dateLabel: "Avril 2026",
   readTime: "~10 min",
+  cover:
+    "https://images.unsplash.com/photo-1760001869138-94d0d1cc87d7?q=80&w=1600&auto=format&fit=crop",
+  coverAlt: "Métro jaune flou en mouvement à l'arrêt en station",
+  coverCredit: "Nico Knaack",
+  coverCreditUrl: "",
 };
 
 <Lead>
@@ -31,17 +36,17 @@ Le site utilise un Service Worker pour le support offline (PWA). Voici la règle
 self.addEventListener("fetch", (event) => {
   // ...
 
-  // App shell — stale-while-revalidate
-  if (isShellUrl(url.pathname)) {
-    event.respondWith(staleWhileRevalidate(request, SHELL_CACHE));
-    return;
-  }
+// App shell — stale-while-revalidate
+if (isShellUrl(url.pathname)) {
+event.respondWith(staleWhileRevalidate(request, SHELL_CACHE));
+return;
+}
 
-  // Next.js data/chunks — cache-first
-  if (url.pathname.startsWith("/_next/")) {
-    event.respondWith(cacheFirst(request, ASSETS_CACHE));
-    return;
-  }
+// Next.js data/chunks — cache-first
+if (url.pathname.startsWith("/\_next/")) {
+event.respondWith(cacheFirst(request, ASSETS_CACHE));
+return;
+}
 });`}</CodeBlock>
 
 ### Pourquoi ça casse la navigation
@@ -65,20 +70,20 @@ self.addEventListener("fetch", (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  if (request.method !== "GET") return;
-  if (url.origin !== self.location.origin) return;
+if (request.method !== "GET") return;
+if (url.origin !== self.location.origin) return;
 
-  // Ne JAMAIS intercepter les requêtes RSC
-  if (
-    request.headers.get("RSC") === "1" ||
-    request.headers.get("Next-Router-State-Tree") ||
-    request.headers.get("Next-Router-Prefetch") ||
-    url.searchParams.has("_rsc")
-  ) {
-    return; // Laisser la requête aller au serveur
-  }
+// Ne JAMAIS intercepter les requêtes RSC
+if (
+request.headers.get("RSC") === "1" ||
+request.headers.get("Next-Router-State-Tree") ||
+request.headers.get("Next-Router-Prefetch") ||
+url.searchParams.has("\_rsc")
+) {
+return; // Laisser la requête aller au serveur
+}
 
-  // ... reste du routing SW
+// ... reste du routing SW
 });`}</CodeBlock>
 
 4 vérifications, une seule suffit. La ceinture et les bretelles, parce que les versions de Next.js n'envoient pas toujours les mêmes headers.
@@ -108,17 +113,17 @@ useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
   };
 
-  const originalPushState = history.pushState.bind(history);
-  history.pushState = function (...args) {
-    originalPushState(...args);
-    scrollToTop();
-  };
+const originalPushState = history.pushState.bind(history);
+history.pushState = function (...args) {
+originalPushState(...args);
+scrollToTop();
+};
 
-  window.addEventListener("popstate", scrollToTop);
-  return () => {
-    history.pushState = originalPushState;
-    window.removeEventListener("popstate", scrollToTop);
-  };
+window.addEventListener("popstate", scrollToTop);
+return () => {
+history.pushState = originalPushState;
+window.removeEventListener("popstate", scrollToTop);
+};
 }, []);`}</CodeBlock>
 
 Ce patch fonctionne même quand `usePathname()` ne se met plus à jour (ce qui arrive quand React 19 corrompt son arbre interne via les erreurs `removeChild`).
@@ -191,10 +196,10 @@ expect(scrollY).toBeLessThanOrEqual(10);
 
 // Test 21 : Les requêtes RSC ne doivent pas être bloquées
 page.on("response", (response) => {
-  const req = response.request();
-  if (req.headers()["rsc"] === "1") {
-    rscResponses.push({ url: response.url(), ok: response.ok() });
-  }
+const req = response.request();
+if (req.headers()["rsc"] === "1") {
+rscResponses.push({ url: response.url(), ok: response.ok() });
+}
 });`}</CodeBlock>
 
 ## Checklist pour les Service Workers avec Next.js App Router
@@ -208,10 +213,10 @@ Si vous avez un Service Worker sur un site Next.js App Router, vérifiez ces poi
 
 ## En résumé
 
-| Couche | Problème | Impact |
-|---|---|---|
-| Service Worker | Intercepte les requêtes RSC, renvoie du HTML caché | Navigation échoue au 1er clic |
-| Lenis (smooth scroll) | Ne reset pas le scroll sur navigation | Page semble bloquée au mauvais endroit |
+| Couche                      | Problème                                                 | Impact                                        |
+| --------------------------- | -------------------------------------------------------- | --------------------------------------------- |
+| Service Worker              | Intercepte les requêtes RSC, renvoie du HTML caché       | Navigation échoue au 1er clic                 |
+| Lenis (smooth scroll)       | Ne reset pas le scroll sur navigation                    | Page semble bloquée au mauvais endroit        |
 | Error handler `removeChild` | `stopImmediatePropagation` bloque le recovery de Next.js | Le router ne peut pas se remettre des erreurs |
 
 Trois bugs indépendants qui se cumulent pour produire un symptôme unique : "il faut cliquer deux fois". En dev, aucun des trois ne se manifeste. En production, les trois se déclenchent en même temps.

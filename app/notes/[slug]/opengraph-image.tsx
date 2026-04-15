@@ -24,7 +24,14 @@ export default async function OgImage({ params }: { params: Promise<{ slug: stri
   const readTime = article?.readTime ?? "";
   const excerpt = article?.excerpt ?? "";
   const tags = article?.tags ?? [];
+  const cover = article?.cover;
   const { accent, glow } = CATEGORY_ACCENTS[category] ?? DEFAULT_ACCENT;
+
+  // Si un cover est défini, on l'utilise en fond obscurci (via linear-gradient
+  // en overlay noir) ; sinon on retombe sur le gradient coloré par catégorie.
+  const background = cover
+    ? `linear-gradient(135deg, rgba(10,10,11,0.85) 0%, rgba(10,10,11,0.65) 100%), url(${cover})`
+    : `radial-gradient(circle at 85% 20%, ${glow} 0%, transparent 55%), linear-gradient(135deg, #0a0a0b 0%, #1a1a2e 50%, #0a0a0b 100%)`;
 
   return new ImageResponse(
     <div
@@ -35,7 +42,9 @@ export default async function OgImage({ params }: { params: Promise<{ slug: stri
         flexDirection: "column",
         justifyContent: "space-between",
         padding: "60px 80px",
-        background: `radial-gradient(circle at 85% 20%, ${glow} 0%, transparent 55%), linear-gradient(135deg, #0a0a0b 0%, #1a1a2e 50%, #0a0a0b 100%)`,
+        background,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
         fontFamily: "system-ui, sans-serif",
         color: "#f5f5f5",
       }}

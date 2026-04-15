@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { ArticleMeta } from "@/lib/articles";
@@ -101,6 +102,54 @@ export default function ArticleLayout({
             splitBy="word"
             staggerChildren={0.04}
           />
+
+          {article.cover && (
+            <figure
+              className="anim-fade-up mt-12 overflow-hidden rounded-2xl border"
+              style={{
+                borderColor: "var(--border-strong)",
+                animationDelay: "0.25s",
+              }}
+            >
+              <div className="relative aspect-[16/9] w-full bg-[var(--elevated)]">
+                <Image
+                  src={article.cover}
+                  alt={article.coverAlt ?? article.title}
+                  fill
+                  priority
+                  sizes="(min-width: 768px) 768px, 100vw"
+                  className="object-cover"
+                />
+              </div>
+              {article.coverCredit && (
+                <figcaption className="flex items-center justify-between gap-3 px-4 py-3 font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--fg-dim)]">
+                  <span>
+                    Photo :{" "}
+                    {article.coverCreditUrl ? (
+                      <a
+                        href={article.coverCreditUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[var(--fg-muted)] hover:text-[var(--color-accent)]"
+                      >
+                        {article.coverCredit}
+                      </a>
+                    ) : (
+                      <span className="text-[var(--fg-muted)]">{article.coverCredit}</span>
+                    )}
+                  </span>
+                  <a
+                    href="https://unsplash.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-[var(--color-accent)]"
+                  >
+                    Unsplash
+                  </a>
+                </figcaption>
+              )}
+            </figure>
+          )}
         </div>
       </header>
 

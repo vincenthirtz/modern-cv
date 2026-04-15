@@ -38,6 +38,12 @@ const nextConfig = {
     formats: ["image/avif", "image/webp"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    // Hôtes autorisés pour les images distantes via next/image
+    // (Unsplash pour les covers d'articles).
+    remotePatterns: [
+      { protocol: "https", hostname: "images.unsplash.com", pathname: "/**" },
+      { protocol: "https", hostname: "plus.unsplash.com", pathname: "/**" },
+    ],
   },
 
   async headers() {
