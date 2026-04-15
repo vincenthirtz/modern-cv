@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { getArticleBySlug } from "@/lib/articles";
 
@@ -15,6 +17,24 @@ const CATEGORY_ACCENTS: Record<string, string> = {
 };
 const DEFAULT_ACCENT = "#c8ff00";
 
+/**
+ * Lit le fichier cover depuis public/ et le convertit en data URL.
+ * On reste en local (pas d'appel HTTP) pour éviter tout crash de satori
+ * sur fetch externe (bot-check Unsplash, timeout, etc).
+ */
+async function readCoverAsDataUrl(cover: string): Promise<string | undefined> {
+  if (!cover.startsWith("/")) return undefined;
+  try {
+    const absolute = join(process.cwd(), "public", cover);
+    const buf = await readFile(absolute);
+    const ext = cover.split(".").pop()?.toLowerCase() ?? "jpg";
+    const mime = ext === "png" ? "image/png" : ext === "webp" ? "image/webp" : "image/jpeg";
+    return `data:${mime};base64,${buf.toString("base64")}`;
+  } catch {
+    return undefined;
+  }
+}
+
 export default async function OgImage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const article = getArticleBySlug(slug);
@@ -25,6 +45,7 @@ export default async function OgImage({ params }: { params: Promise<{ slug: stri
   const excerpt = article?.excerpt ?? "";
   const tags = article?.tags ?? [];
   const accent = CATEGORY_ACCENTS[category] ?? DEFAULT_ACCENT;
+  const coverDataUrl = article?.cover ? await readCoverAsDataUrl(article.cover) : undefined;
 
   return new ImageResponse(
     <div
@@ -35,7 +56,11 @@ export default async function OgImage({ params }: { params: Promise<{ slug: stri
         flexDirection: "column",
         justifyContent: "space-between",
         padding: "60px 80px",
-        background: "linear-gradient(135deg, #0a0a0b 0%, #1a1a2e 50%, #0a0a0b 100%)",
+        backgroundImage: coverDataUrl
+          ? `linear-gradient(135deg, rgba(10,10,11,0.85) 0%, rgba(10,10,11,0.65) 100%), url(${coverDataUrl})`
+          : "linear-gradient(135deg, #0a0a0b 0%, #1a1a2e 50%, #0a0a0b 100%)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
         fontFamily: "system-ui, sans-serif",
         color: "#f5f5f5",
       }}
