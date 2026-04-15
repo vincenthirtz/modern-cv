@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ARTICLES, type ArticleMeta } from "@/lib/articles";
+import { ARTICLE_STATS } from "@/lib/articles/stats.generated";
 import NotesFilters from "@/components/NotesFilters";
 import JsonLd from "@/components/JsonLd";
 
@@ -53,6 +54,11 @@ function toMeta(article: (typeof ARTICLES)[number]): ArticleMeta {
 
 export default function NotesIndexPage() {
   const articlesMeta = ARTICLES.map(toMeta);
+  // Map slug → texte plein pour l'index Fuse (évite de sérialiser 40 KB
+  // de stats si le client n'en a pas besoin ailleurs).
+  const searchIndex: Record<string, string> = Object.fromEntries(
+    Object.entries(ARTICLE_STATS).map(([slug, s]) => [slug, s.searchText]),
+  );
 
   return (
     <main className="relative z-[2] px-6 pt-32 pb-32 sm:pt-40">
@@ -92,7 +98,7 @@ export default function NotesIndexPage() {
         </div>
 
         {/* Filtres + liste d'articles */}
-        <NotesFilters articles={articlesMeta} />
+        <NotesFilters articles={articlesMeta} searchIndex={searchIndex} />
       </div>
     </main>
   );

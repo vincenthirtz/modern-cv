@@ -57,6 +57,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       siteName: "Vincent Hirtz",
       locale: "fr_FR",
       publishedTime: article.date,
+      modifiedTime: article.updatedAt ?? article.date,
       authors: ["Vincent Hirtz"],
       tags: [article.category, ...article.tags],
       images: [
@@ -124,7 +125,7 @@ export default async function NotePage({ params }: PageProps) {
     headline: article.title,
     description: article.excerpt,
     datePublished: article.date,
-    dateModified: article.date,
+    dateModified: article.updatedAt ?? article.date,
     author: {
       "@id": "https://vincenthirtz.fr/#person",
     },

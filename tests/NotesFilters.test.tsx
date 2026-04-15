@@ -111,4 +111,41 @@ describe("NotesFilters", () => {
     const firstLink = within(list).getAllByRole("link")[0] as HTMLAnchorElement;
     expect(firstLink.getAttribute("href")).toMatch(/^\/notes\//);
   });
+
+  describe("recherche full-text sur le contenu (searchIndex)", () => {
+    const searchIndex: Record<string, string> = {
+      "react-hooks": "useEffect useState et la gestion des effets de bord en React",
+      "vue-intro": "reactivity ref et computed dans Vue 3 composition",
+      "ts-strict": "noImplicitAny strictNullChecks et autres options de compilation",
+    };
+
+    it("trouve un article via un mot qui n'est que dans le body", async () => {
+      const user = userEvent.setup();
+      render(<NotesFilters articles={ARTICLES} searchIndex={searchIndex} />);
+
+      // "strictNullChecks" n'apparaît que dans searchIndex["ts-strict"]
+      await user.type(screen.getByRole("searchbox"), "strictNullChecks");
+
+      expect(screen.getByText("TypeScript strict")).toBeInTheDocument();
+      expect(screen.queryByText("Les hooks React")).toBeNull();
+      expect(screen.queryByText("Découverte de Vue")).toBeNull();
+    });
+
+    it("continue de privilégier le titre quand le terme y apparaît", async () => {
+      const user = userEvent.setup();
+      render(<NotesFilters articles={ARTICLES} searchIndex={searchIndex} />);
+
+      await user.type(screen.getByRole("searchbox"), "hooks");
+      // "hooks" est dans le titre de react-hooks et dans le body
+      expect(screen.getByText("Les hooks React")).toBeInTheDocument();
+    });
+
+    it("fonctionne sans searchIndex (rétrocompatibilité)", async () => {
+      const user = userEvent.setup();
+      render(<NotesFilters articles={ARTICLES} />);
+
+      await user.type(screen.getByRole("searchbox"), "hooks");
+      expect(screen.getByText("Les hooks React")).toBeInTheDocument();
+    });
+  });
 });

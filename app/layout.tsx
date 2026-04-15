@@ -118,6 +118,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             __html: `(function(){var H={TITLE:1,LINK:1,META:1,STYLE:1};var noop={removeChild:function(c){return c},insertBefore:function(n){return n}};var d=Object.getOwnPropertyDescriptor(Node.prototype,"parentNode");if(d&&d.get){var g=d.get;Object.defineProperty(Node.prototype,"parentNode",{get:function(){var p=g.call(this);if(p===null&&this.nodeName&&H[this.nodeName])return noop;return p},configurable:true})}var o=Node.prototype.removeChild;Node.prototype.removeChild=function(c){if(c.parentNode!==this)return c;return o.call(this,c)};var i=Node.prototype.insertBefore;Node.prototype.insertBefore=function(n,r){if(r&&r.parentNode!==this)return n;return i.call(this,n,r)}})();`,
           }}
         />
+        {/* Analytics GoatCounter — RGPD-friendly, sans cookie, ~3 KB.
+            Activé uniquement en prod et si NEXT_PUBLIC_GOATCOUNTER_URL est défini
+            (ex: "https://vincenthirtz.goatcounter.com/count"). */}
+        {process.env.NODE_ENV === "production" && process.env.NEXT_PUBLIC_GOATCOUNTER_URL && (
+          <script
+            nonce={nonce}
+            data-goatcounter={process.env.NEXT_PUBLIC_GOATCOUNTER_URL}
+            async
+            src="https://gc.zgo.at/count.js"
+          />
+        )}
         {/* Flux RSS & Atom */}
         <link
           rel="alternate"

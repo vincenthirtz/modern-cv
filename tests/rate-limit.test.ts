@@ -82,6 +82,23 @@ describe("lib/rate-limit", () => {
     expect(r.ok).toBe(true);
   });
 
+  it("déclenche le GC des buckets expirés quand le Map dépasse 10 000 entrées", () => {
+    // Génère 10_001 IPs distinctes : le 10_001ᵉ hit doit traverser la branche GC
+    // (ligne 48-53) qui nettoie les buckets dont la fenêtre est expirée.
+    for (let i = 0; i < 10_000; i++) {
+      rateLimit(makeReq(`10.0.${(i >> 8) & 0xff}.${i & 0xff}`), {
+        limit: 5,
+        windowMs: 100,
+        key: "gc",
+      });
+    }
+    // Avance au-delà de la fenêtre pour rendre tous les buckets expirés
+    vi.advanceTimersByTime(500);
+    // Le 10_001ᵉ hit franchit le seuil 10_000 et déclenche le GC
+    const r = rateLimit(makeReq("255.255.255.255"), { limit: 5, windowMs: 100, key: "gc" });
+    expect(r.ok).toBe(true);
+  });
+
   it("ne prend que la première IP de x-forwarded-for", () => {
     const req = makeReq("8.8.8.8, 9.9.9.9, 10.10.10.10");
     rateLimit(req, { limit: 1, windowMs: 1000, key: "t8" });

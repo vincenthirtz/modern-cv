@@ -7,13 +7,19 @@ import type { ArticleMeta } from "@/lib/articles";
 
 interface NotesFiltersProps {
   articles: ArticleMeta[];
+  /** Map slug → texte plein des articles, utilisé pour l'index Fuse full-text. */
+  searchIndex?: Record<string, string>;
 }
+
+/** Article enrichi du texte plein pour l'indexation Fuse. */
+type IndexedArticle = ArticleMeta & { body?: string };
 
 /**
  * Composant client pour filtrer et rechercher les articles.
- * Filtrage par catégorie + recherche full-text via Fuse.js.
+ * Filtrage par catégorie + recherche full-text via Fuse.js (titre, excerpt,
+ * catégorie, tags, et contenu complet de l'article).
  */
-export default function NotesFilters({ articles }: NotesFiltersProps) {
+export default function NotesFilters({ articles, searchIndex }: NotesFiltersProps) {
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [activeTag, setActiveTag] = useState<string | null>(null);
@@ -27,22 +33,27 @@ export default function NotesFilters({ articles }: NotesFiltersProps) {
   // Extraire les tags uniques
   const allTags = useMemo(() => [...new Set(articles.flatMap((a) => a.tags))].sort(), [articles]);
 
-  // Index Fuse.js pour la recherche
-  const fuse = useMemo(
-    () =>
-      new Fuse(articles, {
-        keys: [
-          { name: "title", weight: 0.35 },
-          { name: "excerpt", weight: 0.25 },
-          { name: "category", weight: 0.15 },
-          { name: "tags", weight: 0.15 },
-          { name: "dateLabel", weight: 0.1 },
-        ],
-        threshold: 0.4,
-        ignoreLocation: true,
-      }),
-    [articles],
-  );
+  // Index Fuse.js pour la recherche — inclut le contenu complet de l'article
+  // quand searchIndex est fourni (poids faible pour ne pas dominer le titre).
+  const fuse = useMemo(() => {
+    const indexed: IndexedArticle[] = articles.map((a) => ({
+      ...a,
+      body: searchIndex?.[a.slug],
+    }));
+    return new Fuse(indexed, {
+      keys: [
+        { name: "title", weight: 0.3 },
+        { name: "excerpt", weight: 0.2 },
+        { name: "category", weight: 0.12 },
+        { name: "tags", weight: 0.12 },
+        { name: "dateLabel", weight: 0.06 },
+        { name: "body", weight: 0.2 },
+      ],
+      threshold: 0.4,
+      ignoreLocation: true,
+      minMatchCharLength: 3,
+    });
+  }, [articles, searchIndex]);
 
   // Filtrage combiné : catégorie + recherche
   const filtered = useMemo(() => {

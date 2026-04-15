@@ -1,5 +1,6 @@
 import { Children, isValidElement, type ReactNode } from "react";
 import CopyButton from "./CopyButton";
+import { highlightCode } from "@/lib/shiki";
 
 /**
  * Briques typographiques réutilisables pour les articles.
@@ -76,14 +77,20 @@ interface CodeBlockProps {
   children: string;
   lang?: string;
 }
-export function CodeBlock({ children, lang }: CodeBlockProps) {
+/**
+ * Coloration SSR via Shiki : l'async Server Component génère le HTML coloré
+ * au build / request time, zéro JS côté client.
+ * Le CopyButton reste interactif (client) mais reçoit le texte brut.
+ */
+export async function CodeBlock({ children, lang }: CodeBlockProps) {
+  const html = await highlightCode(children, lang);
+
   return (
     <div className="group relative my-8">
       <CopyButton text={children} />
-      <pre
-        className="overflow-x-auto rounded-2xl border p-5 text-[13px] leading-relaxed"
+      <div
+        className="shiki-block overflow-hidden rounded-2xl border"
         style={{
-          background: "var(--elevated)",
           borderColor: "var(--border-strong)",
         }}
         tabIndex={0}
@@ -91,12 +98,15 @@ export function CodeBlock({ children, lang }: CodeBlockProps) {
         aria-label={lang ? `Bloc de code ${lang}` : "Bloc de code"}
       >
         {lang && (
-          <div className="mb-3 font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]">
+          <div className="px-5 pt-5 font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]">
             {lang}
           </div>
         )}
-        <code className="font-mono text-[var(--fg)]">{children}</code>
-      </pre>
+        <div
+          className="shiki-content font-mono text-[13px] leading-relaxed"
+          dangerouslySetInnerHTML={{ __html: html }}
+        />
+      </div>
     </div>
   );
 }

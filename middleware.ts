@@ -39,6 +39,9 @@ function buildCsp(nonce: string, isDev: boolean): string {
     // HMR WebSocket en dev
     isDev ? "ws:" : "",
     isDev ? "wss:" : "",
+    // Beacon GoatCounter (analytics RGPD, sans cookie)
+    "https://gc.zgo.at",
+    "https://*.goatcounter.com",
   ].filter(Boolean);
 
   const directives: Record<string, string[]> = {

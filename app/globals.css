@@ -671,3 +671,25 @@ body {
   transform: translateY(0);
   outline: none;
 }
+
+/* Shiki dual-theme : par défaut on est en dark (voir :root).
+   La classe .light sur <html> force le thème clair. */
+.shiki-content pre.shiki {
+  overflow-x: auto;
+  padding: 1.25rem;
+  margin: 0;
+  background-color: var(--shiki-dark-bg);
+  color: var(--shiki-dark);
+}
+.shiki-content pre.shiki span {
+  color: var(--shiki-dark);
+  background-color: var(--shiki-dark-bg);
+}
+:root.light .shiki-content pre.shiki {
+  background-color: var(--shiki-light-bg);
+  color: var(--shiki-light);
+}
+:root.light .shiki-content pre.shiki span {
+  color: var(--shiki-light);
+  background-color: var(--shiki-light-bg);
+}

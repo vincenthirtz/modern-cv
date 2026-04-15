@@ -70,6 +70,12 @@ export default function ArticleLayout({
               {article.category}
             </span>
             <span className="text-[var(--fg-muted)]">{article.dateLabel}</span>
+            {article.updatedAtLabel && (
+              <>
+                <span className="text-[var(--fg-dim)]">·</span>
+                <span className="text-[var(--fg-muted)]">Mis à jour {article.updatedAtLabel}</span>
+              </>
+            )}
             <span className="text-[var(--fg-dim)]">·</span>
             <span className="text-[var(--fg-muted)]">{displayedReadTime} de lecture</span>
             {article.tags.length > 0 && (

@@ -106,7 +106,11 @@ function computeStats(filePath) {
     else bodyPreview += "…";
   }
   const headings = extractHeadings(raw);
-  return { wordCount, readTime, bodyPreview, headings };
+  // Texte complet pour l'index de recherche full-text (Fuse.js).
+  // Normalisé et borné à ~8000 caractères pour garder le bundle raisonnable.
+  const SEARCH_MAX = 8000;
+  const searchText = text.length > SEARCH_MAX ? text.slice(0, SEARCH_MAX) : text;
+  return { wordCount, readTime, bodyPreview, headings, searchText };
 }
 
 const imports = [];
@@ -122,12 +126,14 @@ for (const file of mdxFiles) {
   imports.push(`import ${componentName}, { meta as ${metaName} } from "./${slug}.mdx";`);
   entries.push(`  { ...${metaName}, Content: ${componentName} },`);
 
-  const { wordCount, readTime, bodyPreview, headings } = computeStats(join(articlesDir, file));
+  const { wordCount, readTime, bodyPreview, headings, searchText } = computeStats(
+    join(articlesDir, file),
+  );
   const metaSlugMatch = readFileSync(join(articlesDir, file), "utf-8").match(
     /slug:\s*["']([^"']+)["']/,
   );
   const metaSlug = metaSlugMatch ? metaSlugMatch[1] : slug;
-  stats[metaSlug] = { wordCount, readTime, bodyPreview, headings };
+  stats[metaSlug] = { wordCount, readTime, bodyPreview, headings, searchText };
 }
 
 const content = `import type { ComponentType } from "react";
@@ -144,6 +150,10 @@ export interface ArticleMeta {
   date: string;
   /** Date affichée au format français */
   dateLabel: string;
+  /** Date ISO de dernière révision (optionnel, pour schema.org/dateModified) */
+  updatedAt?: string;
+  /** Date de révision affichée au format français */
+  updatedAtLabel?: string;
   readTime: string;
 }
 
@@ -213,6 +223,8 @@ export interface ArticleStats {
   bodyPreview: string;
   /** Sommaire extrait des headings ## et ### du MDX. */
   headings: TocHeading[];
+  /** Texte nettoyé complet (borné à ~8000 caractères) pour l'index de recherche full-text. */
+  searchText: string;
 }
 
 export const ARTICLE_STATS: Record<string, ArticleStats> = ${JSON.stringify(stats, null, 2)};
