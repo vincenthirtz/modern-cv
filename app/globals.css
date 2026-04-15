@@ -344,6 +344,43 @@ a {
   border-radius: 4px;
 }
 
+/* Contraste renforcé : bordures pleines, outline de focus plus épais */
+@media (prefers-contrast: more) {
+  :root {
+    --color-border: rgba(240, 239, 233, 0.35);
+    --color-border-strong: rgba(240, 239, 233, 0.6);
+    --border: rgba(240, 239, 233, 0.35);
+    --border-strong: rgba(240, 239, 233, 0.6);
+  }
+
+  html.light {
+    --color-border: rgba(10, 10, 11, 0.35);
+    --color-border-strong: rgba(10, 10, 11, 0.6);
+    --border: rgba(10, 10, 11, 0.35);
+    --border-strong: rgba(10, 10, 11, 0.6);
+  }
+
+  :focus-visible {
+    outline-width: 3px;
+    outline-offset: 3px;
+  }
+}
+
+/* Transparence réduite : supprime backdrop-filter et mix-blend, opacifie les fonds */
+@media (prefers-reduced-transparency: reduce) {
+  *,
+  *::before,
+  *::after {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    mix-blend-mode: normal !important;
+  }
+
+  .bg-noise {
+    display: none !important;
+  }
+}
+
 /* Fade vertical doux au top et au bottom des sections — adoucit les transitions */
 .section-fade {
   -webkit-mask-image: linear-gradient(
