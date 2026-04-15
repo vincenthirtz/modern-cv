@@ -1,7 +1,10 @@
 import { ImageResponse } from "next/og";
 import { getArticleBySlug } from "@/lib/articles";
 
-export const runtime = "edge";
+// Runtime nodejs (pas edge) : satori doit pouvoir fetcher l'image de couverture
+// Unsplash pendant la génération. L'edge runtime Netlify avait des problèmes
+// de fetch qui faisaient planter la route en 500.
+export const runtime = "nodejs";
 export const alt = "Article — Vincent Hirtz";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
@@ -27,11 +30,26 @@ export default async function OgImage({ params }: { params: Promise<{ slug: stri
   const cover = article?.cover;
   const { accent, glow } = CATEGORY_ACCENTS[category] ?? DEFAULT_ACCENT;
 
-  // Si un cover est défini, on l'utilise en fond obscurci (via linear-gradient
-  // en overlay noir) ; sinon on retombe sur le gradient coloré par catégorie.
-  const background = cover
-    ? `linear-gradient(135deg, rgba(10,10,11,0.85) 0%, rgba(10,10,11,0.65) 100%), url(${cover})`
-    : `radial-gradient(circle at 85% 20%, ${glow} 0%, transparent 55%), linear-gradient(135deg, #0a0a0b 0%, #1a1a2e 50%, #0a0a0b 100%)`;
+  // Pré-fetch l'image Unsplash en data URL — si le fetch échoue (bot-check,
+  // timeout…), on retombe gracieusement sur le gradient de catégorie au lieu
+  // de faire planter la route en 500.
+  let coverDataUrl: string | undefined;
+  if (cover) {
+    try {
+      const res = await fetch(cover, {
+        headers: { "User-Agent": "Mozilla/5.0 vincenthirtz.fr-og" },
+      });
+      if (res.ok) {
+        const buf = await res.arrayBuffer();
+        const contentTypeHeader = res.headers.get("content-type") ?? "image/jpeg";
+        coverDataUrl = `data:${contentTypeHeader};base64,${Buffer.from(buf).toString("base64")}`;
+      }
+    } catch {
+      // Fallback au gradient — on logge silencieusement pour ne pas casser la route
+    }
+  }
+
+  const fallbackBackground = `radial-gradient(circle at 85% 20%, ${glow} 0%, transparent 55%), linear-gradient(135deg, #0a0a0b 0%, #1a1a2e 50%, #0a0a0b 100%)`;
 
   return new ImageResponse(
     <div
@@ -42,115 +60,155 @@ export default async function OgImage({ params }: { params: Promise<{ slug: stri
         flexDirection: "column",
         justifyContent: "space-between",
         padding: "60px 80px",
-        background,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
+        background: fallbackBackground,
         fontFamily: "system-ui, sans-serif",
         color: "#f5f5f5",
+        position: "relative",
       }}
     >
-      {/* Top — logo + category */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <div
-          style={{
-            fontSize: 48,
-            fontWeight: 700,
-            letterSpacing: "-0.04em",
-            fontFamily: "monospace",
-          }}
-        >
-          VH<span style={{ color: accent }}>.</span>
-        </div>
-        {category && (
+      {coverDataUrl && (
+        <>
+          <img
+            src={coverDataUrl}
+            alt=""
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              zIndex: 0,
+            }}
+          />
           <div
             style={{
-              display: "flex",
-              alignItems: "center",
-              border: `1px solid ${accent}55`,
-              borderRadius: 999,
-              padding: "8px 20px",
-              fontSize: 14,
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              background:
+                "linear-gradient(135deg, rgba(10,10,11,0.85) 0%, rgba(10,10,11,0.65) 100%)",
+              zIndex: 1,
+            }}
+          />
+        </>
+      )}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 2,
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+        }}
+      >
+        {/* Top — logo + category */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div
+            style={{
+              fontSize: 48,
+              fontWeight: 700,
+              letterSpacing: "-0.04em",
               fontFamily: "monospace",
-              textTransform: "uppercase",
-              letterSpacing: "0.15em",
-              color: accent,
             }}
           >
-            {category}
+            VH<span style={{ color: accent }}>.</span>
           </div>
-        )}
-      </div>
-
-      {/* Center — title + excerpt */}
-      <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-        <div
-          style={{
-            fontSize: 56,
-            fontWeight: 400,
-            lineHeight: 1.15,
-            letterSpacing: "-0.02em",
-            maxWidth: 980,
-            color: accent,
-          }}
-        >
-          {title}
-        </div>
-        {excerpt && (
-          <div
-            style={{
-              fontSize: 22,
-              lineHeight: 1.4,
-              maxWidth: 900,
-              color: "rgba(245,245,245,0.7)",
-              display: "-webkit-box",
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: "vertical",
-              overflow: "hidden",
-            }}
-          >
-            {excerpt}
-          </div>
-        )}
-      </div>
-
-      {/* Bottom — tags + author + read time */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
-          {tags.slice(0, 4).map((tag) => (
+          {category && (
             <div
-              key={tag}
               style={{
                 display: "flex",
                 alignItems: "center",
-                border: "1px solid rgba(245,245,245,0.15)",
+                border: `1px solid ${accent}55`,
                 borderRadius: 999,
-                padding: "6px 14px",
+                padding: "8px 20px",
                 fontSize: 14,
                 fontFamily: "monospace",
-                color: "rgba(245,245,245,0.55)",
+                textTransform: "uppercase",
+                letterSpacing: "0.15em",
+                color: accent,
               }}
             >
-              #{tag}
-            </div>
-          ))}
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-          <div style={{ fontSize: 16, color: "rgba(245,245,245,0.5)" }}>vincenthirtz.fr</div>
-          {readTime && (
-            <div
-              style={{
-                fontSize: 14,
-                fontFamily: "monospace",
-                color: "rgba(245,245,245,0.4)",
-                letterSpacing: "0.1em",
-                padding: "6px 12px",
-                border: "1px solid rgba(245,245,245,0.15)",
-                borderRadius: 999,
-              }}
-            >
-              {readTime}
+              {category}
             </div>
           )}
+        </div>
+
+        {/* Center — title + excerpt */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+          <div
+            style={{
+              fontSize: 56,
+              fontWeight: 400,
+              lineHeight: 1.15,
+              letterSpacing: "-0.02em",
+              maxWidth: 980,
+              color: accent,
+            }}
+          >
+            {title}
+          </div>
+          {excerpt && (
+            <div
+              style={{
+                fontSize: 22,
+                lineHeight: 1.4,
+                maxWidth: 900,
+                color: "rgba(245,245,245,0.7)",
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+              }}
+            >
+              {excerpt}
+            </div>
+          )}
+        </div>
+
+        {/* Bottom — tags + author + read time */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+            {tags.slice(0, 4).map((tag) => (
+              <div
+                key={tag}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  border: "1px solid rgba(245,245,245,0.15)",
+                  borderRadius: 999,
+                  padding: "6px 14px",
+                  fontSize: 14,
+                  fontFamily: "monospace",
+                  color: "rgba(245,245,245,0.55)",
+                }}
+              >
+                #{tag}
+              </div>
+            ))}
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+            <div style={{ fontSize: 16, color: "rgba(245,245,245,0.5)" }}>vincenthirtz.fr</div>
+            {readTime && (
+              <div
+                style={{
+                  fontSize: 14,
+                  fontFamily: "monospace",
+                  color: "rgba(245,245,245,0.4)",
+                  letterSpacing: "0.1em",
+                  padding: "6px 12px",
+                  border: "1px solid rgba(245,245,245,0.15)",
+                  borderRadius: 999,
+                }}
+              >
+                {readTime}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>,
