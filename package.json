@@ -16,6 +16,7 @@
     "test": "npx playwright test",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",
+    "test:cov": "vitest run --coverage",
     "analyze": "ANALYZE=true next build",
     "prepare": "husky"
   },
@@ -52,6 +53,7 @@
     "@types/node": "^25.6.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "@vitest/coverage-v8": "^4.1.4",
     "eslint": "^9.28.0",
     "eslint-config-next": "^16.2.3",
     "eslint-config-prettier": "^10.1.8",

@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { getLikes, incrementLikes } from "@/lib/likes-store";
+import { rateLimit } from "@/lib/rate-limit";
 
 /**
  * API de likes anonymes par article.
@@ -9,9 +10,21 @@ import { getLikes, incrementLikes } from "@/lib/likes-store";
  *
  * GET  /api/likes?slug=mon-article   → { likes: 42 }
  * POST /api/likes { slug: "mon-article" } → { likes: 43 }
+ *
+ * Rate limit : 10 POST / min / IP, 60 GET / min / IP.
  */
 
+function rateLimited(retryAfter: number) {
+  return NextResponse.json(
+    { error: "Too many requests" },
+    { status: 429, headers: { "Retry-After": String(retryAfter) } },
+  );
+}
+
 export async function GET(request: NextRequest) {
+  const rl = rateLimit(request, { limit: 60, windowMs: 60_000, key: "likes:get" });
+  if (!rl.ok) return rateLimited(rl.retryAfter);
+
   const slug = request.nextUrl.searchParams.get("slug");
 
   if (!slug) {
@@ -23,6 +36,9 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const rl = rateLimit(request, { limit: 10, windowMs: 60_000, key: "likes:post" });
+  if (!rl.ok) return rateLimited(rl.retryAfter);
+
   let slug: string;
   try {
     const body = await request.json();

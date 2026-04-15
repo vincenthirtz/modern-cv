@@ -9,3 +9,4 @@ next-env.d.ts
 data/
 .claude/settings.json
 test-results/
+coverage

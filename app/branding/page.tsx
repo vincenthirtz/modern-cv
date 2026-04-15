@@ -1,8 +1,21 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import BrandingGrid from "@/components/BrandingGrid";
-import ComponentStories from "@/components/ComponentStories";
 import JsonLd from "@/components/JsonLd";
+
+// Storybook lourd (~660 lignes, beaucoup d'état interactif) — chargé à la demande
+// pour ne pas pénaliser le bundle initial de /branding.
+const ComponentStories = dynamic(() => import("@/components/ComponentStories"), {
+  loading: () => (
+    <div
+      aria-busy="true"
+      className="skeleton h-96 w-full"
+      role="status"
+      aria-label="Chargement du storybook"
+    />
+  ),
+});
 
 export const metadata: Metadata = {
   title: "Branding — Vincent Hirtz",

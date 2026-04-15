@@ -9,6 +9,13 @@ import {
   type Article,
   type ArticleMeta,
 } from "@/lib/articles";
+import { getArticleStats } from "@/lib/articles/stats.generated";
+
+/** Convertit "~5 min" en durée ISO 8601 "PT5M" pour schema.org/timeRequired. */
+function toIsoDuration(readTime: string): string | undefined {
+  const m = readTime.match(/(\d+)/);
+  return m ? `PT${m[1]}M` : undefined;
+}
 
 /** Extrait la partie sérialisable d'un article (sans le composant Content). */
 function toMeta(article: Article): ArticleMeta {
@@ -107,7 +114,10 @@ export default async function NotePage({ params }: PageProps) {
     ],
   };
 
-  const articleJsonLd = {
+  const stats = getArticleStats(article.slug);
+  const timeRequired = toIsoDuration(article.readTime);
+
+  const articleJsonLd: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     "@id": `https://vincenthirtz.fr/notes/${article.slug}#article`,
@@ -127,6 +137,7 @@ export default async function NotePage({ params }: PageProps) {
     },
     image: `https://vincenthirtz.fr/notes/${article.slug}/opengraph-image`,
     keywords: [article.category, ...article.tags],
+    articleSection: article.category,
     inLanguage: "fr",
     isPartOf: {
       "@type": "Blog",
@@ -136,11 +147,24 @@ export default async function NotePage({ params }: PageProps) {
     },
   };
 
+  if (stats) {
+    articleJsonLd.wordCount = stats.wordCount;
+    articleJsonLd.articleBody = stats.bodyPreview;
+  }
+  if (timeRequired) {
+    articleJsonLd.timeRequired = timeRequired;
+  }
+
   return (
     <main className="relative z-[2]">
       <JsonLd data={breadcrumbJsonLd} />
       <JsonLd data={articleJsonLd} />
-      <ArticleLayout article={toMeta(article)} related={related}>
+      <ArticleLayout
+        article={toMeta(article)}
+        related={related}
+        headings={stats?.headings}
+        readTime={stats?.readTime}
+      >
         <Content />
       </ArticleLayout>
     </main>

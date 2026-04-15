@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Sans, Instrument_Serif, JetBrains_Mono } from "next/font/google";
+import { headers } from "next/headers";
 import EffectsProvider from "@/components/EffectsProvider";
 import A11yAnnouncer from "@/components/A11yAnnouncer";
 
@@ -80,7 +81,9 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // Nonce CSP généré par middleware.ts ; passé à chaque <script> inline.
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
   return (
     <html
       lang="fr"
@@ -93,6 +96,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Dé-enregistrement du Service Worker (supprimé — causait des bugs de navigation).
             Nettoie les SW existants chez les visiteurs qui l'avaient déjà installé. */}
         <script
+          nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: `if("serviceWorker"in navigator){navigator.serviceWorker.getRegistrations().then(function(r){r.forEach(function(s){s.unregister()})})}`,
           }}
@@ -109,6 +113,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             removeChild/insertBefore pour le cas "wrong parent" (NotFoundError).
             Ref: vercel/next.js#58055, github.com/vercel/next.js/discussions/70048 */}
         <script
+          nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: `(function(){var H={TITLE:1,LINK:1,META:1,STYLE:1};var noop={removeChild:function(c){return c},insertBefore:function(n){return n}};var d=Object.getOwnPropertyDescriptor(Node.prototype,"parentNode");if(d&&d.get){var g=d.get;Object.defineProperty(Node.prototype,"parentNode",{get:function(){var p=g.call(this);if(p===null&&this.nodeName&&H[this.nodeName])return noop;return p},configurable:true})}var o=Node.prototype.removeChild;Node.prototype.removeChild=function(c){if(c.parentNode!==this)return c;return o.call(this,c)};var i=Node.prototype.insertBefore;Node.prototype.insertBefore=function(n,r){if(r&&r.parentNode!==this)return n;return i.call(this,n,r)}})();`,
           }}
@@ -128,6 +133,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         {/* Évite le flash en chargeant la préférence avant le rendu React */}
         <script
+          nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: `
               try {
@@ -144,6 +150,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* JSON-LD WebSite schema pour Google rich results */}
         <script
           type="application/ld+json"
+          nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
@@ -166,6 +173,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* JSON-LD Person schema pour Google rich results */}
         <script
           type="application/ld+json"
+          nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
@@ -214,6 +222,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       >
         {/* Mise à jour des variables de polices pour matcher next/font */}
         <style
+          nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: `:root{--font-sans:var(--font-dm-sans),ui-sans-serif,system-ui,sans-serif;--font-serif:var(--font-instrument-serif),ui-serif,Georgia,serif;--font-mono:var(--font-jetbrains-mono),ui-monospace,Menlo,monospace}`,
           }}

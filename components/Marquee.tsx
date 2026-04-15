@@ -18,8 +18,13 @@ export default function Marquee({ items, speed = 40, className = "", separator }
 
   return (
     <div
-      className={`relative w-full overflow-hidden border-y py-6 ${className}`}
+      className={`marquee-container relative w-full overflow-hidden border-y py-6 ${className}`}
       style={{ borderColor: "var(--border)" }}
+      // Pause animation au survol clavier/souris pour la lisibilité.
+      // prefers-reduced-motion désactive globalement l'animation via globals.css.
+      tabIndex={0}
+      role="marquee"
+      aria-label="Bande défilante"
     >
       <div className="flex w-max animate-marquee" style={{ animationDuration: `${speed}s` }}>
         {[0, 1].map((dup) => (

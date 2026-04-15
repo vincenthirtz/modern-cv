@@ -229,6 +229,10 @@ body {
 .animate-marquee {
   animation: marquee 40s linear infinite;
 }
+.marquee-container:hover .animate-marquee,
+.marquee-container:focus-within .animate-marquee {
+  animation-play-state: paused;
+}
 
 /* Utilitaires polices */
 .font-serif {

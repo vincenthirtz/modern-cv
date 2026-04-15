@@ -1,73 +1,50 @@
-"use client";
-
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { useEffect, useRef, useState } from "react";
 import type { ArticleMeta } from "@/lib/articles";
+import type { TocHeading } from "@/lib/articles/stats.generated";
 import AnimatedText from "./AnimatedText";
 import ShareButtons from "./ShareButtons";
 import TableOfContents from "./TableOfContents";
 import LikeButton from "./LikeButton";
+import ReadingProgress from "./ReadingProgress";
 
 interface ArticleLayoutProps {
   article: ArticleMeta;
   /** Contenu rendu côté serveur, passé en children pour rester sérialisable */
   children: ReactNode;
   related?: ArticleMeta[];
+  /** Headings extraits au build pour le sommaire (sinon scrape DOM côté client) */
+  headings?: TocHeading[];
+  /** ReadTime calculé au build (override la valeur statique de meta) */
+  readTime?: string;
 }
 
 /**
  * Layout commun à tous les articles : header (breadcrumb, méta, titre),
  * barre de progression de lecture, contenu, footer (navigation).
+ *
+ * Server Component par défaut ; les bouts interactifs sont isolés
+ * (ReadingProgress, TableOfContents, LikeButton, ShareButtons).
  */
-export default function ArticleLayout({ article, children, related = [] }: ArticleLayoutProps) {
-  const progressRef = useRef<HTMLDivElement>(null);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Barre de progression de lecture
-  useEffect(() => {
-    function onScroll() {
-      if (!progressRef.current) return;
-      const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-      const max = scrollHeight - clientHeight;
-      const progress = max <= 0 ? 0 : scrollTop / max;
-      progressRef.current.style.transform = `scaleX(${progress})`;
-    }
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+export default function ArticleLayout({
+  article,
+  children,
+  related = [],
+  headings,
+  readTime,
+}: ArticleLayoutProps) {
+  const displayedReadTime = readTime ?? article.readTime;
 
   return (
     <article className="relative">
-      {/* Barre de progression de lecture */}
-      <div
-        ref={progressRef}
-        aria-hidden
-        className="fixed top-0 left-0 right-0 z-[60] h-[2px] origin-left"
-        style={{
-          transform: "scaleX(0)",
-          transition: "transform 0.1s linear",
-          background: "linear-gradient(to right, var(--color-accent), var(--color-accent-soft))",
-        }}
-      />
+      <ReadingProgress />
 
       {/* Header */}
       <header className="relative pt-32 pb-16 px-6 sm:pt-40">
         <div className="mx-auto max-w-3xl">
-          {/* Breadcrumb */}
           <nav
             aria-label="Fil d'ariane"
-            className="mb-10 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]"
-            style={{
-              opacity: mounted ? 1 : 0,
-              transform: mounted ? "translateY(0)" : "translateY(10px)",
-              transition: "opacity 0.5s ease, transform 0.5s ease",
-            }}
+            className="anim-fade-up mb-10 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]"
           >
             <Link href="/" className="transition-colors hover:text-[var(--color-accent)]">
               Accueil
@@ -82,14 +59,9 @@ export default function ArticleLayout({ article, children, related = [] }: Artic
             </span>
           </nav>
 
-          {/* Méta */}
           <div
-            className="mb-6 flex flex-wrap items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em]"
-            style={{
-              opacity: mounted ? 1 : 0,
-              transform: mounted ? "translateY(0)" : "translateY(10px)",
-              transition: "opacity 0.5s ease 0.1s, transform 0.5s ease 0.1s",
-            }}
+            className="anim-fade-up mb-6 flex flex-wrap items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em]"
+            style={{ animationDelay: "0.1s" }}
           >
             <span
               className="rounded-full border px-3 py-1 text-[var(--color-accent)]"
@@ -99,7 +71,7 @@ export default function ArticleLayout({ article, children, related = [] }: Artic
             </span>
             <span className="text-[var(--fg-muted)]">{article.dateLabel}</span>
             <span className="text-[var(--fg-dim)]">·</span>
-            <span className="text-[var(--fg-muted)]">{article.readTime} de lecture</span>
+            <span className="text-[var(--fg-muted)]">{displayedReadTime} de lecture</span>
             {article.tags.length > 0 && (
               <>
                 <span className="text-[var(--fg-dim)]">·</span>
@@ -116,7 +88,6 @@ export default function ArticleLayout({ article, children, related = [] }: Artic
             )}
           </div>
 
-          {/* Titre animé */}
           <AnimatedText
             el="h1"
             text={article.title}
@@ -131,29 +102,23 @@ export default function ArticleLayout({ article, children, related = [] }: Artic
       <div className="relative px-6 pb-32">
         <div className="mx-auto max-w-5xl lg:grid lg:grid-cols-[1fr_220px] lg:gap-12">
           <div
-            className="max-w-3xl"
-            style={{
-              opacity: mounted ? 1 : 0,
-              transform: mounted ? "translateY(0)" : "translateY(20px)",
-              transition: "opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s",
-            }}
+            className="anim-fade-up max-w-3xl"
+            style={{ animationDelay: "0.3s", animationDuration: "0.6s" }}
           >
             {children}
           </div>
 
-          {/* Sidebar TOC — visible uniquement sur grand écran */}
           <aside className="hidden lg:block">
             <div className="sticky top-28">
-              <TableOfContents />
+              <TableOfContents headings={headings} />
             </div>
           </aside>
         </div>
       </div>
 
-      {/* Footer : signature + autres notes */}
+      {/* Footer */}
       <footer className="relative border-t px-6 py-20" style={{ borderColor: "var(--border)" }}>
         <div className="mx-auto max-w-3xl">
-          {/* Signature + like + partage */}
           <div className="mb-16 flex flex-wrap items-center justify-between gap-6">
             <div className="flex items-center gap-4">
               <div
@@ -178,13 +143,12 @@ export default function ArticleLayout({ article, children, related = [] }: Artic
             </div>
           </div>
 
-          {/* Articles liés */}
           {related.length > 0 && (
             <>
               <div className="mb-6 flex items-center gap-3">
                 <span className="block h-[1px] w-10 bg-[var(--border-strong)]" />
                 <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
-                  D'autres notes
+                  D&apos;autres notes
                 </span>
               </div>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">

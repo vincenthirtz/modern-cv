@@ -1,3 +1,11 @@
+# Régénère lib/articles/index.ts + stats.generated.ts si un .mdx d'articles
+# est dans le diff. Évite les incohérences silencieuses (nouvel article
+# committé sans index/stats à jour).
+if git diff --cached --name-only | grep -q '^lib/articles/.*\.mdx$'; then
+  npm run articles:generate || exit 1
+  git add lib/articles/index.ts lib/articles/stats.generated.ts
+fi
+
 npx lint-staged || exit 1
 npm run typecheck || exit 1
 npm run test:unit || exit 1
