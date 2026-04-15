@@ -70,11 +70,15 @@ export default function ArticleLayout({
             >
               {article.category}
             </span>
-            <span className="text-[var(--fg-muted)]">{article.dateLabel}</span>
+            <time dateTime={article.date} className="text-[var(--fg-muted)]">
+              {article.dateLabel}
+            </time>
             {article.updatedAtLabel && (
               <>
                 <span className="text-[var(--fg-dim)]">·</span>
-                <span className="text-[var(--fg-muted)]">Mis à jour {article.updatedAtLabel}</span>
+                <time dateTime={article.updatedAt} className="text-[var(--fg-muted)]">
+                  Mis à jour {article.updatedAtLabel}
+                </time>
               </>
             )}
             <span className="text-[var(--fg-dim)]">·</span>
@@ -210,7 +214,7 @@ export default function ArticleLayout({
                 {related.map((rel) => (
                   <Link key={rel.slug} href={`/notes/${rel.slug}`} className="card group block p-6">
                     <div className="font-mono text-[10px] uppercase tracking-widest text-[var(--color-accent)]">
-                      {rel.category} · {rel.dateLabel}
+                      {rel.category} · <time dateTime={rel.date}>{rel.dateLabel}</time>
                     </div>
                     <h3 className="mt-2 font-serif text-xl leading-tight transition-colors group-hover:text-[var(--color-accent)]">
                       {rel.title}

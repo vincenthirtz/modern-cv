@@ -51,9 +51,12 @@ export default function Blog() {
                   >
                     {article.category}
                   </span>
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-muted)]">
+                  <time
+                    dateTime={article.date}
+                    className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-muted)]"
+                  >
                     {article.dateLabel}
-                  </span>
+                  </time>
                 </div>
                 <h3 className="font-serif text-2xl leading-tight transition-colors group-hover:text-[var(--color-accent)]">
                   {article.title}
