@@ -10,7 +10,7 @@ export default function ArticleNotFound() {
       {/* Label */}
       <div className="mb-8 flex items-center gap-3">
         <span className="block h-[1px] w-10 bg-[var(--color-accent)]" />
-        <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
+        <span className="font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
           Article introuvable
         </span>
         <span className="block h-[1px] w-10 bg-[var(--color-accent)]" />

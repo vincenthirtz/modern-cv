@@ -58,7 +58,7 @@ export default function Footer() {
             </div>
 
             <div className="mt-4 flex items-center gap-2">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]">
+              <span className="font-mono text-[0.625rem] uppercase tracking-widest text-[var(--fg-dim)]">
                 Lyon, France
               </span>
               <FooterClock />
@@ -90,7 +90,7 @@ export default function Footer() {
             <BackToTopButton />
 
             <div
-              className="group cursor-default font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]"
+              className="group cursor-default font-mono text-[0.625rem] uppercase tracking-widest text-[var(--fg-dim)]"
               title="Konami Code"
             >
               <span className="opacity-0 transition-opacity group-hover:opacity-100">

@@ -75,7 +75,7 @@ export default function About() {
               className="flex h-full flex-col rounded-2xl border p-6"
               style={{ borderColor: "var(--border-strong)", background: "var(--elevated)" }}
             >
-              <h3 className="mb-5 font-mono text-[11px] uppercase tracking-widest text-[var(--fg-muted)]">
+              <h3 className="mb-5 font-mono text-[0.6875rem] uppercase tracking-widest text-[var(--fg-muted)]">
                 Dernières notes
               </h3>
               <ul className="flex flex-1 flex-col gap-4">
@@ -88,12 +88,12 @@ export default function About() {
                     >
                       <div className="flex items-center justify-between gap-2">
                         <span
-                          className="rounded-full border px-2 py-0.5 font-mono text-[9px] uppercase tracking-widest text-[var(--color-accent)]"
+                          className="rounded-full border px-2 py-0.5 font-mono text-[0.5625rem] uppercase tracking-widest text-[var(--color-accent)]"
                           style={{ borderColor: "var(--color-accent)" }}
                         >
                           {article.category}
                         </span>
-                        <span className="font-mono text-[9px] text-[var(--fg-dim)]">
+                        <span className="font-mono text-[0.5625rem] text-[var(--fg-dim)]">
                           {article.readTime}
                         </span>
                       </div>
@@ -106,7 +106,7 @@ export default function About() {
               </ul>
               <Link
                 href="/notes"
-                className="mt-5 inline-flex items-center gap-1.5 self-end font-mono text-[10px] uppercase tracking-widest text-[var(--fg-muted)] transition-colors hover:text-[var(--color-accent)]"
+                className="mt-5 inline-flex items-center gap-1.5 self-end font-mono text-[0.625rem] uppercase tracking-widest text-[var(--fg-muted)] transition-colors hover:text-[var(--color-accent)]"
               >
                 Toutes les notes <span>→</span>
               </Link>

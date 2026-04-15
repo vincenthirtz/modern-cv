@@ -92,7 +92,7 @@ export default function CVPage() {
       <div className="cv-actions mx-auto mb-10 flex max-w-3xl items-center justify-between">
         <nav
           aria-label="Fil d'ariane"
-          className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]"
+          className="flex items-center gap-3 font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg-muted)]"
         >
           <Link href="/" className="transition-colors hover:text-[var(--color-accent)]">
             Accueil
@@ -104,7 +104,7 @@ export default function CVPage() {
           <a
             href="/cv.pdf"
             download="Vincent-Hirtz-CV.pdf"
-            className="rounded-full border px-4 py-2 font-mono text-[10px] uppercase tracking-widest transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            className="rounded-full border px-4 py-2 font-mono text-[0.625rem] uppercase tracking-widest transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
             style={{ borderColor: "var(--border-strong)" }}
           >
             Télécharger PDF

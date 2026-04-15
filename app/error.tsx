@@ -28,7 +28,7 @@ export default function GlobalError({ error, reset }: ErrorProps) {
         Une erreur inattendue est survenue. Vous pouvez réessayer ou revenir à l&apos;accueil.
       </p>
       {error.digest && (
-        <p className="mb-6 font-mono text-[11px] text-[var(--fg-dim)]">
+        <p className="mb-6 font-mono text-[0.6875rem] text-[var(--fg-dim)]">
           Référence : {error.digest}
         </p>
       )}

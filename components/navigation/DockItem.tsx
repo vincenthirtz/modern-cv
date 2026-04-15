@@ -38,7 +38,7 @@ export default function DockItem({
       onMouseLeave={() => onHover(null)}
     >
       <span
-        className="dock-tooltip pointer-events-none absolute -top-10 whitespace-nowrap rounded-lg border px-2.5 py-1 font-mono text-[11px] tracking-wide"
+        className="dock-tooltip pointer-events-none absolute -top-10 whitespace-nowrap rounded-lg border px-2.5 py-1 font-mono text-[0.6875rem] tracking-wide"
         style={{
           background: "var(--elevated)",
           borderColor: "var(--border-strong)",

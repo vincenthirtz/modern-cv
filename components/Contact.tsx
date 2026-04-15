@@ -75,7 +75,7 @@ export default function Contact() {
         <div className="mb-6 flex items-center gap-3">
           <span className="font-mono text-xs text-[var(--color-accent)]">07</span>
           <span className="block h-[1px] w-10 bg-[var(--border-strong)]" />
-          <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
+          <span className="font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
             Contact
           </span>
         </div>
@@ -110,7 +110,7 @@ export default function Contact() {
             <div>
               <label
                 htmlFor="name"
-                className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-muted)]"
+                className="font-mono text-[0.625rem] uppercase tracking-widest text-[var(--fg-muted)]"
               >
                 Nom
               </label>
@@ -129,7 +129,7 @@ export default function Contact() {
                 <p
                   id="name-error"
                   role="alert"
-                  className="mt-2 font-mono text-[11px] text-[#ff8a8a]"
+                  className="mt-2 font-mono text-[0.6875rem] text-[#ff8a8a]"
                 >
                   {errors.name}
                 </p>
@@ -138,7 +138,7 @@ export default function Contact() {
             <div>
               <label
                 htmlFor="email"
-                className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-muted)]"
+                className="font-mono text-[0.625rem] uppercase tracking-widest text-[var(--fg-muted)]"
               >
                 Email
               </label>
@@ -157,7 +157,7 @@ export default function Contact() {
                 <p
                   id="email-error"
                   role="alert"
-                  className="mt-2 font-mono text-[11px] text-[#ff8a8a]"
+                  className="mt-2 font-mono text-[0.6875rem] text-[#ff8a8a]"
                 >
                   {errors.email}
                 </p>
@@ -166,7 +166,7 @@ export default function Contact() {
             <div>
               <label
                 htmlFor="message"
-                className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-muted)]"
+                className="font-mono text-[0.625rem] uppercase tracking-widest text-[var(--fg-muted)]"
               >
                 Message
               </label>
@@ -185,7 +185,7 @@ export default function Contact() {
                 <p
                   id="message-error"
                   role="alert"
-                  className="mt-2 font-mono text-[11px] text-[#ff8a8a]"
+                  className="mt-2 font-mono text-[0.6875rem] text-[#ff8a8a]"
                 >
                   {errors.message}
                 </p>
@@ -219,7 +219,7 @@ export default function Contact() {
           {/* CTA email + socials */}
           <div className="space-y-8 lg:col-span-2">
             <div>
-              <div className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-muted)]">
+              <div className="font-mono text-[0.625rem] uppercase tracking-widest text-[var(--fg-muted)]">
                 Ou directement
               </div>
               <a
@@ -239,7 +239,7 @@ export default function Contact() {
             </div>
 
             <div>
-              <div className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-muted)]">
+              <div className="font-mono text-[0.625rem] uppercase tracking-widest text-[var(--fg-muted)]">
                 Réseaux
               </div>
               <ul className="mt-4 space-y-2">

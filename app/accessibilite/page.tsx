@@ -32,7 +32,7 @@ export default function AccessibilitePage() {
         {/* Fil d'Ariane */}
         <nav
           aria-label="Fil d'ariane"
-          className="mb-10 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]"
+          className="mb-10 flex items-center gap-3 font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg-muted)]"
         >
           <Link href="/" className="transition-colors hover:text-[var(--color-accent)]">
             Accueil
@@ -114,7 +114,7 @@ export default function AccessibilitePage() {
               <li>
                 <strong className="text-[var(--fg)]">Animations décoratives</strong> : les
                 transitions de texte et les effets de scroll sont désactivés via{" "}
-                <code className="rounded bg-[var(--elevated)] px-1.5 py-0.5 font-mono text-[11px]">
+                <code className="rounded bg-[var(--elevated)] px-1.5 py-0.5 font-mono text-[0.6875rem]">
                   prefers-reduced-motion
                 </code>
                 , mais une lecture fine peut nécessiter quelques secondes le temps que les éléments
@@ -128,7 +128,7 @@ export default function AccessibilitePage() {
               <li>
                 <strong className="text-[var(--fg)]">Marquee technologique</strong> : la bande
                 défilante de la page Expertise est dupliquée et marquée{" "}
-                <code className="rounded bg-[var(--elevated)] px-1.5 py-0.5 font-mono text-[11px]">
+                <code className="rounded bg-[var(--elevated)] px-1.5 py-0.5 font-mono text-[0.6875rem]">
                   aria-hidden
                 </code>{" "}
                 sur le second exemplaire. Sa vitesse n&apos;est pas modulable par

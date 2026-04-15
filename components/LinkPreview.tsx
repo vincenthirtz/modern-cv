@@ -125,7 +125,7 @@ export default function LinkPreview({ href, children }: LinkPreviewProps) {
                 className="h-2 w-2 animate-pulse rounded-full"
                 style={{ background: "var(--color-accent)" }}
               />
-              <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-muted)]">
+              <span className="font-mono text-[0.625rem] uppercase tracking-widest text-[var(--fg-muted)]">
                 Chargement...
               </span>
             </span>
@@ -146,7 +146,7 @@ export default function LinkPreview({ href, children }: LinkPreviewProps) {
               )}
               <span className="flex min-w-0 flex-1 flex-col gap-1">
                 {og.siteName && (
-                  <span className="font-mono text-[9px] uppercase tracking-widest text-[var(--color-accent)]">
+                  <span className="font-mono text-[0.5625rem] uppercase tracking-widest text-[var(--color-accent)]">
                     {og.siteName}
                   </span>
                 )}

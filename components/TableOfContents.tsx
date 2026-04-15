@@ -79,7 +79,7 @@ export default function TableOfContents({ headings: provided }: Props) {
 
   return (
     <nav aria-label="Table des matières" className="toc-nav">
-      <div className="mb-3 font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]">
+      <div className="mb-3 font-mono text-[0.625rem] uppercase tracking-widest text-[var(--fg-dim)]">
         Sommaire
       </div>
       <ul className="space-y-1">

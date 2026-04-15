@@ -61,7 +61,7 @@ export default function TopBar({ entered, dockVisible, onToggleDock }: Props) {
             aria-hidden="true"
           >
             <span className="pulse-dot inline-block h-1.5 w-1.5 rounded-full bg-green-500" />
-            <span className="font-mono text-[9px] uppercase tracking-widest text-[var(--fg-muted)]">
+            <span className="font-mono text-[0.5625rem] uppercase tracking-widest text-[var(--fg-muted)]">
               Disponible
             </span>
           </div>

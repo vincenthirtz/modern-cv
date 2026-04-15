@@ -115,7 +115,7 @@ export default function NotesFilters({ articles, searchIndex }: NotesFiltersProp
         <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => setActiveCategory(null)}
-            className={`rounded-full border px-3 py-1 font-mono text-[10px] uppercase tracking-widest transition-colors ${
+            className={`rounded-full border px-3 py-1 font-mono text-[0.625rem] uppercase tracking-widest transition-colors ${
               activeCategory === null
                 ? "border-[var(--color-accent)] text-[var(--color-accent)]"
                 : "text-[var(--fg-muted)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
@@ -130,7 +130,7 @@ export default function NotesFilters({ articles, searchIndex }: NotesFiltersProp
             <button
               key={cat}
               onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
-              className={`rounded-full border px-3 py-1 font-mono text-[10px] uppercase tracking-widest transition-colors ${
+              className={`rounded-full border px-3 py-1 font-mono text-[0.625rem] uppercase tracking-widest transition-colors ${
                 activeCategory === cat
                   ? "border-[var(--color-accent)] text-[var(--color-accent)]"
                   : "text-[var(--fg-muted)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
@@ -148,14 +148,14 @@ export default function NotesFilters({ articles, searchIndex }: NotesFiltersProp
         {/* Filtres par tag */}
         {allTags.length > 0 && (
           <div className="flex flex-wrap items-center gap-2">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]">
+            <span className="font-mono text-[0.625rem] uppercase tracking-widest text-[var(--fg-dim)]">
               Tags
             </span>
             {allTags.map((tag) => (
               <button
                 key={tag}
                 onClick={() => setActiveTag(activeTag === tag ? null : tag)}
-                className={`rounded-full border px-2.5 py-0.5 font-mono text-[10px] tracking-wide transition-colors ${
+                className={`rounded-full border px-2.5 py-0.5 font-mono text-[0.625rem] tracking-wide transition-colors ${
                   activeTag === tag
                     ? "border-[var(--color-accent)] text-[var(--color-accent)]"
                     : "text-[var(--fg-dim)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
@@ -204,7 +204,7 @@ export default function NotesFilters({ articles, searchIndex }: NotesFiltersProp
                   <div className="hidden sm:block" aria-hidden />
                 )}
                 <div>
-                  <div className="mb-3 flex flex-wrap items-center gap-3 font-mono text-[10px] uppercase tracking-[0.2em]">
+                  <div className="mb-3 flex flex-wrap items-center gap-3 font-mono text-[0.625rem] uppercase tracking-[0.2em]">
                     <span
                       className="rounded-full border px-3 py-1 text-[var(--color-accent)]"
                       style={{ borderColor: "var(--color-accent)" }}
@@ -224,7 +224,7 @@ export default function NotesFilters({ articles, searchIndex }: NotesFiltersProp
                       {article.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="rounded-full border px-2 py-0.5 font-mono text-[10px] tracking-wide text-[var(--fg-dim)]"
+                          className="rounded-full border px-2 py-0.5 font-mono text-[0.625rem] tracking-wide text-[var(--fg-dim)]"
                           style={{ borderColor: "var(--border)" }}
                         >
                           {tag}
@@ -232,7 +232,7 @@ export default function NotesFilters({ articles, searchIndex }: NotesFiltersProp
                       ))}
                     </div>
                   )}
-                  <div className="mt-4 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]">
+                  <div className="mt-4 inline-flex items-center gap-2 font-mono text-[0.625rem] uppercase tracking-widest text-[var(--fg-dim)]">
                     Lire l&apos;article{" "}
                     <span className="transition-transform group-hover:translate-x-1">→</span>
                   </div>
@@ -245,7 +245,7 @@ export default function NotesFilters({ articles, searchIndex }: NotesFiltersProp
 
       {/* Compteur de résultats */}
       {(query || activeCategory || activeTag) && filtered.length > 0 && (
-        <div className="mt-6 font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]">
+        <div className="mt-6 font-mono text-[0.625rem] uppercase tracking-widest text-[var(--fg-dim)]">
           {filtered.length} article{filtered.length > 1 ? "s" : ""} trouvé
           {filtered.length > 1 ? "s" : ""}
         </div>

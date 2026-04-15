@@ -71,14 +71,14 @@ export default function Story({
               className="h-1.5 w-1.5 rounded-full"
               style={{ background: "var(--color-accent)" }}
             />
-            <h3 className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg)]">
+            <h3 className="font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg)]">
               {name}
             </h3>
           </div>
-          <p className="mt-1 text-[13px] text-[var(--fg-muted)]">{description}</p>
+          <p className="mt-1 text-[0.8125rem] text-[var(--fg-muted)]">{description}</p>
         </div>
         <div
-          className="inline-flex rounded-lg border p-0.5 font-mono text-[10px] uppercase tracking-widest"
+          className="inline-flex rounded-lg border p-0.5 font-mono text-[0.625rem] uppercase tracking-widest"
           style={{ borderColor: "var(--border-strong)", background: "var(--ink-soft)" }}
           role="tablist"
           aria-label={`Vue ${name}`}
@@ -116,7 +116,7 @@ export default function Story({
           <button
             onClick={handleCopy}
             aria-label={copied ? "Code copié" : "Copier le code"}
-            className="absolute right-3 top-3 z-10 rounded-md border px-2 py-1 font-mono text-[10px] uppercase tracking-widest transition-colors"
+            className="absolute right-3 top-3 z-10 rounded-md border px-2 py-1 font-mono text-[0.625rem] uppercase tracking-widest transition-colors"
             style={{
               borderColor: "var(--border-strong)",
               background: "var(--elevated)",
@@ -126,7 +126,7 @@ export default function Story({
             {copied ? "Copié" : "Copier"}
           </button>
           <pre
-            className="overflow-x-auto p-5 font-mono text-[12px] leading-relaxed"
+            className="overflow-x-auto p-5 font-mono text-[0.75rem] leading-relaxed"
             style={{ background: "var(--ink)", color: "var(--fg-muted)" }}
           >
             <code>

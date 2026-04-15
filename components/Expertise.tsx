@@ -102,7 +102,7 @@ function SkillBar({ skill, parentInView }: { skill: Skill; parentInView: boolean
     <li ref={ref}>
       <div className="mb-1.5 flex items-center justify-between text-sm">
         <span>{skill.name}</span>
-        <span className="font-mono text-[10px] text-[var(--fg-dim)]">{skill.level}/5</span>
+        <span className="font-mono text-[0.625rem] text-[var(--fg-dim)]">{skill.level}/5</span>
       </div>
       {/* Jauge animée */}
       <div

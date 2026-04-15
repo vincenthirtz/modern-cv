@@ -92,7 +92,7 @@ export default function ThemeAccentStory() {
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
             </svg>
           </span>
-          <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]">
+          <span className="font-mono text-[0.625rem] uppercase tracking-widest text-[var(--fg-dim)]">
             Theme
           </span>
         </div>
@@ -105,7 +105,7 @@ export default function ThemeAccentStory() {
               <span key={c} className="block h-5 w-5 rounded-full" style={{ background: c }} />
             ))}
           </div>
-          <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]">
+          <span className="font-mono text-[0.625rem] uppercase tracking-widest text-[var(--fg-dim)]">
             Accents
           </span>
         </div>

@@ -78,7 +78,7 @@ export default function ProjectCard({ project, index, total, reversed }: Project
                   <span className="h-2 w-2 rounded-full bg-white/30" />
                   <span className="h-2 w-2 rounded-full bg-white/30" />
                 </div>
-                <div className="absolute right-4 bottom-4 font-mono text-[10px] uppercase tracking-widest text-white/60">
+                <div className="absolute right-4 bottom-4 font-mono text-[0.625rem] uppercase tracking-widest text-white/60">
                   {project.tags[0]}
                 </div>
               </div>
@@ -86,7 +86,7 @@ export default function ProjectCard({ project, index, total, reversed }: Project
 
             {/* Contenu */}
             <div style={{ transform: "translateZ(20px)" }}>
-              <div className="font-mono text-[10px] uppercase tracking-widest text-[var(--color-accent)]">
+              <div className="font-mono text-[0.625rem] uppercase tracking-widest text-[var(--color-accent)]">
                 {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
               </div>
               <h3 className="mt-3 font-serif text-4xl leading-tight md:text-5xl">{project.name}</h3>
@@ -98,7 +98,7 @@ export default function ProjectCard({ project, index, total, reversed }: Project
                 {project.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full border px-3 py-1 font-mono text-[10px] uppercase tracking-widest text-[var(--fg-muted)] transition-colors group-hover:border-[var(--color-accent)] group-hover:text-[var(--color-accent)]"
+                    className="rounded-full border px-3 py-1 font-mono text-[0.625rem] uppercase tracking-widest text-[var(--fg-muted)] transition-colors group-hover:border-[var(--color-accent)] group-hover:text-[var(--color-accent)]"
                     style={{ borderColor: "var(--border-strong)" }}
                   >
                     {tag}
@@ -109,7 +109,7 @@ export default function ProjectCard({ project, index, total, reversed }: Project
                 className="mt-6 flex items-center justify-between border-t pt-4"
                 style={{ borderColor: "var(--border)" }}
               >
-                <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]">
+                <span className="font-mono text-[0.625rem] uppercase tracking-widest text-[var(--fg-dim)]">
                   {project.role}
                 </span>
                 <a

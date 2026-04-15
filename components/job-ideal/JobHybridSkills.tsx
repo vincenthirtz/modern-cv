@@ -24,7 +24,7 @@ function SkillPanel({ inView, side, title, subtitle, items }: PanelProps) {
         transition: `opacity 0.6s ease ${side === "left" ? "0.1s" : "0.2s"}, transform 0.6s ease ${side === "left" ? "0.1s" : "0.2s"}`,
       }}
     >
-      <h4 className="mb-6 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)]">
+      <h4 className="mb-6 flex items-center gap-3 font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--color-accent)]">
         <span>{title}</span>
         <span className="block h-[1px] w-8 bg-[var(--color-accent)]/40" />
         <span className="text-[var(--fg-muted)]">{subtitle}</span>
@@ -56,7 +56,7 @@ export default function JobHybridSkills() {
           transition: "opacity 0.6s ease, transform 0.6s ease",
         }}
       >
-        <span className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
+        <span className="flex items-center gap-3 font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
           <span className="text-[var(--color-accent)]">✦</span>
           <span className="block h-[1px] w-6 bg-[var(--color-accent)]/40" />
           Ma double casquette

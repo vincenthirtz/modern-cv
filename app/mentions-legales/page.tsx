@@ -32,7 +32,7 @@ export default function MentionsLegalesPage() {
         {/* Fil d'Ariane */}
         <nav
           aria-label="Fil d'ariane"
-          className="mb-10 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]"
+          className="mb-10 flex items-center gap-3 font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg-muted)]"
         >
           <Link href="/" className="transition-colors hover:text-[var(--color-accent)]">
             Accueil

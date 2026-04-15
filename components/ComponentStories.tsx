@@ -15,14 +15,14 @@ export default function ComponentStories() {
     <section>
       <div className="mb-8 flex items-center gap-3">
         <span className="block h-[1px] w-10 bg-[var(--border-strong)]" />
-        <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
+        <span className="font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
           Composants · Storybook
         </span>
       </div>
       <p className="mb-8 max-w-2xl text-[var(--fg-muted)]">
         Les briques d&apos;interaction phares du site, isolées et jouables. Chaque composant gère
         lui-même l&apos;accessibilité et respecte{" "}
-        <code className="font-mono text-[12px] text-[var(--color-accent)]">
+        <code className="font-mono text-[0.75rem] text-[var(--color-accent)]">
           prefers-reduced-motion
         </code>
         .

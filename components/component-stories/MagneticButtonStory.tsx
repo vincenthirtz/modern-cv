@@ -70,7 +70,7 @@ export default function MagneticButtonStory() {
         <MagneticButton
           as="button"
           onClick={() => {}}
-          className="inline-flex items-center gap-2 rounded-full border px-5 py-2.5 font-mono text-[12px] uppercase tracking-widest"
+          className="inline-flex items-center gap-2 rounded-full border px-5 py-2.5 font-mono text-[0.75rem] uppercase tracking-widest"
           ariaLabel="Exemple bouton magnétique"
         >
           <span style={{ color: "var(--color-accent)", borderColor: "var(--border-strong)" }}>

@@ -49,7 +49,7 @@ export function H3({ children }: { children: ReactNode }) {
 
 export function P({ children }: { children: ReactNode }) {
   return (
-    <p className="my-5 text-base leading-relaxed text-[var(--fg-muted)] md:text-[17px] md:leading-[1.75]">
+    <p className="my-5 text-base leading-relaxed text-[var(--fg-muted)] md:text-[1.0625rem] md:leading-[1.75]">
       {children}
     </p>
   );
@@ -98,12 +98,12 @@ export async function CodeBlock({ children, lang }: CodeBlockProps) {
         aria-label={lang ? `Bloc de code ${lang}` : "Bloc de code"}
       >
         {lang && (
-          <div className="px-5 pt-5 font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]">
+          <div className="px-5 pt-5 font-mono text-[0.625rem] uppercase tracking-widest text-[var(--fg-dim)]">
             {lang}
           </div>
         )}
         <div
-          className="shiki-content font-mono text-[13px] leading-relaxed"
+          className="shiki-content font-mono text-[0.8125rem] leading-relaxed"
           dangerouslySetInnerHTML={{ __html: html }}
         />
       </div>
@@ -118,7 +118,7 @@ export function Quote({ children, cite }: { children: ReactNode; cite?: string }
         « {children} »
       </blockquote>
       {cite && (
-        <figcaption className="mt-3 font-mono text-[10px] uppercase tracking-widest text-[var(--fg-muted)]">
+        <figcaption className="mt-3 font-mono text-[0.625rem] uppercase tracking-widest text-[var(--fg-muted)]">
           — {cite}
         </figcaption>
       )}
@@ -128,7 +128,7 @@ export function Quote({ children, cite }: { children: ReactNode; cite?: string }
 
 export function UList({ children }: { children: ReactNode }) {
   return (
-    <ul className="my-6 space-y-2 pl-5 text-[var(--fg-muted)] md:text-[17px] md:leading-[1.75]">
+    <ul className="my-6 space-y-2 pl-5 text-[var(--fg-muted)] md:text-[1.0625rem] md:leading-[1.75]">
       {children}
     </ul>
   );
@@ -136,7 +136,7 @@ export function UList({ children }: { children: ReactNode }) {
 
 export function OList({ children }: { children: ReactNode }) {
   return (
-    <ol className="my-6 list-decimal space-y-2 pl-6 text-[var(--fg-muted)] md:text-[17px] md:leading-[1.75]">
+    <ol className="my-6 list-decimal space-y-2 pl-6 text-[var(--fg-muted)] md:text-[1.0625rem] md:leading-[1.75]">
       {children}
     </ol>
   );
@@ -165,13 +165,13 @@ export function Divider() {
 export function Note({ children }: { children: ReactNode }) {
   return (
     <aside
-      className="my-8 rounded-2xl border-l-2 p-5 text-sm md:text-[15px]"
+      className="my-8 rounded-2xl border-l-2 p-5 text-sm md:text-[0.9375rem]"
       style={{
         background: "var(--elevated)",
         borderColor: "var(--color-accent)",
       }}
     >
-      <div className="mb-1 font-mono text-[10px] uppercase tracking-widest text-[var(--color-accent)]">
+      <div className="mb-1 font-mono text-[0.625rem] uppercase tracking-widest text-[var(--color-accent)]">
         Note
       </div>
       <div className="text-[var(--fg-muted)]">{children}</div>

@@ -26,7 +26,7 @@ export default function JobSkillsTags() {
       {HYBRID_SKILLS.map((skill, i) => (
         <span
           key={skill}
-          className="rounded-full border px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.15em] text-[var(--fg-muted)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+          className="rounded-full border px-3 py-1.5 font-mono text-[0.6875rem] uppercase tracking-[0.15em] text-[var(--fg-muted)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
           style={{
             borderColor: "var(--border)",
             background: "color-mix(in oklab, var(--elevated) 40%, transparent)",

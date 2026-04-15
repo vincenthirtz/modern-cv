@@ -103,7 +103,7 @@ export default function SectionDivider({ number, next, variant = "line" }: Secti
         {(number || next) && (
           <div
             ref={labelRef}
-            className="mt-4 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--fg-muted)]"
+            className="mt-4 flex items-center gap-2 font-mono text-[0.625rem] uppercase tracking-[0.2em] text-[var(--fg-muted)]"
             style={{ opacity: 0 }}
           >
             <span className="block h-[1px] w-3 bg-[var(--color-accent)]" />

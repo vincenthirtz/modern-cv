@@ -72,7 +72,7 @@ export default function Hero() {
           style={{ opacity: 0, animation: "fade-in-left 0.8s ease forwards 0.3s" }}
         >
           <span className="block h-[1px] w-10 bg-[var(--color-accent)]" />
-          <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
+          <span className="font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
             Lead Developer Front-End · Lyon
           </span>
         </div>
@@ -180,7 +180,7 @@ export default function Hero() {
               <div className="font-serif text-5xl text-[var(--color-accent)] md:text-6xl">
                 <Counter to={metric.value} suffix={metric.suffix} />
               </div>
-              <div className="mt-2 font-mono text-[11px] uppercase tracking-widest text-[var(--fg-muted)]">
+              <div className="mt-2 font-mono text-[0.6875rem] uppercase tracking-widest text-[var(--fg-muted)]">
                 {metric.label}
               </div>
             </div>
@@ -193,7 +193,7 @@ export default function Hero() {
         className="absolute bottom-8 left-6 z-10 hidden items-center gap-3 sm:flex"
         style={{ opacity: 0, animation: "fade-in 1s ease forwards 2.2s" }}
       >
-        <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-muted)]">
+        <span className="font-mono text-[0.625rem] uppercase tracking-widest text-[var(--fg-muted)]">
           Scroll
         </span>
         <span

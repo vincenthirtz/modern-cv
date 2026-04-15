@@ -70,7 +70,7 @@ export default function PulseSandbox() {
                 key={t}
                 type="button"
                 onClick={() => handleTabChange(t)}
-                className={`rounded-full px-3 py-1 font-mono text-[10px] uppercase tracking-widest transition-colors ${
+                className={`rounded-full px-3 py-1 font-mono text-[0.625rem] uppercase tracking-widest transition-colors ${
                   tab === t
                     ? "bg-[var(--color-accent)] text-[var(--color-ink)]"
                     : "text-[var(--fg-muted)] hover:text-[var(--fg)]"
@@ -80,13 +80,13 @@ export default function PulseSandbox() {
               </button>
             ))}
           </div>
-          <span className="font-mono text-[9px] uppercase tracking-widest text-[var(--fg-dim)]">
+          <span className="font-mono text-[0.5625rem] uppercase tracking-widest text-[var(--fg-dim)]">
             pulse-js · live demo
           </span>
         </div>
 
         <pre
-          className="overflow-x-auto p-5 text-[12px] leading-relaxed"
+          className="overflow-x-auto p-5 text-[0.75rem] leading-relaxed"
           tabIndex={0}
           role="region"
           aria-label="Extrait de code Pulse"
@@ -110,10 +110,10 @@ export default function PulseSandbox() {
           className="flex items-center justify-between border-b px-4 py-2"
           style={{ borderColor: "var(--border)" }}
         >
-          <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-muted)]">
+          <span className="font-mono text-[0.625rem] uppercase tracking-widest text-[var(--fg-muted)]">
             Live preview
           </span>
-          <span className="inline-flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-widest text-[var(--color-accent)]">
+          <span className="inline-flex items-center gap-1.5 font-mono text-[0.5625rem] uppercase tracking-widest text-[var(--color-accent)]">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--color-accent)]" />
             running
           </span>
@@ -152,7 +152,7 @@ export default function PulseSandbox() {
         </div>
 
         <div
-          className="border-t px-4 py-2 font-mono text-[9px] uppercase tracking-widest text-[var(--fg-dim)]"
+          className="border-t px-4 py-2 font-mono text-[0.5625rem] uppercase tracking-widest text-[var(--fg-dim)]"
           style={{ borderColor: "var(--border)" }}
         >
           state.count = <span className="text-[var(--color-accent)]">{count}</span>

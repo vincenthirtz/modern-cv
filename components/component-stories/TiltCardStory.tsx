@@ -76,11 +76,11 @@ export default function TiltCardStory() {
           className="rounded-xl border p-5"
           style={{ borderColor: "var(--border-strong)", background: "var(--ink)" }}
         >
-          <div className="font-mono text-[10px] uppercase tracking-widest text-[var(--color-accent)]">
+          <div className="font-mono text-[0.625rem] uppercase tracking-widest text-[var(--color-accent)]">
             3D Tilt
           </div>
           <div className="mt-2 font-serif text-2xl leading-tight">Survolez-moi.</div>
-          <p className="mt-2 text-[12px] text-[var(--fg-muted)]">
+          <p className="mt-2 text-[0.75rem] text-[var(--fg-muted)]">
             Rotation 3D avec spotlight d’accent.
           </p>
         </div>

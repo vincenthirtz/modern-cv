@@ -67,7 +67,7 @@ export default function NotesIndexPage() {
         {/* Breadcrumb */}
         <nav
           aria-label="Fil d'ariane"
-          className="mb-10 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]"
+          className="mb-10 flex items-center gap-3 font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg-muted)]"
         >
           <Link href="/" className="transition-colors hover:text-[var(--color-accent)]">
             Accueil
@@ -83,7 +83,7 @@ export default function NotesIndexPage() {
           <div className="mb-6 flex items-center gap-3">
             <span className="font-mono text-xs text-[var(--color-accent)]">All</span>
             <span className="block h-[1px] w-10 bg-[var(--border-strong)]" />
-            <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
+            <span className="font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
               Notes
             </span>
           </div>

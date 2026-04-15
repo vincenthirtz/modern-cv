@@ -45,7 +45,7 @@ export default function ArticleLayout({
         <div className="mx-auto max-w-3xl">
           <nav
             aria-label="Fil d'ariane"
-            className="anim-fade-up mb-10 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]"
+            className="anim-fade-up mb-10 flex items-center gap-3 font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg-muted)]"
           >
             <Link href="/" className="transition-colors hover:text-[var(--color-accent)]">
               Accueil
@@ -61,7 +61,7 @@ export default function ArticleLayout({
           </nav>
 
           <div
-            className="anim-fade-up mb-6 flex flex-wrap items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em]"
+            className="anim-fade-up mb-6 flex flex-wrap items-center gap-3 font-mono text-[0.6875rem] uppercase tracking-[0.2em]"
             style={{ animationDelay: "0.1s" }}
           >
             <span
@@ -126,7 +126,7 @@ export default function ArticleLayout({
                 />
               </div>
               {article.coverCredit && (
-                <figcaption className="flex items-center justify-between gap-3 px-4 py-3 font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--fg-dim)]">
+                <figcaption className="flex items-center justify-between gap-3 px-4 py-3 font-mono text-[0.625rem] uppercase tracking-[0.15em] text-[var(--fg-dim)]">
                   <span>
                     Photo :{" "}
                     {article.coverCreditUrl ? (
@@ -188,7 +188,7 @@ export default function ArticleLayout({
               </div>
               <div>
                 <div className="font-serif text-xl">Vincent Hirtz</div>
-                <div className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-muted)]">
+                <div className="font-mono text-[0.625rem] uppercase tracking-widest text-[var(--fg-muted)]">
                   Lead Developer Front-End · Lyon
                 </div>
               </div>
@@ -206,20 +206,20 @@ export default function ArticleLayout({
             <>
               <div className="mb-6 flex items-center gap-3">
                 <span className="block h-[1px] w-10 bg-[var(--border-strong)]" />
-                <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
+                <span className="font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
                   D&apos;autres notes
                 </span>
               </div>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 {related.map((rel) => (
                   <Link key={rel.slug} href={`/notes/${rel.slug}`} className="card group block p-6">
-                    <div className="font-mono text-[10px] uppercase tracking-widest text-[var(--color-accent)]">
+                    <div className="font-mono text-[0.625rem] uppercase tracking-widest text-[var(--color-accent)]">
                       {rel.category} · <time dateTime={rel.date}>{rel.dateLabel}</time>
                     </div>
                     <h3 className="mt-2 font-serif text-xl leading-tight transition-colors group-hover:text-[var(--color-accent)]">
                       {rel.title}
                     </h3>
-                    <div className="mt-3 font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]">
+                    <div className="mt-3 font-mono text-[0.625rem] uppercase tracking-widest text-[var(--fg-dim)]">
                       Lire →
                     </div>
                   </Link>

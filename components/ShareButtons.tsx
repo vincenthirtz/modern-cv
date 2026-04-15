@@ -47,7 +47,7 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
 
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]">
+      <span className="font-mono text-[0.625rem] uppercase tracking-widest text-[var(--fg-dim)]">
         Partager
       </span>
 

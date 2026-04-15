@@ -94,7 +94,7 @@ export default function BrandingGrid() {
       <section>
         <div className="mb-8 flex items-center gap-3">
           <span className="block h-[1px] w-10 bg-[var(--border-strong)]" />
-          <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
+          <span className="font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
             Thèmes
           </span>
         </div>
@@ -125,12 +125,15 @@ export default function BrandingGrid() {
                 {/* En-tête : nom + bordure accent */}
                 <div className="relative z-10">
                   <div
-                    className="mb-1 inline-block rounded-sm border-l-2 pl-2 font-mono text-[10px] uppercase tracking-widest"
+                    className="mb-1 inline-block rounded-sm border-l-2 pl-2 font-mono text-[0.625rem] uppercase tracking-widest"
                     style={{ borderColor: theme.color, color: theme.soft }}
                   >
                     {theme.name}
                   </div>
-                  <div className="font-mono text-[9px] tracking-wide" style={{ color: theme.soft }}>
+                  <div
+                    className="font-mono text-[0.5625rem] tracking-wide"
+                    style={{ color: theme.soft }}
+                  >
                     {theme.subtitle}
                   </div>
                 </div>
@@ -166,7 +169,7 @@ export default function BrandingGrid() {
                     title={`Contraste : ${theme.contrast}`}
                   />
                   <span
-                    className="ml-auto font-mono text-[9px] tracking-wider"
+                    className="ml-auto font-mono text-[0.5625rem] tracking-wider"
                     style={{ color: theme.soft }}
                   >
                     {theme.color}
@@ -187,7 +190,7 @@ export default function BrandingGrid() {
                 }}
               >
                 <p
-                  className="text-[11px] leading-relaxed"
+                  className="text-[0.6875rem] leading-relaxed"
                   style={{ color: theme.soft, opacity: 0.7 }}
                 >
                   {theme.usage}
@@ -202,7 +205,7 @@ export default function BrandingGrid() {
       <section>
         <div className="mb-8 flex items-center gap-3">
           <span className="block h-[1px] w-10 bg-[var(--border-strong)]" />
-          <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
+          <span className="font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
             Typographies
           </span>
         </div>
@@ -211,11 +214,11 @@ export default function BrandingGrid() {
           {FONTS.map((font) => (
             <div key={font.name} className="card group flex flex-col justify-between p-6">
               <div>
-                <div className="font-mono text-[10px] uppercase tracking-widest text-[var(--color-accent)]">
+                <div className="font-mono text-[0.625rem] uppercase tracking-widest text-[var(--color-accent)]">
                   {font.usage}
                 </div>
                 <div className="mt-1 text-sm text-[var(--fg-muted)]">{font.name}</div>
-                <div className="mt-1 font-mono text-[9px] text-[var(--fg-dim)]">
+                <div className="mt-1 font-mono text-[0.5625rem] text-[var(--fg-dim)]">
                   var({font.variable})
                 </div>
               </div>
@@ -233,7 +236,7 @@ export default function BrandingGrid() {
       <section>
         <div className="mb-8 flex items-center gap-3">
           <span className="block h-[1px] w-10 bg-[var(--border-strong)]" />
-          <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
+          <span className="font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
             Tokens
           </span>
         </div>
@@ -252,8 +255,8 @@ export default function BrandingGrid() {
                 className="aspect-[3/2] rounded-lg border"
                 style={{ background: token.value, borderColor: "var(--border-strong)" }}
               />
-              <div className="font-mono text-[10px] text-[var(--fg)]">{token.name}</div>
-              <div className="font-mono text-[9px] text-[var(--fg-dim)]">{token.value}</div>
+              <div className="font-mono text-[0.625rem] text-[var(--fg)]">{token.name}</div>
+              <div className="font-mono text-[0.5625rem] text-[var(--fg-dim)]">{token.value}</div>
             </div>
           ))}
         </div>

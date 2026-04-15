@@ -56,13 +56,13 @@ export default function Experience() {
         <MotionInView delay={0} className="mt-24">
           <div className="mb-8 flex items-center gap-3">
             <span className="block h-[1px] w-10 bg-[var(--border-strong)]" />
-            <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
+            <span className="font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
               Formation
             </span>
           </div>
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
             <div className="card p-6">
-              <div className="font-mono text-[10px] uppercase tracking-widest text-[var(--color-accent)]">
+              <div className="font-mono text-[0.625rem] uppercase tracking-widest text-[var(--color-accent)]">
                 2012 — 2014
               </div>
               <h3 className="mt-2 font-serif text-2xl">BTS SIO option SLAM</h3>
@@ -72,7 +72,7 @@ export default function Experience() {
               </p>
             </div>
             <div className="card p-6">
-              <div className="font-mono text-[10px] uppercase tracking-widest text-[var(--color-accent)]">
+              <div className="font-mono text-[0.625rem] uppercase tracking-widest text-[var(--color-accent)]">
                 2010 — 2011
               </div>
               <h3 className="mt-2 font-serif text-2xl">Baccalauréat STG option GSI</h3>

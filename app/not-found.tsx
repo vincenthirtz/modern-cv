@@ -148,7 +148,7 @@ export default function NotFound() {
         }}
       >
         <span className="block h-[1px] w-10 bg-[var(--color-accent)]" />
-        <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
+        <span className="font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
           Page introuvable
         </span>
         <span className="block h-[1px] w-10 bg-[var(--color-accent)]" />
@@ -246,7 +246,7 @@ export default function NotFound() {
           <span className="block h-2.5 w-2.5 rounded-full bg-red-500/70" />
           <span className="block h-2.5 w-2.5 rounded-full bg-yellow-500/70" />
           <span className="block h-2.5 w-2.5 rounded-full bg-green-500/70" />
-          <span className="ml-2 font-mono text-[10px] text-[var(--fg-dim)]">terminal</span>
+          <span className="ml-2 font-mono text-[0.625rem] text-[var(--fg-dim)]">terminal</span>
         </div>
 
         {/* Lignes de console */}
@@ -295,7 +295,7 @@ export default function NotFound() {
 
       {/* Hint clavier */}
       <p
-        className="mt-16 font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]"
+        className="mt-16 font-mono text-[0.625rem] uppercase tracking-widest text-[var(--fg-dim)]"
         style={{
           opacity: mounted ? 1 : 0,
           transition: "opacity 0.6s ease 1s",

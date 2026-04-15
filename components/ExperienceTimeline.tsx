@@ -42,7 +42,7 @@ function TimelineItem({ job, index }: { job: Job; index: number }) {
 
       {/* Carte */}
       <div className={`card p-6 md:p-7 ${isLeft ? "md:text-right" : ""}`}>
-        <div className="font-mono text-[10px] uppercase tracking-widest text-[var(--color-accent)]">
+        <div className="font-mono text-[0.625rem] uppercase tracking-widest text-[var(--color-accent)]">
           {job.period}
         </div>
         <h3 className="mt-2 font-serif text-3xl">{job.role}</h3>
@@ -52,7 +52,7 @@ function TimelineItem({ job, index }: { job: Job; index: number }) {
           {job.stack.map((tech) => (
             <span
               key={tech}
-              className="rounded-full border px-2.5 py-1 font-mono text-[10px] text-[var(--fg-muted)]"
+              className="rounded-full border px-2.5 py-1 font-mono text-[0.625rem] text-[var(--fg-muted)]"
               style={{ borderColor: "var(--border-strong)" }}
             >
               {tech}

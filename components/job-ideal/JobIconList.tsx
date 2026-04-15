@@ -30,7 +30,7 @@ export default function JobIconList({ title, symbol, tone, items, delay = 0 }: P
         transition: `opacity 0.6s ease ${delay}s, transform 0.6s ease ${delay}s`,
       }}
     >
-      <h3 className="mb-6 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
+      <h3 className="mb-6 flex items-center gap-3 font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
         <span className={symbolClass}>{symbol}</span>
         <span className={`block h-[1px] w-6 ${lineColor}`} />
         {title}

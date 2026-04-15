@@ -99,7 +99,7 @@ export default function SectionTitle({
       >
         <span className="font-mono text-xs text-[var(--color-accent)]">{number}</span>
         <span className="block h-[1px] w-10 bg-[var(--border-strong)]" />
-        <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
+        <span className="font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
           {label}
         </span>
       </div>

@@ -27,7 +27,7 @@ export default function FooterClock() {
   return (
     <time
       dateTime={new Date().toISOString()}
-      className="font-mono text-[10px] text-[var(--color-accent)]"
+      className="font-mono text-[0.625rem] text-[var(--color-accent)]"
     >
       — {time}
     </time>

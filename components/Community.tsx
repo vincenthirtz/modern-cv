@@ -139,7 +139,7 @@ export default function Community() {
 
                 {/* Contenu */}
                 <div>
-                  <div className="mb-2 flex flex-wrap items-center gap-3 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
+                  <div className="mb-2 flex flex-wrap items-center gap-3 font-mono text-[0.625rem] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
                     <span
                       className="rounded-full border px-3 py-1 text-[var(--color-accent)]"
                       style={{ borderColor: "var(--color-accent)" }}
@@ -154,7 +154,7 @@ export default function Community() {
                   <p className="mt-2 max-w-2xl text-sm text-[var(--fg-muted)]">
                     {item.description}
                   </p>
-                  <div className="mt-3 font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]">
+                  <div className="mt-3 font-mono text-[0.625rem] uppercase tracking-widest text-[var(--fg-dim)]">
                     {item.meta}
                   </div>
                 </div>

@@ -46,14 +46,14 @@ export default function Blog() {
               >
                 <div className="mb-6 flex items-center justify-between">
                   <span
-                    className="rounded-full border px-3 py-1 font-mono text-[10px] uppercase tracking-widest text-[var(--color-accent)]"
+                    className="rounded-full border px-3 py-1 font-mono text-[0.625rem] uppercase tracking-widest text-[var(--color-accent)]"
                     style={{ borderColor: "var(--color-accent)" }}
                   >
                     {article.category}
                   </span>
                   <time
                     dateTime={article.date}
-                    className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-muted)]"
+                    className="font-mono text-[0.625rem] uppercase tracking-widest text-[var(--fg-muted)]"
                   >
                     {article.dateLabel}
                   </time>
@@ -68,7 +68,7 @@ export default function Blog() {
                   className="mt-6 flex items-center justify-between border-t pt-4"
                   style={{ borderColor: "var(--border)" }}
                 >
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--fg-dim)]">
+                  <span className="font-mono text-[0.625rem] uppercase tracking-widest text-[var(--fg-dim)]">
                     {article.readTime} de lecture
                   </span>
                   <span className="text-sm transition-transform group-hover:translate-x-1">→</span>
@@ -89,7 +89,7 @@ export default function Blog() {
         >
           <Link
             href="/notes"
-            className="inline-flex items-center gap-2 rounded-full border px-5 py-2.5 font-mono text-[11px] uppercase tracking-widest transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            className="inline-flex items-center gap-2 rounded-full border px-5 py-2.5 font-mono text-[0.6875rem] uppercase tracking-widest transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
             style={{ borderColor: "var(--border-strong)" }}
           >
             Toutes les notes
