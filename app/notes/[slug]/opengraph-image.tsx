@@ -1,9 +1,7 @@
-import { readFile } from "node:fs/promises";
-import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { getArticleBySlug } from "@/lib/articles";
 
-export const runtime = "nodejs";
+export const runtime = "edge";
 export const alt = "Article — Vincent Hirtz";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
@@ -17,24 +15,6 @@ const CATEGORY_ACCENTS: Record<string, string> = {
 };
 const DEFAULT_ACCENT = "#c8ff00";
 
-/**
- * Lit le fichier cover depuis public/ et le convertit en data URL.
- * On reste en local (pas d'appel HTTP) pour éviter tout crash de satori
- * sur fetch externe (bot-check Unsplash, timeout, etc).
- */
-async function readCoverAsDataUrl(cover: string): Promise<string | undefined> {
-  if (!cover.startsWith("/")) return undefined;
-  try {
-    const absolute = join(process.cwd(), "public", cover);
-    const buf = await readFile(absolute);
-    const ext = cover.split(".").pop()?.toLowerCase() ?? "jpg";
-    const mime = ext === "png" ? "image/png" : ext === "webp" ? "image/webp" : "image/jpeg";
-    return `data:${mime};base64,${buf.toString("base64")}`;
-  } catch {
-    return undefined;
-  }
-}
-
 export default async function OgImage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const article = getArticleBySlug(slug);
@@ -45,7 +25,36 @@ export default async function OgImage({ params }: { params: Promise<{ slug: stri
   const excerpt = article?.excerpt ?? "";
   const tags = article?.tags ?? [];
   const accent = CATEGORY_ACCENTS[category] ?? DEFAULT_ACCENT;
-  const coverDataUrl = article?.cover ? await readCoverAsDataUrl(article.cover) : undefined;
+
+  // Fetch le cover depuis le même domaine. Fonctionne sur Netlify Edge sans
+  // dépendance externe et sans accès au FS de la fonction serverless.
+  // Si le fetch échoue (fichier manquant, cold start), on retombe sur le
+  // gradient via try/catch.
+  let coverDataUrl: string | undefined;
+  if (article?.cover?.startsWith("/")) {
+    try {
+      const origin =
+        process.env.URL ??
+        process.env.DEPLOY_PRIME_URL ??
+        process.env.DEPLOY_URL ??
+        "https://vincenthirtz.fr";
+      const res = await fetch(`${origin}${article.cover}`);
+      if (res.ok) {
+        const buf = await res.arrayBuffer();
+        const mime = res.headers.get("content-type") ?? "image/jpeg";
+        const bytes = new Uint8Array(buf);
+        // Chunker pour éviter le call-stack overflow sur String.fromCharCode(...large)
+        let binary = "";
+        const CHUNK = 0x8000;
+        for (let i = 0; i < bytes.length; i += CHUNK) {
+          binary += String.fromCharCode(...bytes.subarray(i, i + CHUNK));
+        }
+        coverDataUrl = `data:${mime};base64,${btoa(binary)}`;
+      }
+    } catch {
+      // Fallback gradient
+    }
+  }
 
   return new ImageResponse(
     <div
