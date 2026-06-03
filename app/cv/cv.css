@@ -302,6 +302,13 @@
     text-decoration: none !important;
   }
 
+  /* Masquer les emojis de contact : ils rendent en glyphes noirs à
+     l'impression (le téléphone devient un rectangle noir plein) et ne
+     peuvent pas être recolorisés. Le texte de contact reste lisible. */
+  .cv-icon {
+    display: none !important;
+  }
+
   /* Afficher l'URL des liens externes */
   .cv-contact a[href^="http"]::after {
     content: none; /* Pas pour le contact — l'URL est déjà visible */
