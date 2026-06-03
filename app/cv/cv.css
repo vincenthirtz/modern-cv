@@ -230,6 +230,13 @@
   }
 
   /* ---- Réinitialiser les fonds et couleurs ---- */
+  /* color-scheme: light est essentiel : sinon le « color-scheme: dark »
+     de :root fait peindre par Chromium le canvas des pages A4 (l'espace
+     vide autour/sous le contenu) en sombre, d'où un fond noir dans le PDF. */
+  :root {
+    color-scheme: light !important;
+  }
+
   html,
   body {
     background: #ffffff !important;
