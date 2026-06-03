@@ -7,6 +7,7 @@
     "prebuild": "node scripts/generate-articles-index.mjs",
     "build": "next build",
     "articles:generate": "node scripts/generate-articles-index.mjs",
+    "cv:pdf": "node scripts/generate-cv-pdf.mjs",
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
