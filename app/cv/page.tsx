@@ -299,6 +299,27 @@ export default function CVPage() {
           </div>
         </section>
 
+        {/* Engagement associatif */}
+        <section className="cv-section">
+          <h2 className="cv-section-title">Engagement associatif</h2>
+          <div className="cv-job">
+            <div className="cv-job-head">
+              <div>
+                <h3 className="cv-job-title">Trésorier</h3>
+                <p className="cv-job-company">OW Women&apos;s Cup • Association esport</p>
+              </div>
+              <span className="cv-job-period">Depuis 2026</span>
+            </div>
+            <ul className="cv-job-list">
+              <li>
+                Gestion budgétaire et financière de l&apos;association organisatrice d&apos;un
+                tournoi Overwatch 100 % féminin et francophone
+              </li>
+              <li>Suivi des partenariats, des dépenses et transparence des comptes</li>
+            </ul>
+          </div>
+        </section>
+
         {/* Langues & intérêts */}
         <section className="cv-section cv-section--two">
           <div>

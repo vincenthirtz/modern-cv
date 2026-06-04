@@ -1,3 +1,4 @@
+import Link from "next/link";
 import SectionTitle from "./SectionTitle";
 import MotionInView from "./MotionInView";
 import ExperienceTimeline from "./ExperienceTimeline";
@@ -81,6 +82,38 @@ export default function Experience() {
                 Gestion des Systèmes d&apos;Information
               </p>
             </div>
+          </div>
+        </MotionInView>
+
+        {/* Engagement associatif */}
+        <MotionInView delay={0} className="mt-24">
+          <div className="mb-8 flex items-center gap-3">
+            <span className="block h-[1px] w-10 bg-[var(--border-strong)]" />
+            <span className="font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
+              Engagement associatif
+            </span>
+          </div>
+          <div className="card p-6">
+            <div className="font-mono text-[0.625rem] uppercase tracking-widest text-[var(--color-accent)]">
+              Depuis 2026
+            </div>
+            <h3 className="mt-2 font-serif text-2xl">Trésorier — OW Women&apos;s Cup</h3>
+            <div className="text-sm text-[var(--fg-muted)]">
+              Association esport · Tournoi Overwatch 100 % féminin et francophone
+            </div>
+            <p className="mt-2 text-sm text-[var(--fg-muted)]">
+              Gestion budgétaire et financière de l&apos;association : suivi des partenariats, des
+              dépenses et transparence des comptes.
+            </p>
+            <Link
+              href="/association"
+              className="group mt-4 inline-flex items-center gap-2 text-sm transition-colors hover:text-[var(--color-accent)]"
+            >
+              Découvrir le projet
+              <span aria-hidden className="transition-transform group-hover:translate-x-1">
+                →
+              </span>
+            </Link>
           </div>
         </MotionInView>
       </div>
