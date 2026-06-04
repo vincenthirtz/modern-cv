@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import Association from "@/components/Association";
 import JsonLd from "@/components/JsonLd";
 
@@ -36,23 +35,9 @@ const orgJsonLd = {
 
 export default function AssociationPage() {
   return (
-    <main className="relative z-[2]">
+    <main id="main" className="relative z-[2]">
       <JsonLd data={breadcrumbJsonLd} />
       <JsonLd data={orgJsonLd} />
-      <div className="px-6 pt-32 sm:pt-40">
-        <div className="mx-auto max-w-6xl">
-          <nav
-            aria-label="Fil d'ariane"
-            className="flex items-center gap-3 font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg-muted)]"
-          >
-            <Link href="/" className="transition-colors hover:text-[var(--color-accent)]">
-              Accueil
-            </Link>
-            <span className="text-[var(--fg-dim)]">/</span>
-            <span className="text-[var(--color-accent)]">Association</span>
-          </nav>
-        </div>
-      </div>
       <Association />
     </main>
   );

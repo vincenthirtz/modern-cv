@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import { useInView } from "@/hooks/useInView";
 import SectionTitle from "./SectionTitle";
 import Counter from "./Counter";
@@ -121,7 +122,7 @@ export default function Association() {
       {/* ───────────────────────── HERO 3D ───────────────────────── */}
       <section
         ref={sceneRef}
-        className="assoc-scene relative overflow-hidden px-6 pt-24 pb-24 sm:pt-32"
+        className="assoc-scene relative overflow-hidden px-6 pt-32 pb-28 sm:pt-40"
       >
         <div className="assoc-aurora pointer-events-none absolute inset-0 -z-10" aria-hidden />
         <div
@@ -129,104 +130,132 @@ export default function Association() {
           aria-hidden
         />
 
-        <div className="mx-auto grid max-w-6xl items-center gap-16 lg:grid-cols-[1.1fr_0.9fr]">
-          {/* Colonne texte */}
-          <div>
-            <Reveal>
-              <span className="inline-flex items-center gap-2 rounded-full border px-4 py-1.5 font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
-                <span
-                  className="pulse-dot h-2 w-2 rounded-full"
-                  style={{ background: "#22c55e" }}
-                  aria-hidden
-                />
-                Association · Esport
-              </span>
-            </Reveal>
+        <div className="mx-auto max-w-6xl">
+          {/* Fil d'ariane intégré au bandeau */}
+          <nav
+            aria-label="Fil d'ariane"
+            className="mb-14 flex items-center gap-3 font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg-muted)]"
+          >
+            <Link href="/" className="transition-colors hover:text-[var(--color-accent)]">
+              Accueil
+            </Link>
+            <span className="text-[var(--fg-dim)]">/</span>
+            <span className="text-[var(--color-accent)]">Association</span>
+          </nav>
 
-            <Reveal delay={0.08}>
-              <h1 className="mt-6 font-serif text-[clamp(2.75rem,8vw,6rem)] leading-[0.95] tracking-tight">
-                OW <span className="assoc-gradient-text">Women&apos;s</span> Cup
-              </h1>
-            </Reveal>
-
-            <Reveal delay={0.16}>
-              <p className="mt-6 max-w-xl text-lg text-[var(--fg-muted)]">
-                Le tournoi <strong className="text-[var(--fg)]">Overwatch 100 % féminin</strong> et
-                francophone. Communauté, compétition et bienveillance — une scène esport pensée pour
-                les joueuses, par la communauté.
-              </p>
-            </Reveal>
-
-            <Reveal delay={0.24}>
-              <div className="mt-9 flex flex-wrap items-center gap-4">
-                <MagneticButton
-                  href={SITE_URL}
-                  target="_blank"
-                  ariaLabel="Visiter owwomenscup.fr (nouvel onglet)"
-                  className="btn-accent"
-                >
-                  Découvrir le projet <span aria-hidden>↗</span>
-                </MagneticButton>
-                <MagneticButton
-                  href={`${SITE_URL}/#inscription`}
-                  target="_blank"
-                  ariaLabel="Inscrire une équipe (nouvel onglet)"
-                  className="btn-ghost"
-                >
-                  Inscrire une équipe
-                </MagneticButton>
-              </div>
-            </Reveal>
-
-            <Reveal delay={0.32}>
-              <p className="mt-8 font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg-dim)]">
-                Lancement · 18 septembre 2026
-              </p>
-            </Reveal>
-          </div>
-
-          {/* Colonne scène 3D : badge flottant + anneaux coniques */}
-          <div className="relative flex items-center justify-center" aria-hidden>
-            <div
-              ref={orbRef}
-              className="assoc-orb relative grid aspect-square w-full max-w-sm place-items-center"
-            >
-              {/* Anneaux coniques en rotation */}
-              <div
-                className="assoc-ring absolute inset-0 rounded-full opacity-60"
-                style={{
-                  mask: "radial-gradient(closest-side, transparent 67%, #000 69%, #000 72%, transparent 74%)",
-                  WebkitMask:
-                    "radial-gradient(closest-side, transparent 67%, #000 69%, #000 72%, transparent 74%)",
-                  transform: "translateZ(40px)",
-                }}
-              />
-              <div
-                className="assoc-ring assoc-ring--slow absolute inset-6 rounded-full opacity-40"
-                style={{
-                  mask: "radial-gradient(closest-side, transparent 80%, #000 82%, #000 84%, transparent 86%)",
-                  WebkitMask:
-                    "radial-gradient(closest-side, transparent 80%, #000 82%, #000 84%, transparent 86%)",
-                  transform: "translateZ(80px)",
-                }}
-              />
-
-              {/* Cœur du badge */}
-              <div
-                className="relative grid h-44 w-44 place-items-center rounded-[2rem] border sm:h-52 sm:w-52"
-                style={{
-                  borderColor: "var(--border-strong)",
-                  background:
-                    "radial-gradient(circle at 30% 25%, rgba(255,122,24,0.25), transparent 55%), radial-gradient(circle at 75% 80%, rgba(138,92,255,0.25), transparent 55%), var(--elevated)",
-                  boxShadow: "0 40px 80px -30px rgba(255,46,135,0.4)",
-                  transform: "translateZ(120px)",
-                }}
-              >
-                <span className="assoc-gradient-text font-serif text-7xl leading-none sm:text-8xl">
-                  OW
+          <div className="grid items-center gap-16 lg:grid-cols-[1.1fr_0.9fr]">
+            {/* Colonne texte */}
+            <div>
+              <Reveal>
+                <span className="inline-flex items-center gap-2 rounded-full border px-4 py-1.5 font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
+                  <span
+                    className="pulse-dot h-2 w-2 rounded-full"
+                    style={{ background: "#22c55e" }}
+                    aria-hidden
+                  />
+                  Association · Esport
                 </span>
-                <span className="absolute bottom-5 font-mono text-[0.625rem] uppercase tracking-[0.3em] text-[var(--fg-muted)]">
-                  2026
+              </Reveal>
+
+              <Reveal delay={0.08}>
+                <h1 className="mt-6 font-serif text-[clamp(2.75rem,8vw,6rem)] leading-[0.95] tracking-tight">
+                  OW <span className="assoc-gradient-text">Women&apos;s</span> Cup
+                </h1>
+              </Reveal>
+
+              <Reveal delay={0.16}>
+                <p className="mt-6 max-w-xl text-lg text-[var(--fg-muted)]">
+                  Le tournoi <strong className="text-[var(--fg)]">Overwatch 100 % féminin</strong>{" "}
+                  et francophone. Communauté, compétition et bienveillance — une scène esport pensée
+                  pour les joueuses, par la communauté.
+                </p>
+              </Reveal>
+
+              <Reveal delay={0.24}>
+                <div className="mt-9 flex flex-wrap items-center gap-4">
+                  <MagneticButton
+                    href={SITE_URL}
+                    target="_blank"
+                    ariaLabel="Visiter owwomenscup.fr (nouvel onglet)"
+                    className="btn-accent"
+                  >
+                    Découvrir le projet <span aria-hidden>↗</span>
+                  </MagneticButton>
+                  <MagneticButton
+                    href={`${SITE_URL}/#inscription`}
+                    target="_blank"
+                    ariaLabel="Inscrire une équipe (nouvel onglet)"
+                    className="btn-ghost"
+                  >
+                    Inscrire une équipe
+                  </MagneticButton>
+                </div>
+              </Reveal>
+
+              <Reveal delay={0.32}>
+                <p className="mt-8 font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg-dim)]">
+                  Lancement · 18 septembre 2026
+                </p>
+              </Reveal>
+            </div>
+
+            {/* Colonne scène 3D : médaillon en verre */}
+            <div className="relative flex items-center justify-center" aria-hidden>
+              <div
+                ref={orbRef}
+                className="assoc-orb relative grid aspect-square w-full max-w-xs place-items-center sm:max-w-sm"
+              >
+                {/* Halo lumineux diffus en rotation lente */}
+                <div
+                  className="assoc-ring assoc-ring--slow absolute inset-10 rounded-full opacity-70"
+                  style={{ filter: "blur(46px)", transform: "translateZ(0)" }}
+                />
+
+                {/* Anneau dégradé net */}
+                <div
+                  className="assoc-ring absolute inset-0 rounded-full"
+                  style={{
+                    mask: "radial-gradient(closest-side, transparent calc(100% - 4px), #000 calc(100% - 3px))",
+                    WebkitMask:
+                      "radial-gradient(closest-side, transparent calc(100% - 4px), #000 calc(100% - 3px))",
+                    transform: "translateZ(40px)",
+                  }}
+                />
+
+                {/* Médaillon central — verre dépoli */}
+                <div
+                  className="relative grid h-3/4 w-3/4 place-items-center rounded-full"
+                  style={{
+                    border: "1px solid var(--border-strong)",
+                    background:
+                      "radial-gradient(circle at 32% 22%, rgba(255,122,24,0.20), transparent 55%), radial-gradient(circle at 72% 82%, rgba(138,92,255,0.22), transparent 55%), color-mix(in oklab, var(--bg) 55%, transparent)",
+                    backdropFilter: "blur(14px)",
+                    WebkitBackdropFilter: "blur(14px)",
+                    boxShadow:
+                      "inset 0 1px 0 rgba(255,255,255,0.10), inset 0 0 50px -12px rgba(255,46,135,0.30), 0 50px 100px -40px rgba(138,92,255,0.55)",
+                    transform: "translateZ(110px)",
+                  }}
+                >
+                  <span
+                    className="assoc-gradient-text font-serif text-7xl leading-none sm:text-8xl"
+                    style={{ transform: "translateZ(50px)" }}
+                  >
+                    OW
+                  </span>
+                </div>
+
+                {/* Pastille saison flottante */}
+                <span
+                  className="absolute bottom-1 left-1/2 rounded-full border px-4 py-1.5 font-mono text-[0.625rem] uppercase tracking-[0.3em] text-[var(--fg-muted)]"
+                  style={{
+                    borderColor: "var(--border-strong)",
+                    background: "color-mix(in oklab, var(--bg) 78%, transparent)",
+                    backdropFilter: "blur(8px)",
+                    WebkitBackdropFilter: "blur(8px)",
+                    transform: "translate(-50%, 0) translateZ(150px)",
+                  }}
+                >
+                  Saison 2026
                 </span>
               </div>
             </div>
