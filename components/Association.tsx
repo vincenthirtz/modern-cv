@@ -119,7 +119,10 @@ export default function Association() {
   return (
     <div className="assoc">
       {/* ───────────────────────── HERO 3D ───────────────────────── */}
-      <section ref={sceneRef} className="assoc-scene relative overflow-hidden px-6 pt-16 pb-24">
+      <section
+        ref={sceneRef}
+        className="assoc-scene relative overflow-hidden px-6 pt-24 pb-24 sm:pt-32"
+      >
         <div className="assoc-aurora pointer-events-none absolute inset-0 -z-10" aria-hidden />
         <div
           className="bg-grid pointer-events-none absolute inset-0 -z-10 opacity-40"
