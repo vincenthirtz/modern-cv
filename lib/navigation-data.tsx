@@ -63,6 +63,20 @@ export const DOCK_ITEMS: DockItem[] = [
     ),
   },
   {
+    href: "/association",
+    label: "Association",
+    icon: (
+      <svg {...SVG_PROPS}>
+        <path d="M6 9H4.5a2.5 2.5 0 010-5C6 4 6 6 6 9z" />
+        <path d="M18 9h1.5a2.5 2.5 0 000-5C18 4 18 6 18 9z" />
+        <path d="M4 22h16" />
+        <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+        <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+        <path d="M18 2H6v7a6 6 0 0012 0V2z" />
+      </svg>
+    ),
+  },
+  {
     href: "/community",
     label: "Communauté",
     icon: (

@@ -719,6 +719,193 @@ body {
   outline: none;
 }
 
+/* ─────────────────────────────────────────────────────────────
+   Page Association — OW Women's Cup
+   Effets 3D & transitions CSS3 modernes, scopés sous .assoc
+   ───────────────────────────────────────────────────────────── */
+
+.assoc {
+  /* Palette de marque locale : orange Overwatch → magenta → cyan
+     (clin d'œil esport + inclusivité). N'écrase pas l'accent global. */
+  --ow-1: #ff7a18;
+  --ow-2: #ff2e87;
+  --ow-3: #8a5cff;
+  --ow-4: #18d6ff;
+  --ow-gradient: linear-gradient(120deg, var(--ow-1), var(--ow-2), var(--ow-3), var(--ow-4));
+}
+
+/* Texte rempli par le gradient animé OW */
+.assoc-gradient-text {
+  background: var(--ow-gradient);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: assocGradientShift 8s ease-in-out infinite;
+}
+
+@keyframes assocGradientShift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Scène 3D : conteneur avec perspective partagée */
+.assoc-scene {
+  perspective: 1200px;
+  perspective-origin: 50% 30%;
+}
+
+/* Badge/trophée flottant en 3D, piloté par variables --rx/--ry (souris) */
+.assoc-orb {
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateZ(0);
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation: assocFloat 6s ease-in-out infinite;
+}
+
+@keyframes assocFloat {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -14px;
+  }
+}
+
+/* Anneau conique en rotation autour du badge */
+.assoc-ring {
+  background: conic-gradient(
+    from 0deg,
+    var(--ow-1),
+    var(--ow-2),
+    var(--ow-3),
+    var(--ow-4),
+    var(--ow-1)
+  );
+  animation: assocSpin 9s linear infinite;
+  filter: blur(2px);
+}
+.assoc-ring--slow {
+  animation-duration: 16s;
+  animation-direction: reverse;
+}
+
+@keyframes assocSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Carte de valeur : bordure dégradée + reveal 3D au scroll */
+.assoc-card {
+  position: relative;
+  transform-style: preserve-3d;
+  transition:
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.5s ease,
+    border-color 0.5s ease;
+}
+.assoc-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--ow-gradient);
+  background-size: 300% 300%;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.assoc-card:hover {
+  transform: translateY(-6px) rotateX(4deg);
+  box-shadow:
+    0 40px 80px -30px rgba(255, 46, 135, 0.35),
+    0 0 60px -30px rgba(138, 92, 255, 0.4);
+}
+.assoc-card:hover::before {
+  opacity: 1;
+  animation: assocGradientShift 6s ease-in-out infinite;
+}
+
+/* Reveal 3D piloté par IntersectionObserver (.is-in) */
+.assoc-reveal {
+  opacity: 0;
+  transform: perspective(1000px) rotateX(12deg) translateY(40px);
+  transition:
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.assoc-reveal.is-in {
+  opacity: 1;
+  transform: perspective(1000px) rotateX(0deg) translateY(0);
+}
+
+/* Balayage de lumière (shine) sur les puces réseaux */
+.assoc-shine {
+  position: relative;
+  overflow: hidden;
+}
+.assoc-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.18) 50%,
+    transparent 70%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.7s ease;
+}
+.assoc-shine:hover::after {
+  transform: translateX(120%);
+}
+
+/* Halo radial animé d'arrière-plan de la hero */
+.assoc-aurora {
+  background:
+    radial-gradient(40rem 40rem at 15% 10%, rgba(255, 122, 24, 0.18), transparent 60%),
+    radial-gradient(36rem 36rem at 85% 20%, rgba(255, 46, 135, 0.16), transparent 60%),
+    radial-gradient(40rem 40rem at 70% 90%, rgba(138, 92, 255, 0.16), transparent 60%),
+    radial-gradient(30rem 30rem at 25% 80%, rgba(24, 214, 255, 0.12), transparent 60%);
+  animation: assocAuroraDrift 18s ease-in-out infinite alternate;
+}
+
+@keyframes assocAuroraDrift {
+  from {
+    transform: translate3d(-2%, -1%, 0) scale(1);
+  }
+  to {
+    transform: translate3d(2%, 1%, 0) scale(1.08);
+  }
+}
+
+/* Désactivation des mouvements coûteux si réduction de mouvement */
+@media (prefers-reduced-motion: reduce) {
+  .assoc-orb,
+  .assoc-ring,
+  .assoc-aurora,
+  .assoc-gradient-text {
+    animation: none !important;
+  }
+  .assoc-orb {
+    transform: none !important;
+  }
+}
+
 /* Shiki dual-theme : par défaut on est en dark (voir :root).
    La classe .light sur <html> force le thème clair. */
 .shiki-content pre.shiki {
