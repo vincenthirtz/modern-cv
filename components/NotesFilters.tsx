@@ -115,6 +115,7 @@ export default function NotesFilters({ articles, searchIndex }: NotesFiltersProp
         <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => setActiveCategory(null)}
+            aria-pressed={activeCategory === null}
             className={`rounded-full border px-3 py-1 font-mono text-[0.625rem] uppercase tracking-widest transition-colors ${
               activeCategory === null
                 ? "border-[var(--color-accent)] text-[var(--color-accent)]"
@@ -130,6 +131,7 @@ export default function NotesFilters({ articles, searchIndex }: NotesFiltersProp
             <button
               key={cat}
               onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
+              aria-pressed={activeCategory === cat}
               className={`rounded-full border px-3 py-1 font-mono text-[0.625rem] uppercase tracking-widest transition-colors ${
                 activeCategory === cat
                   ? "border-[var(--color-accent)] text-[var(--color-accent)]"
@@ -155,6 +157,7 @@ export default function NotesFilters({ articles, searchIndex }: NotesFiltersProp
               <button
                 key={tag}
                 onClick={() => setActiveTag(activeTag === tag ? null : tag)}
+                aria-pressed={activeTag === tag}
                 className={`rounded-full border px-2.5 py-0.5 font-mono text-[0.625rem] tracking-wide transition-colors ${
                   activeTag === tag
                     ? "border-[var(--color-accent)] text-[var(--color-accent)]"
