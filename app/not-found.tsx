@@ -107,7 +107,10 @@ export default function NotFound() {
         : null;
 
   return (
-    <main className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 text-center">
+    <main
+      id="main"
+      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 text-center"
+    >
       {/* Halo accent en fond */}
       <div
         className="pointer-events-none absolute inset-0 opacity-20"

@@ -3,7 +3,7 @@
  */
 export default function CVLoading() {
   return (
-    <main className="relative z-[2] min-h-screen px-6 py-12">
+    <main id="main" className="relative z-[2] min-h-screen px-6 py-12">
       {/* Barre d'actions */}
       <div className="mx-auto mb-10 flex max-w-3xl items-center justify-between">
         <div className="skeleton h-3 w-32" />
