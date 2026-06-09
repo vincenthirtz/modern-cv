@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { useInView } from "@/hooks/useInView";
 import SectionTitle from "./SectionTitle";
+import AssociationCountdown from "./AssociationCountdown";
 import Counter from "./Counter";
 import MagneticButton from "./MagneticButton";
 import TiltCard from "./TiltCard";
@@ -56,11 +57,11 @@ interface Social {
 }
 
 const SOCIALS: Social[] = [
-  { name: "Twitch", href: "https://twitch.tv", handle: "Lives & matchs" },
-  { name: "Discord", href: "https://discord.com", handle: "La communauté" },
-  { name: "TikTok", href: "https://tiktok.com", handle: "Coulisses" },
-  { name: "Instagram", href: "https://instagram.com", handle: "Actus" },
-  { name: "YouTube", href: "https://youtube.com", handle: "Replays" },
+  { name: "Twitch", href: "https://www.twitch.tv/womens_cup", handle: "Lives & matchs" },
+  { name: "Discord", href: "https://discord.gg/gERSsjC3Vd", handle: "La communauté" },
+  { name: "TikTok", href: "https://www.tiktok.com/@ow_womenscup", handle: "Coulisses" },
+  { name: "Instagram", href: "https://www.instagram.com/womenscup_asso", handle: "Actus" },
+  { name: "YouTube", href: "https://www.youtube.com/@owwomenscup", handle: "Replays" },
 ];
 
 /** Applique la classe .is-in quand l'élément entre dans le viewport. */
@@ -139,8 +140,12 @@ export default function Association() {
             <Link href="/" className="transition-colors hover:text-[var(--color-accent)]">
               Accueil
             </Link>
-            <span className="text-[var(--fg-dim)]">/</span>
-            <span className="text-[var(--color-accent)]">Association</span>
+            <span className="text-[var(--fg-dim)]" aria-hidden>
+              /
+            </span>
+            <span className="text-[var(--color-accent)]" aria-current="page">
+              Association
+            </span>
           </nav>
 
           <div className="grid items-center gap-16 lg:grid-cols-[1.1fr_0.9fr]">
@@ -192,10 +197,8 @@ export default function Association() {
                 </div>
               </Reveal>
 
-              <Reveal delay={0.32}>
-                <p className="mt-8 font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg-dim)]">
-                  Lancement · 18 septembre 2026
-                </p>
+              <Reveal delay={0.32} className="mt-8">
+                <AssociationCountdown />
               </Reveal>
             </div>
 
