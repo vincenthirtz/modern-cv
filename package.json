@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/generate-articles-index.mjs",
+    "prebuild": "node scripts/generate-articles-index.mjs && prettier --write --log-level warn lib/articles/index.ts lib/articles/stats.generated.ts",
     "build": "next build",
-    "articles:generate": "node scripts/generate-articles-index.mjs",
+    "articles:generate": "node scripts/generate-articles-index.mjs && prettier --write --log-level warn lib/articles/index.ts lib/articles/stats.generated.ts",
     "cv:pdf": "node scripts/generate-cv-pdf.mjs",
     "start": "next start",
     "lint": "eslint .",
@@ -18,7 +18,7 @@
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",
     "test:cov": "vitest run --coverage",
-    "analyze": "ANALYZE=true next build",
+    "analyze": "cross-env ANALYZE=true next build",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -56,6 +56,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitest/coverage-v8": "^4.1.4",
+    "cross-env": "^10.1.0",
     "eslint": "^9.28.0",
     "eslint-config-next": "^16.2.3",
     "eslint-config-prettier": "^10.1.8",

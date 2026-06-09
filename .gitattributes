@@ -1,0 +1,20 @@
+# Normalise les fins de ligne : LF dans le dépôt, quelle que soit la plateforme.
+# Évite que core.autocrlf (Windows) ne checkout en CRLF et casse `prettier --check`
+# (le .prettierrc impose endOfLine: "lf").
+* text=auto eol=lf
+
+# Fichiers binaires : jamais de normalisation de fins de ligne.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.avif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.pdf binary
+*.mp4 binary
+*.webm binary
