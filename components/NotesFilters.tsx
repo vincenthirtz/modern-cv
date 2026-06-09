@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import Fuse from "fuse.js";
+import type FuseType from "fuse.js";
 import type { ArticleMeta } from "@/lib/articles";
 
 interface NotesFiltersProps {
@@ -34,27 +34,39 @@ export default function NotesFilters({ articles, searchIndex }: NotesFiltersProp
   // Extraire les tags uniques
   const allTags = useMemo(() => [...new Set(articles.flatMap((a) => a.tags))].sort(), [articles]);
 
-  // Index Fuse.js pour la recherche — inclut le contenu complet de l'article
-  // quand searchIndex est fourni (poids faible pour ne pas dominer le titre).
-  const fuse = useMemo(() => {
-    const indexed: IndexedArticle[] = articles.map((a) => ({
-      ...a,
-      body: searchIndex?.[a.slug],
-    }));
-    return new Fuse(indexed, {
-      keys: [
-        { name: "title", weight: 0.3 },
-        { name: "excerpt", weight: 0.2 },
-        { name: "category", weight: 0.12 },
-        { name: "tags", weight: 0.12 },
-        { name: "dateLabel", weight: 0.06 },
-        { name: "body", weight: 0.2 },
-      ],
-      threshold: 0.4,
-      ignoreLocation: true,
-      minMatchCharLength: 3,
+  // Fuse.js n'est pas dans le bundle initial : on l'importe dynamiquement
+  // (et on construit l'index) seulement quand l'utilisateur saisit une recherche.
+  const [fuse, setFuse] = useState<FuseType<IndexedArticle> | null>(null);
+
+  useEffect(() => {
+    if (!query.trim() || fuse) return;
+    let cancelled = false;
+    import("fuse.js").then(({ default: Fuse }) => {
+      if (cancelled) return;
+      const indexed: IndexedArticle[] = articles.map((a) => ({
+        ...a,
+        body: searchIndex?.[a.slug],
+      }));
+      setFuse(
+        new Fuse(indexed, {
+          keys: [
+            { name: "title", weight: 0.3 },
+            { name: "excerpt", weight: 0.2 },
+            { name: "category", weight: 0.12 },
+            { name: "tags", weight: 0.12 },
+            { name: "dateLabel", weight: 0.06 },
+            { name: "body", weight: 0.2 },
+          ],
+          threshold: 0.4,
+          ignoreLocation: true,
+          minMatchCharLength: 3,
+        }),
+      );
     });
-  }, [articles, searchIndex]);
+    return () => {
+      cancelled = true;
+    };
+  }, [query, fuse, articles, searchIndex]);
 
   // Filtrage combiné : catégorie + recherche
   const filtered = useMemo(() => {
@@ -70,8 +82,8 @@ export default function NotesFilters({ articles, searchIndex }: NotesFiltersProp
       results = results.filter((a) => a.tags.includes(activeTag));
     }
 
-    // Recherche full-text
-    if (query.trim()) {
+    // Recherche full-text (uniquement une fois Fuse chargé dynamiquement)
+    if (query.trim() && fuse) {
       const fuseResults = fuse.search(query);
       const slugs = new Set(fuseResults.map((r) => r.item.slug));
       results = results.filter((a) => slugs.has(a.slug));

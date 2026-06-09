@@ -37,6 +37,7 @@ export default function MagneticButton({
 }: MagneticButtonProps) {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const ref = useRef<HTMLAnchorElement | HTMLButtonElement | null>(null);
+  const ticking = useRef(false);
   const useAnchor = (as ?? (href ? "a" : "button")) === "a";
   const isExternal = useAnchor && href && (href.startsWith("http") || href.startsWith("mailto:"));
   const useNextLink = useAnchor && href && !isExternal && !download && target !== "_blank";
@@ -46,10 +47,21 @@ export default function MagneticButton({
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const el = ref.current;
     if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const offsetX = (e.clientX - (rect.left + rect.width / 2)) * strength;
-    const offsetY = (e.clientY - (rect.top + rect.height / 2)) * strength;
-    setOffset({ x: offsetX, y: offsetY });
+    // Throttle via rAF : un seul setState (donc un seul re-render) par frame
+    // au lieu d'un par événement mousemove.
+    if (ticking.current) return;
+    ticking.current = true;
+    const clientX = e.clientX;
+    const clientY = e.clientY;
+    requestAnimationFrame(() => {
+      ticking.current = false;
+      const node = ref.current;
+      if (!node) return;
+      const rect = node.getBoundingClientRect();
+      const offsetX = (clientX - (rect.left + rect.width / 2)) * strength;
+      const offsetY = (clientY - (rect.top + rect.height / 2)) * strength;
+      setOffset({ x: offsetX, y: offsetY });
+    });
   }
 
   function handleLeave() {

@@ -23,22 +23,32 @@ export default function TiltCard({
 }: TiltCardProps) {
   const ref = useRef<HTMLDivElement>(null);
   const spotRef = useRef<HTMLDivElement>(null);
+  const ticking = useRef(false);
 
   function handleMouseMove(e: MouseEvent<HTMLDivElement>) {
     if (!ref.current) return;
     if (typeof window === "undefined") return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const rect = ref.current.getBoundingClientRect();
-    const px = (e.clientX - rect.left) / rect.width - 0.5;
-    const py = (e.clientY - rect.top) / rect.height - 0.5;
-    const rotateX = -py * intensity * 2;
-    const rotateY = px * intensity * 2;
-    ref.current.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-    if (spotRef.current) {
-      const spotX = (px + 0.5) * 100;
-      const spotY = (py + 0.5) * 100;
-      spotRef.current.style.background = `radial-gradient(400px circle at ${spotX}% ${spotY}%, rgba(200,255,0,0.12), transparent 60%)`;
-    }
+    // Throttle via rAF : un seul recalcul layout + écriture de transform par frame.
+    if (ticking.current) return;
+    ticking.current = true;
+    const clientX = e.clientX;
+    const clientY = e.clientY;
+    requestAnimationFrame(() => {
+      ticking.current = false;
+      if (!ref.current) return;
+      const rect = ref.current.getBoundingClientRect();
+      const px = (clientX - rect.left) / rect.width - 0.5;
+      const py = (clientY - rect.top) / rect.height - 0.5;
+      const rotateX = -py * intensity * 2;
+      const rotateY = px * intensity * 2;
+      ref.current.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      if (spotRef.current) {
+        const spotX = (px + 0.5) * 100;
+        const spotY = (py + 0.5) * 100;
+        spotRef.current.style.background = `radial-gradient(400px circle at ${spotX}% ${spotY}%, rgba(200,255,0,0.12), transparent 60%)`;
+      }
+    });
   }
 
   function handleMouseLeave() {

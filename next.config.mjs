@@ -1,11 +1,50 @@
 import withBundleAnalyzer from "@next/bundle-analyzer";
 import createMDX from "@next/mdx";
 
+const isDev = process.env.NODE_ENV !== "production";
+
+/**
+ * Content-Security-Policy statique.
+ *
+ * Choix : CSP sans nonce par requête. Un nonce imposait `await headers()` dans
+ * le layout racine, ce qui basculait TOUT le site en rendu dynamique (aucune
+ * page statique, TTFB élevé, pas de cache CDN). En la rendant statique, toutes
+ * les pages redeviennent prérendues et servies depuis le CDN.
+ *
+ * `script-src 'unsafe-inline'` est nécessaire pour nos scripts inline (theme-flip,
+ * patch React 19, dé-enregistrement SW) et ceux injectés par Next.js. On ne peut
+ * pas utiliser `'strict-dynamic'` ici : il neutraliserait `'unsafe-inline'` et
+ * bloquerait justement ces scripts inline désormais dépourvus de nonce.
+ */
+function buildCsp() {
+  const directives = {
+    "default-src": "'self'",
+    // 'unsafe-eval' requis en dev pour le HMR / Fast Refresh de Next.
+    "script-src": `'self' 'unsafe-inline' ${isDev ? "'unsafe-eval' " : ""}https://gc.zgo.at`,
+    "style-src": "'self' 'unsafe-inline'",
+    "img-src": "'self' data: blob: https:",
+    "font-src": "'self' data:",
+    "connect-src": `'self' https://gc.zgo.at https://*.goatcounter.com${isDev ? " ws: wss:" : ""}`,
+    "frame-ancestors": "'none'",
+    "base-uri": "'self'",
+    "form-action": "'self'",
+    "object-src": "'none'",
+    "media-src": "'self'",
+    "manifest-src": "'self'",
+    "worker-src": "'self' blob:",
+    ...(isDev ? {} : { "upgrade-insecure-requests": "" }),
+  };
+  return Object.entries(directives)
+    .map(([k, v]) => (v ? `${k} ${v}` : k))
+    .join("; ");
+}
+
 /**
  * Headers de sécurité OWASP-friendly. Ils s'appliquent à toutes les routes.
- * Strict-Transport-Security est géré par Vercel automatiquement.
+ * Strict-Transport-Security est géré par l'hébergeur (Netlify) automatiquement.
  */
 const securityHeaders = [
+  { key: "Content-Security-Policy", value: buildCsp() },
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "X-Frame-Options", value: "DENY" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },

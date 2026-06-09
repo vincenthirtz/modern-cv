@@ -18,11 +18,27 @@ export default function CursorFollower() {
     if (isTouch || prefersReduced) return;
     setEnabled(true);
 
-    function onMove(e: MouseEvent) {
+    // Throttle via rAF : un seul repositionnement par frame, peu importe
+    // le nombre d'événements mousemove émis (60+/s sur certaines souris).
+    let ticking = false;
+    let x = 0;
+    let y = 0;
+
+    function apply() {
+      ticking = false;
       if (!ref.current) return;
-      ref.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
+      ref.current.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
     }
-    window.addEventListener("mousemove", onMove);
+
+    function onMove(e: MouseEvent) {
+      x = e.clientX;
+      y = e.clientY;
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(apply);
+      }
+    }
+    window.addEventListener("mousemove", onMove, { passive: true });
     return () => window.removeEventListener("mousemove", onMove);
   }, []);
 

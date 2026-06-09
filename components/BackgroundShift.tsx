@@ -49,14 +49,27 @@ export default function BackgroundShift() {
   useEffect(() => {
     if (reduced) return;
     const colors = isLight ? LIGHT_COLORS : DARK_COLORS;
-    function onScroll() {
+
+    // Throttle via rAF : l'interpolation de couleur + le repaint ne se font
+    // qu'une fois par frame plutôt qu'à chaque événement scroll.
+    let ticking = false;
+
+    function apply() {
+      ticking = false;
       if (!ref.current) return;
       const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
       const max = scrollHeight - clientHeight;
       const progress = max <= 0 ? 0 : scrollTop / max;
       ref.current.style.backgroundColor = interpolateColor(progress, colors);
     }
-    onScroll();
+
+    function onScroll() {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(apply);
+      }
+    }
+    apply();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, [reduced, isLight]);
