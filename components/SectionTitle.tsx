@@ -14,6 +14,12 @@ interface SectionTitleProps {
   bigNumber?: boolean;
   /** Symbole affiché en fond à la place du numéro (ex: "</>", "{ }"). */
   bigSymbol?: string;
+  /**
+   * Niveau du titre rendu. "h2" par défaut (section d'une page).
+   * Passer "h1" quand cette section EST le titre principal d'une page
+   * dédiée, pour garantir un unique h1 par page.
+   */
+  titleAs?: "h1" | "h2";
 }
 
 /**
@@ -31,6 +37,7 @@ export default function SectionTitle({
   description,
   bigNumber = true,
   bigSymbol,
+  titleAs = "h2",
 }: SectionTitleProps) {
   const ref = useRef<HTMLDivElement>(null);
   const bigNumRef = useRef<HTMLDivElement>(null);
@@ -105,7 +112,7 @@ export default function SectionTitle({
       </div>
       <div className="relative z-10">
         <AnimatedText
-          el="h2"
+          el={titleAs}
           text={title}
           highlight={highlight}
           className="font-serif text-[clamp(2rem,5vw,4.5rem)] leading-[1] tracking-tight"
