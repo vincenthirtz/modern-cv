@@ -2,7 +2,7 @@
 
 ## Projet
 
-Portfolio personnel de Vincent Hirtz — Lead Developer Front-End basé à Lyon.
+Portfolio personnel de Vincent Hirtz — Lead Full-Stack Developer basé à Lyon.
 Site en français, déployé sur Netlify : https://vincenthirtz.fr
 
 ## Stack technique

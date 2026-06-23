@@ -32,8 +32,8 @@ const PROJECTS: Project[] = [
     name: "SAPIENDO — Plateforme retraite",
     tagline: "SPA Vue.js + Laravel pour la gestion de la retraite",
     description:
-      "Plateforme SaaS de services pour les clients du cabinet SAPIENDO. Lead technique sur l'architecture, choix technologiques du produit principal et formation continue de l'équipe sur Laravel et les bonnes pratiques front-end.",
-    role: "Lead Developer Front-End — SAPIENDO",
+      "Plateforme SaaS de services pour les clients du cabinet SAPIENDO. Développement full-stack Vue.js + Laravel, lead technique sur l'architecture, conception des API et de la logique métier, et formation continue de l'équipe sur Laravel et les bonnes pratiques.",
+    role: "Lead Full-Stack Developer — SAPIENDO",
     tags: ["Vue.js", "Laravel", "Cypress", "SPA"],
     href: "https://www.sapiendo.fr",
     linkLabel: "sapiendo.fr",

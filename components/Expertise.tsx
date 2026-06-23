@@ -21,7 +21,7 @@ const CATEGORIES: Category[] = [
   {
     title: "Frontend",
     icon: "◐",
-    span: "md:col-span-4",
+    span: "md:col-span-3",
     skills: [
       { name: "React / React Native", level: 5 },
       { name: "Vue.js", level: 5 },
@@ -33,12 +33,13 @@ const CATEGORIES: Category[] = [
   {
     title: "Backend",
     icon: "◑",
-    span: "md:col-span-2",
+    span: "md:col-span-3",
     skills: [
-      { name: "Node.js", level: 4 },
-      { name: "NestJS", level: 4 },
+      { name: "Node.js", level: 5 },
+      { name: "NestJS", level: 5 },
       { name: "Laravel / PHP", level: 4 },
-      { name: "Java", level: 3 },
+      { name: "API REST / GraphQL", level: 4 },
+      { name: "SQL / PostgreSQL", level: 4 },
     ],
   },
   {
@@ -82,9 +83,11 @@ const MARQUEE_TECHS = [
   "Vue.js",
   "Angular",
   "TypeScript",
-  "NestJS",
   "Node.js",
+  "NestJS",
   "Laravel",
+  "PHP",
+  "PostgreSQL",
   "Cypress",
   "Storybook",
   "Docker",
@@ -134,7 +137,7 @@ export default function Expertise() {
             label="Expertise"
             title="Une stack maîtrisée, pas juste essayée."
             highlight="maîtrisée,"
-            description="Dix ans à explorer, casser et rebâtir. Voici ce que je manie au quotidien — sans buzzwords."
+            description="Dix ans à explorer, casser et rebâtir, du back-end à l'interface. Voici ce que je manie au quotidien — sans buzzwords."
             bigSymbol="{ }"
           />
         </div>
@@ -174,13 +177,7 @@ export default function Expertise() {
                     {cat.icon}
                   </span>
                 </div>
-                <ul
-                  className={`mt-6 space-y-4 ${
-                    cat.span.includes("col-span-4")
-                      ? "md:grid md:grid-cols-2 md:gap-x-8 md:space-y-0 md:[&>li]:mb-4"
-                      : ""
-                  }`}
-                >
+                <ul className="mt-6 space-y-4">
                   {cat.skills.map((skill) => (
                     <SkillBar key={skill.name} skill={skill} parentInView={gridInView} />
                   ))}

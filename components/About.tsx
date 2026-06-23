@@ -44,18 +44,19 @@ export default function About() {
             <MotionInView>
               <p>
                 Je m&apos;appelle <span className="text-[var(--fg)]">Vincent Hirtz</span>.
-                Développeur front-end passionné, avec plus de 10 ans d&apos;expérience à concevoir
-                des solutions web modernes et performantes pour des équipes qui veulent aller vite
-                sans sacrifier la qualité.
+                Développeur full-stack passionné, avec plus de 10 ans d&apos;expérience à concevoir
+                des solutions web modernes et performantes — du back-end à l&apos;interface — pour
+                des équipes qui veulent aller vite sans sacrifier la qualité.
               </p>
             </MotionInView>
             <MotionInView delay={0.1}>
               <p>
-                Expert en React, Vue.js et Angular, je suis spécialisé dans le développement
-                d&apos;applications SPA complexes, la mise en place de tests end-to-end, et
-                l&apos;architecture front-end scalable. Ces dernières années, j&apos;ai dirigé
-                l&apos;équipe technique de SAPIENDO sur des plateformes Vue.js + Laravel pour la
-                gestion de la retraite.
+                À l&apos;aise sur toute la chaîne : React, Vue.js et Angular côté front, Node.js,
+                NestJS et Laravel côté back. Je conçois des applications complètes, de la base de
+                données à l&apos;interface, avec une attention forte aux tests end-to-end et à
+                l&apos;architecture scalable. Ces dernières années, j&apos;ai dirigé l&apos;équipe
+                technique de SAPIENDO sur des plateformes Vue.js + Laravel pour la gestion de la
+                retraite.
               </p>
             </MotionInView>
             <MotionInView delay={0.2}>

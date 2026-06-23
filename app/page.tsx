@@ -4,9 +4,9 @@ import About from "@/components/About";
 import Expertise from "@/components/Expertise";
 
 export const metadata: Metadata = {
-  title: "Vincent Hirtz — Lead Developer Front-End à Lyon | Portfolio",
+  title: "Vincent Hirtz — Lead Full-Stack Developer à Lyon | Portfolio",
   description:
-    "Portfolio de Vincent Hirtz, Lead Developer Front-End basé à Lyon. Créateur de Pulse JS Framework. Découvrez mes projets, mon expertise React, Vue, TypeScript et mon parcours.",
+    "Portfolio de Vincent Hirtz, Lead Full-Stack Developer basé à Lyon. Du front (React, Vue) au back (Node.js, NestJS, Laravel). Créateur de Pulse JS Framework. Découvrez mes projets et mon parcours.",
   alternates: { canonical: "https://vincenthirtz.fr" },
 };
 

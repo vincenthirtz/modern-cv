@@ -2,10 +2,10 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Vincent Hirtz — Lead Developer & Architecte Logiciel",
+    name: "Vincent Hirtz — Lead Full-Stack Developer & Architecte Logiciel",
     short_name: "Vincent Hirtz",
     description:
-      "Lead Developer basé à Lyon. Créateur de Pulse JS Framework. Curiosité infinie pour les nouvelles technos.",
+      "Lead Full-Stack Developer basé à Lyon, du front au back. Créateur de Pulse JS Framework.",
     start_url: "/",
     display: "standalone",
     background_color: "#0a0a0b",

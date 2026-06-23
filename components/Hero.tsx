@@ -7,7 +7,7 @@ import MagneticButton from "./MagneticButton";
 
 const METRICS = [
   { value: 10, suffix: "+", label: "Années d'expérience" },
-  { value: 3, suffix: "", label: "Frameworks maîtrisés" },
+  { value: 5, suffix: "", label: "Frameworks front & back" },
   { value: 1, suffix: "", label: "Framework JS open-source" },
 ];
 
@@ -73,7 +73,7 @@ export default function Hero() {
         >
           <span className="block h-[1px] w-10 bg-[var(--color-accent)]" />
           <span className="font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
-            Lead Developer Front-End · Lyon
+            Lead Full-Stack Developer · Lyon
           </span>
         </div>
 
@@ -93,9 +93,9 @@ export default function Hero() {
           className="mt-8 max-w-2xl text-lg leading-relaxed text-[var(--fg-muted)] md:text-xl"
           style={{ opacity: 0, animation: "fade-in-up 0.8s ease forwards 1.4s" }}
         >
-          Lead Developer Front-End basé à Lyon. 10+ ans à concevoir des SPA complexes avec React,
-          Vue et Angular — et à former les équipes qui les font vivre. Curiosité infinie, code
-          soigné.
+          Lead Full-Stack Developer basé à Lyon. 10+ ans à concevoir des applications complètes — du
+          front (React, Vue, Angular) au back (Node.js, NestJS, Laravel) — et à former les équipes
+          qui les font vivre. Curiosité infinie, code soigné.
         </p>
 
         {/* CTAs */}

@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "CV de Vincent Hirtz — Lead Developer Front-End";
+export const alt = "CV de Vincent Hirtz — Lead Full-Stack Developer";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -69,7 +69,7 @@ export default function OgImage() {
             lineHeight: 1.4,
           }}
         >
-          Lead Developer Front-End · 10+ ans d&apos;expérience
+          Lead Full-Stack Developer · 10+ ans d&apos;expérience
         </div>
       </div>
 

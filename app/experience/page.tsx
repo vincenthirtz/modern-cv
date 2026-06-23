@@ -6,7 +6,7 @@ import JsonLd from "@/components/JsonLd";
 export const metadata: Metadata = {
   title: "Expérience — Vincent Hirtz",
   description:
-    "Parcours professionnel de Vincent Hirtz : 10+ ans de développement front-end, de Docapost à SAPIENDO.",
+    "Parcours professionnel de Vincent Hirtz : 10+ ans de développement full-stack, du front au back, de Docapost à SAPIENDO.",
   alternates: { canonical: "https://vincenthirtz.fr/experience" },
 };
 

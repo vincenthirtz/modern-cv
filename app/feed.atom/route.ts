@@ -34,7 +34,7 @@ export function GET() {
   const feed = `<?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="fr">
   <title>Vincent Hirtz — Notes</title>
-  <subtitle>Réflexions et retours d'expérience sur le développement front-end.</subtitle>
+  <subtitle>Réflexions et retours d'expérience sur le développement full-stack.</subtitle>
   <link href="${SITE_URL}/notes" rel="alternate" type="text/html" />
   <link href="${SITE_URL}/feed.atom" rel="self" type="application/atom+xml" />
   <id>${SITE_URL}/notes</id>

@@ -29,18 +29,23 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Vincent Hirtz — Lead Developer & Architecte Logiciel",
+  title: "Vincent Hirtz — Lead Full-Stack Developer & Architecte Logiciel",
   description:
-    "Lead Developer basé à Lyon. Curiosité infinie pour les nouvelles technos, créateur de Pulse JS Framework. Je transforme des idées complexes en produits élégants, scalables et performants.",
+    "Lead Full-Stack Developer basé à Lyon. Du front (React, Vue, Angular) au back (Node.js, NestJS, Laravel), je conçois des produits web complets, élégants et scalables. Créateur de Pulse JS Framework.",
   keywords: [
     "Vincent Hirtz",
-    "Lead Developer",
+    "Lead Full-Stack Developer",
+    "Développeur Full-Stack",
     "Lyon",
     "JavaScript",
     "TypeScript",
     "Next.js",
+    "React",
     "Vue",
-    "Svelte",
+    "Node.js",
+    "NestJS",
+    "Laravel",
+    "Back-end",
     "Pulse JS",
     "Portfolio",
   ],
@@ -51,23 +56,24 @@ export const metadata: Metadata = {
     type: "website",
     locale: "fr_FR",
     url: "https://vincenthirtz.fr",
-    title: "Vincent Hirtz — Lead Developer & Architecte Logiciel",
+    title: "Vincent Hirtz — Lead Full-Stack Developer & Architecte Logiciel",
     description:
-      "Lead Developer basé à Lyon. Créateur de Pulse JS Framework. Curiosité infinie pour les nouvelles technos.",
+      "Lead Full-Stack Developer basé à Lyon. Du front au back : React, Vue, Node.js, NestJS, Laravel. Créateur de Pulse JS Framework.",
     siteName: "Vincent Hirtz",
     images: [
       {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "Vincent Hirtz — Lead Developer & Architecte Logiciel",
+        alt: "Vincent Hirtz — Lead Full-Stack Developer & Architecte Logiciel",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Vincent Hirtz — Lead Developer",
-    description: "Lead Developer basé à Lyon. Créateur de Pulse JS Framework.",
+    title: "Vincent Hirtz — Lead Full-Stack Developer",
+    description:
+      "Lead Full-Stack Developer basé à Lyon, du front au back. Créateur de Pulse JS Framework.",
     creator: "@vincenthirtz",
     images: ["/twitter-image"],
   },
@@ -160,9 +166,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               "@type": "WebSite",
               "@id": "https://vincenthirtz.fr/#website",
               url: "https://vincenthirtz.fr",
-              name: "Vincent Hirtz — Lead Developer & Architecte Logiciel",
+              name: "Vincent Hirtz — Lead Full-Stack Developer & Architecte Logiciel",
               description:
-                "Lead Developer basé à Lyon. Créateur de Pulse JS Framework. Curiosité infinie pour les nouvelles technos.",
+                "Lead Full-Stack Developer basé à Lyon. Du front au back : React, Vue, Node.js, NestJS, Laravel. Créateur de Pulse JS Framework.",
               inLanguage: "fr",
               author: {
                 "@id": "https://vincenthirtz.fr/#person",
@@ -182,9 +188,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               "@type": "Person",
               "@id": "https://vincenthirtz.fr/#person",
               name: "Vincent Hirtz",
-              jobTitle: "Lead Developer Front-End",
+              jobTitle: "Lead Full-Stack Developer",
               description:
-                "Lead Developer Front-End basé à Lyon, 10+ ans d'expérience React, Vue et Angular. Créateur de Pulse JS Framework.",
+                "Lead Full-Stack Developer basé à Lyon, 10+ ans d'expérience full-stack : React, Vue et Angular côté front ; Node.js, NestJS et Laravel côté back. Créateur de Pulse JS Framework.",
               url: "https://vincenthirtz.fr",
               image: "https://vincenthirtz.fr/icon.svg",
               email: "mailto:hirtzvincent@free.fr",
@@ -204,8 +210,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 "Vue.js",
                 "Angular",
                 "TypeScript",
+                "Node.js",
                 "NestJS",
                 "Laravel",
+                "PHP",
                 "Cypress",
                 "Storybook",
               ],

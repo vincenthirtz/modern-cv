@@ -6,7 +6,7 @@ import JsonLd from "@/components/JsonLd";
 export const metadata: Metadata = {
   title: "Contact — Vincent Hirtz",
   description:
-    "Contactez Vincent Hirtz, Lead Developer Front-End basé à Lyon. Disponible pour missions, consulting et collaboration.",
+    "Contactez Vincent Hirtz, Lead Full-Stack Developer basé à Lyon. Disponible pour missions, consulting et collaboration.",
   alternates: { canonical: "https://vincenthirtz.fr/contact" },
 };
 

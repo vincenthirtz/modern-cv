@@ -5,17 +5,17 @@ import JsonLd from "@/components/JsonLd";
 import "./cv.css";
 
 export const metadata: Metadata = {
-  title: "CV — Vincent Hirtz, Lead Developer Front-End",
+  title: "CV — Vincent Hirtz, Lead Full-Stack Developer",
   description:
-    "CV en ligne de Vincent Hirtz, Lead Developer Front-End basé à Lyon. 10+ ans d'expérience React, Vue et Angular.",
+    "CV en ligne de Vincent Hirtz, Lead Full-Stack Developer basé à Lyon. 10+ ans d'expérience, du front (React, Vue, Angular) au back (Node.js, NestJS, Laravel).",
   alternates: { canonical: "https://vincenthirtz.fr/cv" },
   robots: { index: true, follow: true },
   openGraph: {
     type: "profile",
     url: "https://vincenthirtz.fr/cv",
-    title: "CV — Vincent Hirtz, Lead Developer Front-End",
+    title: "CV — Vincent Hirtz, Lead Full-Stack Developer",
     description:
-      "CV en ligne de Vincent Hirtz, Lead Developer Front-End basé à Lyon. 10+ ans d'expérience React, Vue et Angular.",
+      "CV en ligne de Vincent Hirtz, Lead Full-Stack Developer basé à Lyon. 10+ ans d'expérience, du front (React, Vue, Angular) au back (Node.js, NestJS, Laravel).",
     siteName: "Vincent Hirtz",
     locale: "fr_FR",
     firstName: "Vincent",
@@ -25,15 +25,15 @@ export const metadata: Metadata = {
         url: "/cv/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "CV de Vincent Hirtz — Lead Developer Front-End",
+        alt: "CV de Vincent Hirtz — Lead Full-Stack Developer",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "CV — Vincent Hirtz, Lead Developer Front-End",
+    title: "CV — Vincent Hirtz, Lead Full-Stack Developer",
     description:
-      "CV en ligne de Vincent Hirtz, Lead Developer Front-End basé à Lyon. 10+ ans d'expérience React, Vue et Angular.",
+      "CV en ligne de Vincent Hirtz, Lead Full-Stack Developer basé à Lyon. 10+ ans d'expérience, du front (React, Vue, Angular) au back (Node.js, NestJS, Laravel).",
     creator: "@vincenthirtz",
     images: ["/cv/opengraph-image"],
   },
@@ -51,9 +51,9 @@ const profilePageJsonLd = {
   "@context": "https://schema.org",
   "@type": "ProfilePage",
   "@id": "https://vincenthirtz.fr/cv#profilepage",
-  name: "CV — Vincent Hirtz, Lead Developer Front-End",
+  name: "CV — Vincent Hirtz, Lead Full-Stack Developer",
   description:
-    "CV en ligne de Vincent Hirtz, Lead Developer Front-End basé à Lyon. 10+ ans d'expérience React, Vue et Angular.",
+    "CV en ligne de Vincent Hirtz, Lead Full-Stack Developer basé à Lyon. 10+ ans d'expérience, du front (React, Vue, Angular) au back (Node.js, NestJS, Laravel).",
   url: "https://vincenthirtz.fr/cv",
   mainEntity: {
     "@id": "https://vincenthirtz.fr/#person",
@@ -119,7 +119,7 @@ export default function CVPage() {
         <header className="cv-header">
           <div>
             <h1 className="cv-name">Vincent Hirtz</h1>
-            <p className="cv-role">Lead Developer Front-End</p>
+            <p className="cv-role">Lead Full-Stack Developer</p>
           </div>
           <ul className="cv-contact">
             <li>
@@ -159,11 +159,12 @@ export default function CVPage() {
         <section className="cv-section">
           <h2 className="cv-section-title">Profil professionnel</h2>
           <p>
-            Développeur front-end passionné avec plus de 10 ans d'expérience dans la création de
-            solutions web modernes et performantes. Expert en ReactJS, VueJS et Angular, avec une
+            Développeur full-stack passionné avec plus de 10 ans d'expérience dans la création de
+            solutions web modernes et performantes, du back-end à l'interface. À l'aise aussi bien
+            côté front (ReactJS, VueJS, Angular) que côté back (Node.js, NestJS, Laravel), avec une
             forte capacité à diriger des équipes techniques et à former les développeurs juniors.
-            Spécialisé dans le développement d'applications SPA complexes, la mise en place de tests
-            end-to-end et l'architecture front-end scalable.
+            Spécialisé dans le développement d'applications complètes, la conception d'API, la mise
+            en place de tests end-to-end et l'architecture scalable.
           </p>
         </section>
 
@@ -172,30 +173,32 @@ export default function CVPage() {
           <h2 className="cv-section-title">Compétences techniques</h2>
           <div className="cv-grid">
             <div>
-              <h3 className="cv-skill-cat">Frameworks &amp; Bibliothèques</h3>
+              <h3 className="cv-skill-cat">Front-end</h3>
               <ul className="cv-skill-list">
                 <li>React, React Native</li>
                 <li>VueJS, Angular</li>
-                <li>NestJS, NodeJS</li>
-                <li>Storybook</li>
+                <li>TypeScript, JavaScript</li>
+                <li>SASS, Tailwind, Material UI</li>
+                <li>Storybook, HTML5 / CSS3</li>
               </ul>
             </div>
             <div>
-              <h3 className="cv-skill-cat">Outils &amp; Technologies</h3>
+              <h3 className="cv-skill-cat">Back-end</h3>
               <ul className="cv-skill-list">
-                <li>Docker, GitLab</li>
+                <li>Node.js, NestJS</li>
+                <li>Laravel, PHP</li>
+                <li>API REST / GraphQL</li>
+                <li>SQL / PostgreSQL</li>
+                <li>Java</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="cv-skill-cat">Tests &amp; DevOps</h3>
+              <ul className="cv-skill-list">
                 <li>Cypress (tests E2E)</li>
                 <li>Jest, Enzyme, Selenium</li>
-                <li>SASS, Bootstrap, Material UI</li>
+                <li>Docker, GitLab CI/CD</li>
                 <li>Lerna (monorepo)</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="cv-skill-cat">Langages</h3>
-              <ul className="cv-skill-list">
-                <li>JavaScript / TypeScript</li>
-                <li>HTML5 / CSS3</li>
-                <li>PHP, Java</li>
               </ul>
             </div>
             <div>
@@ -203,7 +206,8 @@ export default function CVPage() {
               <ul className="cv-skill-list">
                 <li>Agile / Scrum</li>
                 <li>CI/CD</li>
-                <li>Architecture SPA</li>
+                <li>Architecture full-stack</li>
+                <li>Lead technique &amp; mentorat</li>
               </ul>
             </div>
           </div>
@@ -216,19 +220,23 @@ export default function CVPage() {
           <div className="cv-job">
             <div className="cv-job-head">
               <div>
-                <h3 className="cv-job-title">Lead Developer Front-End</h3>
+                <h3 className="cv-job-title">Lead Full-Stack Developer</h3>
                 <p className="cv-job-company">SAPIENDO • Lyon</p>
               </div>
               <span className="cv-job-period">Juil. 2021 — Oct. 2025</span>
             </div>
             <ul className="cv-job-list">
               <li>
-                Développement de solutions web avec VueJS et Laravel pour des applications de
-                gestion de la retraite
+                Développement full-stack avec VueJS (front) et Laravel / PHP (back) pour des
+                applications de gestion de la retraite
               </li>
-              <li>Création d'une plateforme SPA de services pour les clients du cabinet</li>
+              <li>
+                Conception des API REST et de la logique métier côté serveur, jusqu'aux interfaces
+                SPA côté client
+              </li>
+              <li>Création d'une plateforme de services pour les clients du cabinet</li>
               <li>Mise en place et maintenance de tests end-to-end avec Cypress</li>
-              <li>Formation technique des équipes sur Laravel et les bonnes pratiques front-end</li>
+              <li>Formation technique des équipes sur Laravel et les bonnes pratiques</li>
               <li>
                 Lead technique sur l'architecture et les choix technologiques du produit principal
               </li>

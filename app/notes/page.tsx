@@ -8,7 +8,7 @@ import JsonLd from "@/components/JsonLd";
 export const metadata: Metadata = {
   title: "Notes — Vincent Hirtz",
   description:
-    "Articles longs autour du métier de Lead Developer Front-End : Pulse JS, Vue + Laravel, Cypress en production, et autres retours d'expérience.",
+    "Articles longs autour du métier de Lead Full-Stack Developer : Pulse JS, Vue + Laravel, Cypress en production, et autres retours d'expérience.",
   alternates: { canonical: "https://vincenthirtz.fr/notes" },
   openGraph: {
     type: "website",

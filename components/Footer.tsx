@@ -44,7 +44,7 @@ export default function Footer() {
               VH<span className="text-[var(--color-accent)]">.</span>
             </Link>
             <p className="mt-3 max-w-xs text-sm text-[var(--fg-muted)]">
-              Vincent Hirtz — Lead Developer Front-End, basé à Lyon, disponible en remote ou sur
+              Vincent Hirtz — Lead Full-Stack Developer, basé à Lyon, disponible en remote ou sur
               site.
             </p>
 

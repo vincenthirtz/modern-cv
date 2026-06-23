@@ -42,7 +42,7 @@ export default function ConsoleEgg() {
     console.log("%cSalut, dev curieux·se 👋", bold);
 
     console.log(
-      "%cTu lis le code source ? Cool, j'aime ça.\nSi tu cherches un Lead Dev Front-End, on peut en parler.",
+      "%cTu lis le code source ? Cool, j'aime ça.\nSi tu cherches un Lead Dev Full-Stack, on peut en parler.",
       muted,
     );
 

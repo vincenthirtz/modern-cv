@@ -14,11 +14,11 @@ interface Job {
 const JOBS: Job[] = [
   {
     company: "SAPIENDO · Lyon",
-    role: "Lead Developer Front-End",
+    role: "Lead Full-Stack Developer",
     period: "Juil. 2021 — Oct. 2025",
     description:
-      "Lead technique sur l'architecture et les choix technologiques du produit principal. Développement de plateformes SPA Vue.js + Laravel pour la gestion de la retraite, mise en place et maintenance de tests end-to-end avec Cypress, et formation continue des équipes sur Laravel et les bonnes pratiques front-end.",
-    stack: ["Vue.js", "Laravel", "Cypress", "TypeScript", "SASS"],
+      "Lead technique sur l'architecture et les choix technologiques du produit principal. Développement full-stack de plateformes Vue.js + Laravel pour la gestion de la retraite : conception des API et de la logique métier côté back, interfaces SPA côté front, tests end-to-end avec Cypress, et formation continue des équipes sur Laravel et les bonnes pratiques.",
+    stack: ["Vue.js", "Laravel", "PHP", "Cypress", "TypeScript"],
   },
   {
     company: "Horoquartz · Lyon",

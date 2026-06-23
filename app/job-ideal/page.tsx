@@ -4,14 +4,14 @@ import JobIdeal from "@/components/JobIdeal";
 import JsonLd from "@/components/JsonLd";
 
 export const metadata: Metadata = {
-  title: "Mon job idéal — Vincent Hirtz, Lead Developer Front-End",
+  title: "Mon job idéal — Vincent Hirtz, Lead Full-Stack Developer",
   description:
     "Ce que je recherche dans mon prochain poste de Lead Developer : produit ambitieux, stack moderne, sensibilité UI/UX, autonomie, culture technique et équilibre.",
   alternates: { canonical: "https://vincenthirtz.fr/job-ideal" },
   openGraph: {
     type: "website",
     url: "https://vincenthirtz.fr/job-ideal",
-    title: "Mon job idéal — Vincent Hirtz, Lead Developer Front-End",
+    title: "Mon job idéal — Vincent Hirtz, Lead Full-Stack Developer",
     description:
       "Ce que je recherche dans mon prochain poste de Lead Developer : produit ambitieux, stack moderne, sensibilité UI/UX, autonomie, culture technique et équilibre.",
     siteName: "Vincent Hirtz",

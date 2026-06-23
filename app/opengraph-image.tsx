@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Vincent Hirtz — Lead Developer & Architecte Logiciel";
+export const alt = "Vincent Hirtz — Lead Full-Stack Developer & Architecte Logiciel";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -70,7 +70,7 @@ export default function OgImage() {
             maxWidth: 800,
           }}
         >
-          Lead Developer & <span style={{ color: "#c8ff00" }}>Architecte Logiciel</span>
+          Full-Stack Developer & <span style={{ color: "#c8ff00" }}>Architecte Logiciel</span>
         </div>
         <div
           style={{
@@ -80,14 +80,14 @@ export default function OgImage() {
             lineHeight: 1.5,
           }}
         >
-          10+ ans d&apos;expérience React, Vue et Angular. Créateur de Pulse JS Framework.
+          10+ ans, du front au back : React, Vue, Node.js, NestJS, Laravel. Créateur de Pulse JS.
         </div>
       </div>
 
       {/* Bottom — tech tags + location */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div style={{ display: "flex", gap: 10 }}>
-          {["React", "Vue.js", "TypeScript", "Next.js"].map((tag) => (
+          {["React", "Vue.js", "Node.js", "Laravel"].map((tag) => (
             <div
               key={tag}
               style={{

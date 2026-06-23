@@ -6,7 +6,7 @@ import JsonLd from "@/components/JsonLd";
 export const metadata: Metadata = {
   title: "Expertise — Vincent Hirtz",
   description:
-    "Compétences techniques de Vincent Hirtz : React, Vue.js, Angular, TypeScript, architecture front-end et tests E2E.",
+    "Compétences techniques de Vincent Hirtz : React, Vue.js, Angular et TypeScript côté front, Node.js, NestJS et Laravel côté back, architecture full-stack et tests E2E.",
   alternates: { canonical: "https://vincenthirtz.fr/expertise" },
 };
 

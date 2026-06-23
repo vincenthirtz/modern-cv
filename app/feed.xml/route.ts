@@ -24,7 +24,7 @@ export function GET() {
   <channel>
     <title>Vincent Hirtz — Notes</title>
     <link>${SITE_URL}/notes</link>
-    <description>Réflexions et retours d'expérience sur le développement front-end, par Vincent Hirtz.</description>
+    <description>Réflexions et retours d'expérience sur le développement full-stack, par Vincent Hirtz.</description>
     <language>fr</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <atom:link href="${SITE_URL}/feed.xml" rel="self" type="application/rss+xml" />${items}
