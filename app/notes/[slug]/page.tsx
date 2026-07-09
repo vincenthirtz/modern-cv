@@ -157,7 +157,7 @@ export default async function NotePage({ params }: PageProps) {
   }
 
   return (
-    <main className="relative z-[2]">
+    <main id="main" className="relative z-[2]">
       <JsonLd data={breadcrumbJsonLd} />
       <JsonLd data={articleJsonLd} />
       <ArticleLayout

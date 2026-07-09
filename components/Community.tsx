@@ -110,6 +110,7 @@ export default function Community() {
           highlight="Au-delà"
           description="Quand le client n'attend rien, je code quand même. Open source, contributions, expérimentations — voilà ce qui vit en parallèle."
           bigSymbol="npm"
+          titleAs="h1"
         />
 
         <ul ref={listRef} className="divide-y" style={{ borderColor: "var(--border)" }}>

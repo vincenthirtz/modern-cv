@@ -49,6 +49,7 @@ export default function Experience() {
           highlight="obsession."
           description="Du junior qui découvrait le monitoring au lead qui forme la prochaine génération. Voilà le parcours."
           bigSymbol=">>>"
+          titleAs="h1"
         />
 
         <ExperienceTimeline jobs={JOBS} />

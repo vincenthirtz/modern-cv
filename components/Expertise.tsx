@@ -124,7 +124,12 @@ function SkillBar({ skill, parentInView }: { skill: Skill; parentInView: boolean
   );
 }
 
-export default function Expertise() {
+export default function Expertise({
+  headingLevel = "h2",
+}: {
+  /** "h1" sur la page dédiée /expertise, "h2" en section de l'accueil. */
+  headingLevel?: "h1" | "h2";
+} = {}) {
   const gridRef = useRef<HTMLDivElement>(null);
   const gridInView = useInView(gridRef, { once: true, amount: 0.1 });
 
@@ -139,6 +144,7 @@ export default function Expertise() {
             highlight="maîtrisée,"
             description="Dix ans à explorer, casser et rebâtir, du back-end à l'interface. Voici ce que je manie au quotidien — sans buzzwords."
             bigSymbol="{ }"
+            titleAs={headingLevel}
           />
         </div>
       </div>

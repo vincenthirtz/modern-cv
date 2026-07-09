@@ -6,7 +6,10 @@ import Link from "next/link";
  */
 export default function ArticleNotFound() {
   return (
-    <main className="relative z-[2] flex min-h-screen flex-col items-center justify-center px-6 text-center">
+    <main
+      id="main"
+      className="relative z-[2] flex min-h-screen flex-col items-center justify-center px-6 text-center"
+    >
       {/* Label */}
       <div className="mb-8 flex items-center gap-3">
         <span className="block h-[1px] w-10 bg-[var(--color-accent)]" />

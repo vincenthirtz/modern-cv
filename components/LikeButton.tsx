@@ -55,6 +55,7 @@ export default function LikeButton({ slug }: LikeButtonProps) {
     <button
       onClick={handleLike}
       disabled={hasLiked}
+      aria-pressed={hasLiked}
       aria-label={
         hasLiked ? `Vous avez aimé cet article (${likes})` : `Aimer cet article (${likes})`
       }

@@ -21,6 +21,7 @@ export default function JobIdeal() {
           highlight="vraiment"
           description="Après 10+ ans à construire du front au back, je sais ce qui me fait avancer — et ce qui me freine. Voici ce que je recherche dans mon prochain poste de Lead Full-Stack Developer."
           bigSymbol="~/"
+          titleAs="h1"
         />
 
         <JobSkillsTags />

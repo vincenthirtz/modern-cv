@@ -3,7 +3,7 @@
  */
 export default function NotesLoading() {
   return (
-    <main className="relative z-[2] px-6 pt-32 pb-32 sm:pt-40">
+    <main id="main" className="relative z-[2] px-6 pt-32 pb-32 sm:pt-40">
       <div className="mx-auto max-w-4xl">
         {/* Breadcrumb */}
         <div className="skeleton mb-10 h-3 w-32" />

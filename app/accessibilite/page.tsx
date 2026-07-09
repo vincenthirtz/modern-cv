@@ -26,7 +26,7 @@ const breadcrumbJsonLd = {
 
 export default function AccessibilitePage() {
   return (
-    <main className="relative z-[2] px-6 pt-32 pb-32 sm:pt-40">
+    <main id="main" className="relative z-[2] px-6 pt-32 pb-32 sm:pt-40">
       <JsonLd data={breadcrumbJsonLd} />
       <div className="mx-auto max-w-6xl">
         {/* Fil d'Ariane */}

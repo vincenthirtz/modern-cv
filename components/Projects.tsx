@@ -90,6 +90,7 @@ export default function Projects() {
           highlight="fier"
           description="Une sélection de projets sur lesquels j'ai eu un impact technique et humain réel — du cadrage à la mise en production."
           bigSymbol="git"
+          titleAs="h1"
         />
 
         <div className="space-y-8">

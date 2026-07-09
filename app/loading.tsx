@@ -4,7 +4,7 @@
  */
 export default function HomeLoading() {
   return (
-    <main className="relative z-[2]" role="status" aria-label="Chargement">
+    <main id="main" className="relative z-[2]" role="status" aria-label="Chargement">
       {/* Hero skeleton */}
       <section className="flex min-h-screen flex-col items-center justify-center px-6">
         <div className="mx-auto w-full max-w-4xl space-y-6">

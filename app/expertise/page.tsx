@@ -26,7 +26,7 @@ const breadcrumbJsonLd = {
 
 export default function ExpertisePage() {
   return (
-    <main className="relative z-[2] px-6 pt-32 pb-32 sm:pt-40">
+    <main id="main" className="relative z-[2] px-6 pt-32 pb-32 sm:pt-40">
       <JsonLd data={breadcrumbJsonLd} />
       <div className="mx-auto max-w-6xl">
         <nav
@@ -40,7 +40,7 @@ export default function ExpertisePage() {
           <span className="text-[var(--color-accent)]">Expertise</span>
         </nav>
       </div>
-      <Expertise />
+      <Expertise headingLevel="h1" />
     </main>
   );
 }

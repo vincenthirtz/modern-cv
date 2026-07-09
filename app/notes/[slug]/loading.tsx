@@ -3,7 +3,7 @@
  */
 export default function ArticleLoading() {
   return (
-    <main className="relative z-[2]">
+    <main id="main" className="relative z-[2]">
       {/* Header */}
       <header className="relative pt-32 pb-16 px-6 sm:pt-40">
         <div className="mx-auto max-w-3xl space-y-6">

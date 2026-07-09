@@ -81,7 +81,7 @@ export default function Contact() {
         </div>
 
         <AnimatedText
-          el="h2"
+          el="h1"
           text="Travaillons ensemble."
           highlight="ensemble."
           className="font-serif text-[clamp(2.5rem,8vw,7rem)] leading-[0.95] tracking-tight"
