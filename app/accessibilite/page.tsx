@@ -64,7 +64,7 @@ export default function AccessibilitePage() {
               Le site{" "}
               <a
                 href="https://vincenthirtz.fr"
-                className="text-[var(--color-accent)] transition-colors hover:underline"
+                className="text-[var(--color-accent)] underline underline-offset-4 transition-colors hover:decoration-2"
               >
                 vincenthirtz.fr
               </a>{" "}
@@ -86,7 +86,7 @@ export default function AccessibilitePage() {
                 href="https://www.deque.com/axe/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[var(--color-accent)] transition-colors hover:underline"
+                className="text-[var(--color-accent)] underline underline-offset-4 transition-colors hover:decoration-2"
               >
                 axe-core
               </a>{" "}
@@ -175,7 +175,7 @@ export default function AccessibilitePage() {
                 <strong className="text-[var(--fg)]">Email :</strong>{" "}
                 <a
                   href="mailto:hirtzvincent@gmail.com?subject=Accessibilit%C3%A9%20vincenthirtz.fr"
-                  className="text-[var(--color-accent)] transition-colors hover:underline"
+                  className="text-[var(--color-accent)] underline underline-offset-4 transition-colors hover:decoration-2"
                 >
                   hirtzvincent@gmail.com
                 </a>
@@ -202,7 +202,7 @@ export default function AccessibilitePage() {
                   href="https://formulaire.defenseurdesdroits.fr/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[var(--color-accent)] transition-colors hover:underline"
+                  className="text-[var(--color-accent)] underline underline-offset-4 transition-colors hover:decoration-2"
                 >
                   Défenseur des droits
                 </a>
@@ -213,7 +213,7 @@ export default function AccessibilitePage() {
                   href="https://www.defenseurdesdroits.fr/saisir/delegues"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[var(--color-accent)] transition-colors hover:underline"
+                  className="text-[var(--color-accent)] underline underline-offset-4 transition-colors hover:decoration-2"
                 >
                   annuaire
                 </a>

@@ -72,7 +72,7 @@ export default function MentionsLegalesPage() {
                 <strong className="text-[var(--fg)]">Email :</strong>{" "}
                 <a
                   href="mailto:hirtzvincent@gmail.com"
-                  className="text-[var(--color-accent)] transition-colors hover:underline"
+                  className="text-[var(--color-accent)] underline underline-offset-4 transition-colors hover:decoration-2"
                 >
                   hirtzvincent@gmail.com
                 </a>
@@ -81,7 +81,7 @@ export default function MentionsLegalesPage() {
                 <strong className="text-[var(--fg)]">Site :</strong>{" "}
                 <a
                   href="https://vincenthirtz.fr"
-                  className="text-[var(--color-accent)] transition-colors hover:underline"
+                  className="text-[var(--color-accent)] underline underline-offset-4 transition-colors hover:decoration-2"
                 >
                   vincenthirtz.fr
                 </a>
@@ -107,7 +107,7 @@ export default function MentionsLegalesPage() {
                   href="https://www.netlify.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[var(--color-accent)] transition-colors hover:underline"
+                  className="text-[var(--color-accent)] underline underline-offset-4 transition-colors hover:decoration-2"
                 >
                   netlify.com
                 </a>
@@ -159,7 +159,7 @@ export default function MentionsLegalesPage() {
                 href="https://nextjs.org"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[var(--color-accent)] transition-colors hover:underline"
+                className="text-[var(--color-accent)] underline underline-offset-4 transition-colors hover:decoration-2"
               >
                 Next.js
               </a>
@@ -168,7 +168,7 @@ export default function MentionsLegalesPage() {
                 href="https://tailwindcss.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[var(--color-accent)] transition-colors hover:underline"
+                className="text-[var(--color-accent)] underline underline-offset-4 transition-colors hover:decoration-2"
               >
                 Tailwind CSS
               </a>{" "}
@@ -177,7 +177,7 @@ export default function MentionsLegalesPage() {
                 href="https://www.netlify.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[var(--color-accent)] transition-colors hover:underline"
+                className="text-[var(--color-accent)] underline underline-offset-4 transition-colors hover:decoration-2"
               >
                 Netlify
               </a>

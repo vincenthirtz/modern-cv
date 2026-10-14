@@ -53,8 +53,18 @@
   --color-accent-soft: var(--color-accent-light-soft, #6b9a00);
 }
 
-* {
-  border-color: var(--border);
+/* Valeurs par défaut des éléments : dans @layer base pour que les utilitaires
+   Tailwind (border-*, text-*, underline…) puissent les surcharger. Hors layer,
+   elles écrasaient silencieusement ces utilitaires. */
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
 }
 
 html {
@@ -243,12 +253,6 @@ body {
 }
 .font-mono {
   font-family: var(--font-mono);
-}
-
-/* Liens */
-a {
-  text-decoration: none;
-  color: inherit;
 }
 
 /* Hover lisible quelle que soit la couleur d'accent choisie */
