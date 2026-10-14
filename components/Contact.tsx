@@ -9,7 +9,7 @@ const SOCIALS = [
   { name: "GitHub", href: "https://github.com/vincenthirtz", icon: "GH" },
   { name: "LinkedIn", href: "https://linkedin.com/in/hirtzvincent", icon: "IN" },
   { name: "Pulse JS", href: "https://pulse-js.fr", icon: "↳" },
-  { name: "Email", href: "mailto:hirtzvincent@free.fr", icon: "@" },
+  { name: "Email", href: "mailto:hirtzvincent@gmail.com", icon: "@" },
 ];
 
 type FieldErrors = {
@@ -223,12 +223,12 @@ export default function Contact() {
                 Ou directement
               </div>
               <a
-                href="mailto:hirtzvincent@free.fr"
+                href="mailto:hirtzvincent@gmail.com"
                 className="mt-3 block break-words font-serif text-2xl leading-tight transition-colors hover:text-[var(--color-accent)] md:text-3xl"
               >
                 hirtzvincent
                 <br />
-                @free.fr
+                @gmail.com
               </a>
               <a
                 href="tel:+33769167612"

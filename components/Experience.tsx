@@ -13,28 +13,28 @@ interface Job {
 
 const JOBS: Job[] = [
   {
-    company: "SAPIENDO · Lyon",
+    company: "Docaposte Agility · Sotteville-lès-Rouen",
     role: "Lead Full-Stack Developer",
     period: "Juil. 2021 — Oct. 2025",
     description:
-      "Lead technique sur l'architecture et les choix technologiques du produit principal. Développement full-stack de plateformes Vue.js + Laravel pour la gestion de la retraite : conception des API et de la logique métier côté back, interfaces SPA côté front, tests end-to-end avec Cypress, et formation continue des équipes sur Laravel et les bonnes pratiques.",
+      "Technical Lead : pilotage de l'architecture globale et des choix technologiques du produit principal. Conception et développement web et mobile multi-frameworks (React, React Native, Angular) avec un back-end NestJS et Java ; mise en place des environnements Docker, des pipelines GitLab CI/CD et de l'automatisation des tests (Jest, Selenium) ; gestion d'un monorepo Lerna et conception de bibliothèques de composants réutilisables.",
+    stack: ["React Native", "Angular", "NestJS", "Lerna", "Docker"],
+  },
+  {
+    company: "SAPIENDO · Lyon",
+    role: "Développeur Full-Stack",
+    period: "Sept. 2020 — Juin 2021",
+    description:
+      "Développement full-stack Vue.js + Laravel / PHP d'applications de gestion de la retraite et création d'une plateforme de services clients. Conception d'API REST performantes et intégration de SPA réactives, mise en place intégrale des tests end-to-end avec Cypress et formation des équipes sur Laravel.",
     stack: ["Vue.js", "Laravel", "PHP", "Cypress", "TypeScript"],
   },
   {
     company: "Horoquartz · Lyon",
     role: "Développeur Front-End",
-    period: "Sept. 2020 — Juin 2021",
-    description:
-      "Développement de solutions ReactJS pour la gestion des temps et la planification. Maintenance et évolution du produit principal de l'éditeur, création d'une bibliothèque de composants réutilisables avec Storybook, intégration de l'UI interne avec SASS et HTML5/CSS3.",
-    stack: ["React", "Storybook", "SASS", "HTML5/CSS3"],
-  },
-  {
-    company: "Docapost Agility · Sotteville-lès-Rouen",
-    role: "Développeur Full-Stack",
     period: "Mars 2016 — Sept. 2020",
     description:
-      "Quatre années de full-stack : développement d'applications web et mobile avec React, React Native et Angular ; architecture et back-end avec NestJS, NodeJS, PHP et Java ; mise en place d'environnements Docker et pipelines CI/CD ; tests Jest, Enzyme, Selenium ; gestion d'un monorepo Lerna et création de bibliothèques de composants.",
-    stack: ["React Native", "Angular", "NestJS", "Lerna", "Docker"],
+      "Développement en React de la solution web phare de l'éditeur, dédiée à la gestion des temps et à la planification d'entreprise. Maintenance et évolution du produit principal, conception d'un design system interne sous Storybook avec SASS et HTML5/CSS3.",
+    stack: ["React", "Storybook", "SASS", "HTML5/CSS3"],
   },
 ];
 
@@ -67,7 +67,7 @@ export default function Experience() {
                 2012 — 2014
               </div>
               <h3 className="mt-2 font-serif text-2xl">BTS SIO option SLAM</h3>
-              <div className="text-sm text-[var(--fg-muted)]">Campus La Chataigneraie</div>
+              <div className="text-sm text-[var(--fg-muted)]">Lycée Gustave Flaubert</div>
               <p className="mt-2 text-sm text-[var(--fg-muted)]">
                 Solutions Logicielles et Applications Métiers
               </p>
@@ -77,7 +77,7 @@ export default function Experience() {
                 2010 — 2011
               </div>
               <h3 className="mt-2 font-serif text-2xl">Baccalauréat STG option GSI</h3>
-              <div className="text-sm text-[var(--fg-muted)]">Lycée Gustave Flaubert</div>
+              <div className="text-sm text-[var(--fg-muted)]">Campus La Châtaigneraie</div>
               <p className="mt-2 text-sm text-[var(--fg-muted)]">
                 Gestion des Systèmes d&apos;Information
               </p>

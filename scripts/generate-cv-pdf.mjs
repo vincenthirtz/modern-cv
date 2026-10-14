@@ -10,11 +10,24 @@
  * Le script démarre son propre serveur Next si rien n'écoute sur le port,
  * sinon il réutilise celui déjà lancé (ex : npm run dev en parallèle).
  *
- * Usage : node scripts/generate-cv-pdf.mjs
+ * ⚠ Désactivé par défaut : public/cv.pdf est désormais un PDF mis en page à
+ * la main (deux colonnes, barre latérale sombre), fourni hors du repo. Le
+ * régénérer l'écraserait par la version imprimée de /cv. Penser à garder le
+ * contenu de app/cv/page.tsx aligné sur ce PDF lors de chaque mise à jour.
+ *
+ * Usage : node scripts/generate-cv-pdf.mjs --force
  */
 import { spawn } from "node:child_process";
 import { join } from "node:path";
 import { chromium } from "@playwright/test";
+
+if (!process.argv.includes("--force")) {
+  console.error(
+    "✗ public/cv.pdf est maintenu à la main : le régénérer l'écraserait.\n" +
+      "  Relancer avec --force pour l'écraser quand même (npm run cv:pdf -- --force).",
+  );
+  process.exit(1);
+}
 
 const PORT = Number(process.env.PORT ?? 3000);
 const BASE_URL = `http://localhost:${PORT}`;

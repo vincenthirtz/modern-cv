@@ -47,7 +47,7 @@ export default function ConsoleEgg() {
     );
 
     console.log(
-      "%c→ hirtzvincent@free.fr\n→ https://github.com/vincenthirtz\n→ https://pulse-js.fr",
+      "%c→ hirtzvincent@gmail.com\n→ https://github.com/vincenthirtz\n→ https://pulse-js.fr",
       accent,
     );
 

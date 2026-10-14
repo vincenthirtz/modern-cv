@@ -54,9 +54,9 @@ export default function About() {
                 À l&apos;aise sur toute la chaîne : React, Vue.js et Angular côté front, Node.js,
                 NestJS et Laravel côté back. Je conçois des applications complètes, de la base de
                 données à l&apos;interface, avec une attention forte aux tests end-to-end et à
-                l&apos;architecture scalable. Ces dernières années, j&apos;ai dirigé l&apos;équipe
-                technique de SAPIENDO sur des plateformes Vue.js + Laravel pour la gestion de la
-                retraite.
+                l&apos;architecture scalable. Ces dernières années, j&apos;ai été Technical Lead
+                chez Docaposte Agility : pilotage de l&apos;architecture d&apos;un produit web et
+                mobile en React, React Native, Angular et NestJS.
               </p>
             </MotionInView>
             <MotionInView delay={0.2}>

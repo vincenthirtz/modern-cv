@@ -123,17 +123,21 @@ export default function CVPage() {
           </div>
           <ul className="cv-contact">
             <li>
+              <span className="cv-icon">📍</span>
+              Lyon (69), France
+            </li>
+            <li>
               <span className="cv-icon">📱</span>
               <a href="tel:+33769167612">07 69 16 76 12</a>
             </li>
             <li>
               <span className="cv-icon">✉</span>
-              <a href="mailto:hirtzvincent@free.fr">hirtzvincent@free.fr</a>
+              <a href="mailto:hirtzvincent@gmail.com">hirtzvincent@gmail.com</a>
             </li>
             <li>
               <span className="cv-icon">🌐</span>
-              <a href="https://pulse-js.fr" target="_blank" rel="noopener noreferrer">
-                pulse-js.fr
+              <a href="https://owwomenscup.fr" target="_blank" rel="noopener noreferrer">
+                owwomenscup.fr
               </a>
             </li>
             <li>
@@ -160,54 +164,54 @@ export default function CVPage() {
           <h2 className="cv-section-title">Profil professionnel</h2>
           <p>
             Développeur full-stack passionné avec plus de 10 ans d'expérience dans la création de
-            solutions web modernes et performantes, du back-end à l'interface. À l'aise aussi bien
-            côté front (ReactJS, VueJS, Angular) que côté back (Node.js, NestJS, Laravel), avec une
-            forte capacité à diriger des équipes techniques et à former les développeurs juniors.
-            Spécialisé dans le développement d'applications complètes, la conception d'API, la mise
-            en place de tests end-to-end et l'architecture scalable.
+            solutions web modernes, robustes et performantes. Spécialisé aussi bien en front-end
+            (React, Vue.js, Angular) qu'en back-end (Node.js, NestJS, Laravel), j'apporte une solide
+            expertise en architecture scalable, en mise en place de tests E2E et en intégration
+            continue. Leadership technique affirmé : encadrement d'équipes, mentorat de développeurs
+            et pilotage des choix d'architecture.
           </p>
         </section>
 
         {/* Compétences */}
         <section className="cv-section">
-          <h2 className="cv-section-title">Compétences techniques</h2>
+          <h2 className="cv-section-title">Compétences</h2>
           <div className="cv-grid">
             <div>
               <h3 className="cv-skill-cat">Front-end</h3>
               <ul className="cv-skill-list">
-                <li>React, React Native</li>
-                <li>VueJS, Angular</li>
-                <li>TypeScript, JavaScript</li>
+                <li>React, Next.js, React Native</li>
+                <li>Vue.js, Angular</li>
+                <li>TypeScript</li>
                 <li>SASS, Tailwind, Material UI</li>
-                <li>Storybook, HTML5 / CSS3</li>
+                <li>Storybook</li>
               </ul>
             </div>
             <div>
               <h3 className="cv-skill-cat">Back-end</h3>
               <ul className="cv-skill-list">
                 <li>Node.js, NestJS</li>
-                <li>Laravel, PHP</li>
-                <li>API REST / GraphQL</li>
-                <li>SQL / PostgreSQL</li>
+                <li>Laravel (PHP)</li>
+                <li>API REST, GraphQL</li>
+                <li>PostgreSQL, Supabase</li>
                 <li>Java</li>
               </ul>
             </div>
             <div>
-              <h3 className="cv-skill-cat">Tests &amp; DevOps</h3>
+              <h3 className="cv-skill-cat">DevOps &amp; Quality</h3>
               <ul className="cv-skill-list">
-                <li>Cypress (tests E2E)</li>
-                <li>Jest, Enzyme, Selenium</li>
-                <li>Docker, GitLab CI/CD</li>
+                <li>Cypress, Jest, Selenium</li>
+                <li>Docker</li>
+                <li>GitLab CI/CD</li>
                 <li>Lerna (monorepo)</li>
               </ul>
             </div>
             <div>
-              <h3 className="cv-skill-cat">Méthodologies</h3>
+              <h3 className="cv-skill-cat">Pratiques &amp; encadrement</h3>
               <ul className="cv-skill-list">
                 <li>Agile / Scrum</li>
-                <li>CI/CD</li>
-                <li>Architecture full-stack</li>
-                <li>Lead technique &amp; mentorat</li>
+                <li>Architecture scalable</li>
+                <li>Mentorat</li>
+                <li>Revue de code</li>
               </ul>
             </div>
           </div>
@@ -221,24 +225,26 @@ export default function CVPage() {
             <div className="cv-job-head">
               <div>
                 <h3 className="cv-job-title">Lead Full-Stack Developer</h3>
-                <p className="cv-job-company">SAPIENDO • Lyon</p>
+                <p className="cv-job-company">Docaposte Agility • Sotteville-lès-Rouen</p>
               </div>
               <span className="cv-job-period">Juil. 2021 — Oct. 2025</span>
             </div>
             <ul className="cv-job-list">
               <li>
-                Développement full-stack avec VueJS (front) et Laravel / PHP (back) pour des
-                applications de gestion de la retraite
+                Technical Lead : pilotage de l'architecture globale et des choix technologiques du
+                produit principal
               </li>
               <li>
-                Conception des API REST et de la logique métier côté serveur, jusqu'aux interfaces
-                SPA côté client
+                Conception et développement web/mobile multi-frameworks (React, React Native,
+                Angular, NestJS, Java)
               </li>
-              <li>Création d'une plateforme de services pour les clients du cabinet</li>
-              <li>Mise en place et maintenance de tests end-to-end avec Cypress</li>
-              <li>Formation technique des équipes sur Laravel et les bonnes pratiques</li>
               <li>
-                Lead technique sur l'architecture et les choix technologiques du produit principal
+                Mise en place des environnements Docker, des pipelines GitLab CI/CD et
+                automatisation des tests (Jest, Selenium)
+              </li>
+              <li>
+                Gestion de la base de code en monorepo (Lerna) et conception de bibliothèques de
+                composants réutilisables
               </li>
             </ul>
           </div>
@@ -246,38 +252,38 @@ export default function CVPage() {
           <div className="cv-job">
             <div className="cv-job-head">
               <div>
-                <h3 className="cv-job-title">Développeur Front-End</h3>
-                <p className="cv-job-company">Horoquartz • Lyon</p>
+                <h3 className="cv-job-title">Full-Stack Developer</h3>
+                <p className="cv-job-company">SAPIENDO • Lyon</p>
               </div>
               <span className="cv-job-period">Sept. 2020 — Juin 2021</span>
             </div>
             <ul className="cv-job-list">
               <li>
-                Développement de solutions web avec ReactJS pour la gestion des temps et
-                planification
+                Développement full-stack (Vue.js &amp; Laravel / PHP) d'applications de gestion de
+                retraite et création d'une plateforme de services clients
               </li>
-              <li>Maintenance et évolution du produit principal de l'éditeur</li>
-              <li>Création de composants réutilisables avec Storybook</li>
-              <li>Intégration de l'UI interne avec SASS et HTML5/CSS3</li>
+              <li>Conception d'API REST performantes et intégration de SPA réactives</li>
+              <li>
+                Mise en place intégrale des tests end-to-end avec Cypress et formation des équipes
+                sur Laravel
+              </li>
             </ul>
           </div>
 
           <div className="cv-job">
             <div className="cv-job-head">
               <div>
-                <h3 className="cv-job-title">Développeur Full-Stack</h3>
-                <p className="cv-job-company">Docapost Agility • Sotteville-lès-Rouen</p>
+                <h3 className="cv-job-title">Front-End Developer</h3>
+                <p className="cv-job-company">Horoquartz • Lyon</p>
               </div>
               <span className="cv-job-period">Mars 2016 — Sept. 2020</span>
             </div>
             <ul className="cv-job-list">
               <li>
-                Développement d'applications web et mobile avec React, React Native et Angular
+                Développement de la solution web phare de l'éditeur, dédiée à la gestion des temps
+                et à la planification d'entreprise, en React
               </li>
-              <li>Architecture et développement back-end avec NestJS, NodeJS, PHP et Java</li>
-              <li>Mise en place d'environnements Docker et pipelines CI/CD</li>
-              <li>Implémentation de tests unitaires et d'intégration (Jest, Enzyme, Selenium)</li>
-              <li>Gestion de monorepo avec Lerna et création de bibliothèques de composants</li>
+              <li>Conception d'un design system interne sous Storybook avec SASS et HTML5/CSS3</li>
             </ul>
           </div>
         </section>
@@ -289,7 +295,7 @@ export default function CVPage() {
             <div className="cv-job-head">
               <div>
                 <h3 className="cv-job-title">BTS SIO option SLAM</h3>
-                <p className="cv-job-company">Campus La Chataigneraie</p>
+                <p className="cv-job-company">Lycée Gustave Flaubert</p>
               </div>
               <span className="cv-job-period">2012 — 2014</span>
             </div>
@@ -299,7 +305,7 @@ export default function CVPage() {
             <div className="cv-job-head">
               <div>
                 <h3 className="cv-job-title">Baccalauréat STG option GSI</h3>
-                <p className="cv-job-company">Lycée Gustave Flaubert</p>
+                <p className="cv-job-company">Campus La Châtaigneraie</p>
               </div>
               <span className="cv-job-period">2010 — 2011</span>
             </div>
@@ -316,15 +322,61 @@ export default function CVPage() {
                 <h3 className="cv-job-title">Trésorier</h3>
                 <p className="cv-job-company">OW Women&apos;s Cup • Association esport</p>
               </div>
-              <span className="cv-job-period">Depuis 2026</span>
+              <span className="cv-job-period">Depuis janv. 2026</span>
             </div>
             <ul className="cv-job-list">
               <li>
-                Gestion budgétaire et financière de l&apos;association organisatrice d&apos;un
-                tournoi Overwatch 100 % féminin et francophone
+                Gestion budgétaire et financière de l&apos;association, suivi et renouvellement des
+                partenariats
               </li>
-              <li>Suivi des partenariats, des dépenses et transparence des comptes</li>
+              <li>
+                Co-organisation d&apos;un tournoi Overwatch 100 % féminin et francophone, de la
+                production à la diffusion
+              </li>
             </ul>
+          </div>
+        </section>
+
+        {/* Projets & open source */}
+        <section className="cv-section">
+          <h2 className="cv-section-title">Projets &amp; open source</h2>
+          <div className="cv-job">
+            <div className="cv-job-head">
+              <div>
+                <h3 className="cv-job-title">Plateforme du tournoi OW Women&apos;s Cup</h3>
+                <p className="cv-job-company">
+                  <a href="https://owwomenscup.fr" target="_blank" rel="noopener noreferrer">
+                    owwomenscup.fr
+                  </a>
+                </p>
+              </div>
+              <span className="cv-job-period">En cours</span>
+            </div>
+            <p className="cv-job-detail">
+              Conception et développement de la plateforme du tournoi en Next.js et Supabase :
+              inscriptions des équipes, classements et calendrier des matchs en temps réel,
+              intégration Twitch, espace partenaires et site bilingue FR/EN.
+            </p>
+          </div>
+          <div className="cv-job">
+            <div className="cv-job-head">
+              <div>
+                <h3 className="cv-job-title">Contributions open source</h3>
+                <p className="cv-job-company">
+                  <a
+                    href="https://github.com/vincenthirtz"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    github.com/vincenthirtz
+                  </a>
+                </p>
+              </div>
+            </div>
+            <p className="cv-job-detail">
+              Veille technologique continue et publication de projets et composants réutilisables
+              (React, TypeScript, Node.js).
+            </p>
           </div>
         </section>
 
@@ -340,8 +392,9 @@ export default function CVPage() {
           <div>
             <h2 className="cv-section-title">Centres d'intérêt</h2>
             <ul className="cv-skill-list">
-              <li>Veille technologique web</li>
-              <li>Contribution open source</li>
+              <li>Veille technologique</li>
+              <li>Open source</li>
+              <li>Esport, gaming</li>
             </ul>
           </div>
         </section>

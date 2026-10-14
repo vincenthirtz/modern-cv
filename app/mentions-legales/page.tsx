@@ -71,10 +71,10 @@ export default function MentionsLegalesPage() {
               <li>
                 <strong className="text-[var(--fg)]">Email :</strong>{" "}
                 <a
-                  href="mailto:hirtzvincent@free.fr"
+                  href="mailto:hirtzvincent@gmail.com"
                   className="text-[var(--color-accent)] transition-colors hover:underline"
                 >
-                  hirtzvincent@free.fr
+                  hirtzvincent@gmail.com
                 </a>
               </li>
               <li>

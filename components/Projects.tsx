@@ -29,11 +29,22 @@ const PROJECTS: Project[] = [
       "linear-gradient(135deg, #0a0a0b 0%, #1a1a2e 50%, #16213e 100%), radial-gradient(at top right, rgba(200,255,0,0.4), transparent)",
   },
   {
+    name: "Docaposte Agility — Apps mobile & web",
+    tagline: "Apps cross-platform React Native + back NestJS/NodeJS",
+    description:
+      "Quatre années de lead technique pour Docaposte Agility : pilotage de l'architecture, applications web et mobile (React, React Native, Angular), back-end NestJS / NodeJS / Java, monorepo Lerna, environnements Docker et pipelines GitLab CI/CD complets.",
+    role: "Lead Full-Stack Developer — Docaposte Agility",
+    tags: ["React Native", "NestJS", "Lerna", "Docker"],
+    href: "https://www.docaposte.com",
+    linkLabel: "docaposte.com",
+    gradient: "linear-gradient(135deg, #2d1b3d 0%, #44318d 50%, #6c4ab6 100%)",
+  },
+  {
     name: "SAPIENDO — Plateforme retraite",
     tagline: "SPA Vue.js + Laravel pour la gestion de la retraite",
     description:
-      "Plateforme SaaS de services pour les clients du cabinet SAPIENDO. Développement full-stack Vue.js + Laravel, lead technique sur l'architecture, conception des API et de la logique métier, et formation continue de l'équipe sur Laravel et les bonnes pratiques.",
-    role: "Lead Full-Stack Developer — SAPIENDO",
+      "Plateforme SaaS de services pour les clients du cabinet SAPIENDO. Développement full-stack Vue.js + Laravel, conception d'API REST et de la logique métier, mise en place des tests end-to-end avec Cypress et formation de l'équipe sur Laravel.",
+    role: "Développeur Full-Stack — SAPIENDO",
     tags: ["Vue.js", "Laravel", "Cypress", "SPA"],
     href: "https://www.sapiendo.fr",
     linkLabel: "sapiendo.fr",
@@ -43,23 +54,12 @@ const PROJECTS: Project[] = [
     name: "Horoquartz — Gestion des temps",
     tagline: "Application ReactJS de planification & gestion des temps",
     description:
-      "Maintenance et évolution du produit principal de l'éditeur Horoquartz, leader français de la gestion des temps. Création de composants réutilisables avec Storybook et intégration de l'UI interne en SASS et HTML5/CSS3.",
+      "Plus de quatre ans sur le produit principal de l'éditeur Horoquartz, leader français de la gestion des temps : développement en React, puis conception d'un design system interne sous Storybook avec SASS et HTML5/CSS3.",
     role: "Développeur Front-End — Horoquartz",
     tags: ["React", "Storybook", "SASS", "Design System"],
     href: "https://www.horoquartz.com",
     linkLabel: "horoquartz.com",
     gradient: "linear-gradient(135deg, #134e5e 0%, #2d7a8a 50%, #71b280 100%)",
-  },
-  {
-    name: "Docapost Agility — Apps mobile & web",
-    tagline: "Apps cross-platform React Native + back NestJS/NodeJS",
-    description:
-      "Quatre années de développement full-stack pour Docapost Agility : applications web et mobile (React, React Native, Angular), back-end NestJS / NodeJS / Java, monorepo Lerna, environnements Docker et pipelines CI/CD complets.",
-    role: "Développeur Full-Stack — Docapost Agility",
-    tags: ["React Native", "NestJS", "Lerna", "Docker"],
-    href: "https://www.docaposte.com",
-    linkLabel: "docaposte.com",
-    gradient: "linear-gradient(135deg, #2d1b3d 0%, #44318d 50%, #6c4ab6 100%)",
   },
 ];
 

@@ -193,7 +193,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 "Lead Full-Stack Developer basé à Lyon, 10+ ans d'expérience full-stack : React, Vue et Angular côté front ; Node.js, NestJS et Laravel côté back. Créateur de Pulse JS Framework.",
               url: "https://vincenthirtz.fr",
               image: "https://vincenthirtz.fr/icon.svg",
-              email: "mailto:hirtzvincent@free.fr",
+              email: "mailto:hirtzvincent@gmail.com",
               telephone: "+33769167612",
               address: {
                 "@type": "PostalAddress",

@@ -36,10 +36,10 @@ Ouvrir [http://localhost:3000](http://localhost:3000).
 1. **Hero** — Lead Developer Front-End, Lyon
 2. **À propos** — Bio + valeurs (Clean Code, Architecture First, Team Player, Continuous Learner)
 3. **Expertise** — React/Vue/Angular, NestJS/Laravel, Cypress, Storybook, Docker, Lead
-4. **Projets** — Pulse JS Framework, SAPIENDO, Horoquartz, Docapost, Rally
-5. **Expérience** — SAPIENDO (2021-2025), Horoquartz (2020-2021), Docapost Agility (2016-2020) + Formation
+4. **Projets** — Pulse JS Framework, Docaposte Agility, SAPIENDO, Horoquartz, Rally
+5. **Expérience** — Docaposte Agility (2021-2025), SAPIENDO (2020-2021), Horoquartz (2016-2020) + Formation
 6. **Notes** — Articles autour de Pulse JS, Vue/Laravel, Cypress
-7. **Contact** — Formulaire + email `hirtzvincent@free.fr` + tél + GitHub + LinkedIn + Pulse JS
+7. **Contact** — Formulaire + email `hirtzvincent@gmail.com` + tél + GitHub + LinkedIn + Pulse JS
 
 ## 🎨 Design system
 

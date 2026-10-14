@@ -174,10 +174,10 @@ export default function AccessibilitePage() {
               <li>
                 <strong className="text-[var(--fg)]">Email :</strong>{" "}
                 <a
-                  href="mailto:hirtzvincent@free.fr?subject=Accessibilit%C3%A9%20vincenthirtz.fr"
+                  href="mailto:hirtzvincent@gmail.com?subject=Accessibilit%C3%A9%20vincenthirtz.fr"
                   className="text-[var(--color-accent)] transition-colors hover:underline"
                 >
-                  hirtzvincent@free.fr
+                  hirtzvincent@gmail.com
                 </a>
               </li>
               <li>
