@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import PrintButton from "./PrintButton";
 import JsonLd from "@/components/JsonLd";
 import "./cv.css";
 
@@ -109,7 +108,18 @@ export default function CVPage() {
           >
             Télécharger PDF
           </a>
-          <PrintButton />
+          {/* Ouvre le PDF mis en page dans la visionneuse du navigateur pour
+              l'imprimer : window.print() imprimerait la version web une colonne. */}
+          <a
+            href="/cv.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full border bg-[var(--color-accent)] px-4 py-2 font-mono text-[0.625rem] uppercase tracking-widest text-[var(--color-ink)] transition-transform hover:scale-105"
+            style={{ borderColor: "var(--color-accent)" }}
+          >
+            Imprimer
+            <span className="sr-only"> le CV (PDF, nouvel onglet)</span>
+          </a>
         </div>
       </div>
 
