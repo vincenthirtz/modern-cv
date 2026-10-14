@@ -4,13 +4,15 @@
  * Service Worker — PWA offline pour vincenthirtz.fr
  *
  * Stratégies :
- *  - App Shell (/, /notes, /cv) : stale-while-revalidate
- *  - Articles (/notes/*) : cache-first (articles déjà lus disponibles offline)
+ *  - App Shell (/, /notes, /cv) : network-first (toujours à jour en ligne,
+ *    cache en repli hors ligne — en stale-while-revalidate, les visiteurs
+ *    récurrents voyaient l'ancienne version après chaque déploiement)
+ *  - Articles (/notes/*) : stale-while-revalidate (articles déjà lus disponibles offline)
  *  - Polices & assets statiques : cache-first, longue durée
  *  - API & autres : network-only (pas de cache)
  */
 
-const CACHE_VERSION = "v2";
+const CACHE_VERSION = "v3";
 const SHELL_CACHE = `shell-${CACHE_VERSION}`;
 const ARTICLES_CACHE = `articles-${CACHE_VERSION}`;
 const ASSETS_CACHE = `assets-${CACHE_VERSION}`;
@@ -88,9 +90,9 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // App shell (/, /notes, /cv) — stale-while-revalidate
+  // App shell (/, /notes, /cv) — network-first
   if (isShellUrl(url.pathname)) {
-    event.respondWith(staleWhileRevalidate(request, SHELL_CACHE));
+    event.respondWith(networkFirst(request, SHELL_CACHE));
     return;
   }
 
@@ -121,6 +123,24 @@ async function cacheFirst(request, cacheName) {
     return response;
   } catch {
     return new Response("Offline", { status: 503, statusText: "Service Unavailable" });
+  }
+}
+
+/**
+ * Network-first : retourne toujours la version réseau la plus récente et la
+ * met en cache ; le cache ne sert que de repli quand le réseau échoue.
+ */
+async function networkFirst(request, cacheName) {
+  const cache = await caches.open(cacheName);
+  try {
+    const response = await fetch(request);
+    if (response.ok) {
+      cache.put(request, response.clone());
+    }
+    return response;
+  } catch {
+    const cached = await cache.match(request);
+    return cached || new Response("Offline", { status: 503, statusText: "Service Unavailable" });
   }
 }
 
