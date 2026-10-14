@@ -32,7 +32,7 @@ const ACCENTS = [
     name: "Rose",
     color: "#ff3c82",
     soft: "#ff6fa3",
-    contrast: "#ffffff",
+    contrast: "#0a0a0b",
     fg: "#d42265",
     lightColor: "#d42265",
     lightSoft: "#e8447f",
@@ -42,8 +42,8 @@ const ACCENTS = [
     color: "#ff8a00",
     soft: "#ffaa40",
     contrast: "#1a1200",
-    fg: "#b86200",
-    lightColor: "#b86200",
+    fg: "#9a5200",
+    lightColor: "#9a5200",
     lightSoft: "#d07400",
   },
   {
@@ -59,11 +59,16 @@ const ACCENTS = [
 
 export type AccentName = (typeof ACCENTS)[number]["name"];
 
+/**
+ * Écrit la palette en variables d'entrée : globals.css en dérive
+ * --color-accent* selon le thème. Écrire --color-accent directement en
+ * inline écraserait la variante light de :root.light.
+ */
 function applyAccent(accent: (typeof ACCENTS)[number]) {
   const s = document.documentElement.style;
-  s.setProperty("--color-accent", accent.color);
-  s.setProperty("--color-accent-soft", accent.soft);
-  s.setProperty("--color-accent-contrast", accent.contrast);
+  s.setProperty("--color-accent-dark", accent.color);
+  s.setProperty("--color-accent-dark-soft", accent.soft);
+  s.setProperty("--color-accent-dark-contrast", accent.contrast);
   s.setProperty("--color-accent-fg", accent.fg);
   s.setProperty("--color-accent-light", accent.lightColor);
   s.setProperty("--color-accent-light-soft", accent.lightSoft);

@@ -13,9 +13,9 @@ beforeEach(() => {
 
   // Nettoyer les custom properties
   const s = document.documentElement.style;
-  s.removeProperty("--color-accent");
-  s.removeProperty("--color-accent-soft");
-  s.removeProperty("--color-accent-contrast");
+  s.removeProperty("--color-accent-dark");
+  s.removeProperty("--color-accent-dark-soft");
+  s.removeProperty("--color-accent-dark-contrast");
   s.removeProperty("--color-accent-fg");
   s.removeProperty("--color-accent-light");
   s.removeProperty("--color-accent-light-soft");
@@ -113,7 +113,7 @@ describe("AccentPicker", () => {
     await user.click(screen.getByLabelText("Cyan"));
 
     const root = document.documentElement;
-    expect(root.style.getPropertyValue("--color-accent")).toBe("#00e5ff");
+    expect(root.style.getPropertyValue("--color-accent-dark")).toBe("#00e5ff");
   });
 
   it("ferme la palette au Escape", async () => {
@@ -139,7 +139,7 @@ describe("AccentPicker", () => {
 
     await waitFor(() => {
       const root = document.documentElement;
-      expect(root.style.getPropertyValue("--color-accent")).toBe("#ff3c82");
+      expect(root.style.getPropertyValue("--color-accent-dark")).toBe("#ff3c82");
     });
   });
 
@@ -202,9 +202,9 @@ describe("AccentPicker", () => {
     await user.click(screen.getByLabelText("Violet"));
 
     const s = document.documentElement.style;
-    expect(s.getPropertyValue("--color-accent")).toBe("#a78bfa");
-    expect(s.getPropertyValue("--color-accent-soft")).toBe("#c4b5fd");
-    expect(s.getPropertyValue("--color-accent-contrast")).toBe("#1a1530");
+    expect(s.getPropertyValue("--color-accent-dark")).toBe("#a78bfa");
+    expect(s.getPropertyValue("--color-accent-dark-soft")).toBe("#c4b5fd");
+    expect(s.getPropertyValue("--color-accent-dark-contrast")).toBe("#1a1530");
     expect(s.getPropertyValue("--color-accent-fg")).toBe("#6d47d9");
     expect(s.getPropertyValue("--color-accent-light")).toBe("#6d47d9");
     expect(s.getPropertyValue("--color-accent-light-soft")).toBe("#8660ec");

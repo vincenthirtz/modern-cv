@@ -54,7 +54,9 @@ export default function Footer() {
                 <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
               </span>
-              <span className="text-xs font-medium text-emerald-400">Disponible pour missions</span>
+              <span className="text-xs font-medium text-[var(--fg-success)]">
+                Disponible pour missions
+              </span>
             </div>
 
             <div className="mt-4 flex items-center gap-2">

@@ -1,8 +1,15 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 
 /**
  * Tests du toggle de thème (dark/light) et du sélecteur d'accent.
  */
+
+/** Valeur effective de --color-accent (après résolution des var() par le CSS). */
+function computedAccent(page: Page) {
+  return page.evaluate(() =>
+    getComputedStyle(document.documentElement).getPropertyValue("--color-accent").trim(),
+  );
+}
 
 test.describe("Thème dark/light", () => {
   test.beforeEach(async ({ page }) => {
@@ -82,10 +89,17 @@ test.describe("Sélecteur d'accent", () => {
     await page.locator('[role="radio"][aria-label="Rose"]').click();
 
     // Vérifier que --color-accent a changé
-    const accentColor = await page.evaluate(() =>
-      document.documentElement.style.getPropertyValue("--color-accent"),
-    );
-    expect(accentColor).toBe("#ff3c82");
+    expect(await computedAccent(page)).toBe("rgb(255, 60, 130)"); // #ff3c82
+  });
+
+  test("en mode clair, l'accent passe sur sa variante sombre (contraste AA)", async ({ page }) => {
+    await page.locator('button[aria-label="Changer la couleur d\'accentuation"]').click();
+    await page.locator('[role="radio"][aria-label="Rose"]').click();
+    await page.keyboard.press("Escape");
+    await page.locator('button[aria-label="Activer le mode clair"]').click();
+
+    // Variante light de Rose : un style inline ne doit pas écraser :root.light
+    expect(await computedAccent(page)).toBe("rgb(212, 34, 101)"); // #d42265
   });
 
   test("la palette se ferme avec Escape", async ({ page }) => {
@@ -109,9 +123,6 @@ test.describe("Sélecteur d'accent", () => {
     await page.reload();
     await page.waitForLoadState("networkidle");
 
-    const accentColor = await page.evaluate(() =>
-      document.documentElement.style.getPropertyValue("--color-accent"),
-    );
-    expect(accentColor).toBe("#00e5ff");
+    expect(await computedAccent(page)).toBe("rgb(0, 229, 255)"); // #00e5ff
   });
 });

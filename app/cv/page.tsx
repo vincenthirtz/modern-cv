@@ -88,7 +88,7 @@ export default function CVPage() {
       <JsonLd data={profilePageJsonLd} />
       <JsonLd data={breadcrumbJsonLd} />
       {/* Fil d'Ariane + actions — masqués à l'impression */}
-      <div className="cv-actions mx-auto mb-10 flex max-w-3xl items-center justify-between">
+      <div className="cv-actions mx-auto mb-10 flex max-w-3xl flex-wrap items-center justify-between gap-4">
         <nav
           aria-label="Fil d'ariane"
           className="flex items-center gap-3 font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-[var(--fg-muted)]"
@@ -114,7 +114,7 @@ export default function CVPage() {
             href="/cv.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-full border bg-[var(--color-accent)] px-4 py-2 font-mono text-[0.625rem] uppercase tracking-widest text-[var(--color-ink)] transition-transform hover:scale-105"
+            className="rounded-full border bg-[var(--color-accent)] px-4 py-2 font-mono text-[0.625rem] uppercase tracking-widest text-[var(--color-accent-contrast)] transition-transform hover:scale-105"
             style={{ borderColor: "var(--color-accent)" }}
           >
             Imprimer

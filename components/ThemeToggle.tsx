@@ -51,7 +51,7 @@ export default function ThemeToggle() {
         style={{
           left: isDark ? 4 : "calc(100% - 32px)",
           background: isDark ? "var(--color-bone)" : "var(--color-accent)",
-          color: "var(--color-ink)",
+          color: isDark ? "var(--color-ink)" : "var(--color-accent-contrast)",
           transition: "left 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.3s ease",
         }}
       >

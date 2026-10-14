@@ -24,7 +24,7 @@ export default function EffectsToggle() {
       style={{
         borderColor: "var(--border-strong)",
         background: reduced ? "var(--color-accent)" : "var(--elevated)",
-        color: reduced ? "var(--color-ink)" : "var(--fg)",
+        color: reduced ? "var(--color-accent-contrast)" : "var(--fg)",
       }}
     >
       <svg

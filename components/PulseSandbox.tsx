@@ -72,7 +72,7 @@ export default function PulseSandbox() {
                 onClick={() => handleTabChange(t)}
                 className={`rounded-full px-3 py-1 font-mono text-[0.625rem] uppercase tracking-widest transition-colors ${
                   tab === t
-                    ? "bg-[var(--color-accent)] text-[var(--color-ink)]"
+                    ? "bg-[var(--color-accent)] text-[var(--color-accent-contrast)]"
                     : "text-[var(--fg-muted)] hover:text-[var(--fg)]"
                 }`}
               >

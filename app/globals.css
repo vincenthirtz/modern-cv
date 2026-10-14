@@ -35,6 +35,15 @@
   --elevated: var(--color-ink-elevated);
   --border: var(--color-border);
   --border-strong: var(--color-border-strong);
+  --fg-success: #00d492;
+  /* Accent : le script anti-flash (layout.tsx) et AccentPicker écrivent la
+     palette choisie en inline (--color-accent-dark*, --color-accent-light*),
+     le thème choisit ici la variante. Ne jamais écrire --color-accent en
+     inline : un style inline écrase :root.light. */
+  --color-accent: var(--color-accent-dark, #c8ff00);
+  --color-accent-soft: var(--color-accent-dark-soft, #d9ff4d);
+  /* Texte posé sur un fond var(--color-accent) */
+  --color-accent-contrast: var(--color-accent-dark-contrast, #1a1a1a);
 }
 
 :root.light {
@@ -47,10 +56,13 @@
   --border: rgba(10, 10, 11, 0.1);
   --border-strong: rgba(10, 10, 11, 0.2);
   --dock-shadow: rgba(0, 0, 0, 0.12);
+  --fg-success: #065f46;
   /* Contraste WCAG AA : en mode light, utiliser les variantes sombres de l'accent.
      Fallback = Lime light (#4a7a00), écrasé par JS si un autre accent est choisi. */
   --color-accent: var(--color-accent-light, #4a7a00);
   --color-accent-soft: var(--color-accent-light-soft, #6b9a00);
+  /* Les variantes light étant sombres, le texte posé dessus passe en blanc. */
+  --color-accent-contrast: #ffffff;
 }
 
 /* Valeurs par défaut des éléments : dans @layer base pour que les utilitaires
@@ -88,7 +100,7 @@ body {
 
 ::selection {
   background: var(--color-accent);
-  color: var(--color-ink);
+  color: var(--color-accent-contrast);
 }
 
 /* Scrollbar discret */
@@ -152,7 +164,7 @@ body {
   gap: 0.5rem;
   padding: 0.875rem 1.5rem;
   background: var(--color-accent);
-  color: var(--color-ink);
+  color: var(--color-accent-contrast);
   font-weight: 500;
   border-radius: 999px;
   transition:
@@ -708,7 +720,7 @@ body {
   z-index: 1000;
   padding: 0.75rem 1.25rem;
   background: var(--color-accent);
-  color: var(--color-ink);
+  color: var(--color-accent-contrast);
   font-family: var(--font-mono);
   font-size: 0.75rem;
   text-transform: uppercase;

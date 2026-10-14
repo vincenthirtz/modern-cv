@@ -150,9 +150,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 const stored = localStorage.getItem('theme');
                 const prefersLight = stored === 'light';
                 if (prefersLight) document.documentElement.classList.add('light');
-                var _a = {Lime:['#c8ff00','#d9ff4d','#1a1a1a','#5a7a00','#4a7a00','#6b9a00'],Cyan:['#00e5ff','#4df0ff','#0a1a1f','#007a8a','#007a8a','#009aaa'],Rose:['#ff3c82','#ff6fa3','#ffffff','#d42265','#d42265','#e8447f'],Orange:['#ff8a00','#ffaa40','#1a1200','#b86200','#b86200','#d07400'],Violet:['#a78bfa','#c4b5fd','#1a1530','#6d47d9','#6d47d9','#8660ec']};
+                var _a = {Lime:['#c8ff00','#d9ff4d','#1a1a1a','#5a7a00','#4a7a00','#6b9a00'],Cyan:['#00e5ff','#4df0ff','#0a1a1f','#007a8a','#007a8a','#009aaa'],Rose:['#ff3c82','#ff6fa3','#0a0a0b','#d42265','#d42265','#e8447f'],Orange:['#ff8a00','#ffaa40','#1a1200','#9a5200','#9a5200','#d07400'],Violet:['#a78bfa','#c4b5fd','#1a1530','#6d47d9','#6d47d9','#8660ec']};
                 var _c = _a[localStorage.getItem('accent')] || _a.Lime;
-                var s=document.documentElement.style; s.setProperty('--color-accent',_c[0]); s.setProperty('--color-accent-soft',_c[1]); s.setProperty('--color-accent-contrast',_c[2]); s.setProperty('--color-accent-fg',_c[3]); s.setProperty('--color-accent-light',_c[4]); s.setProperty('--color-accent-light-soft',_c[5]);
+                var s=document.documentElement.style; s.setProperty('--color-accent-dark',_c[0]); s.setProperty('--color-accent-dark-soft',_c[1]); s.setProperty('--color-accent-dark-contrast',_c[2]); s.setProperty('--color-accent-fg',_c[3]); s.setProperty('--color-accent-light',_c[4]); s.setProperty('--color-accent-light-soft',_c[5]);
               } catch (e) {}
             `,
           }}

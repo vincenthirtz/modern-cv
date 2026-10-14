@@ -14,9 +14,10 @@ const SOURCE = `const ACCENTS = [
 ];
 
 function applyAccent(a) {
+  // Variables d'entrée : le CSS choisit la variante selon le thème.
   const s = document.documentElement.style;
-  s.setProperty("--color-accent", a.color);
-  s.setProperty("--color-accent-soft", a.soft);
+  s.setProperty("--color-accent-dark", a.color);
+  s.setProperty("--color-accent-dark-soft", a.soft);
 }
 
 export function AccentPicker() {
@@ -54,13 +55,15 @@ const CSS = `/* Toutes les couleurs du site lisent des custom
    properties — on ne change que les variables,
    jamais les composants. */
 :root {
-  --color-accent: #c8ff00; /* Lime par défaut */
-  --color-accent-soft: #d9ff4d;
-  --color-accent-contrast: #1a1a1a;
+  --color-accent: var(--color-accent-dark, #c8ff00);
+  --color-accent-soft: var(--color-accent-dark-soft, #d9ff4d);
+  --color-accent-contrast: var(--color-accent-dark-contrast, #1a1a1a);
 }
 
 :root.light {
-  --color-accent: #4a7a00; /* contrastes WCAG AA */
+  /* contrastes WCAG AA */
+  --color-accent: var(--color-accent-light, #4a7a00);
+  --color-accent-contrast: #ffffff;
 }
 
 /* Le toggle applique simplement la classe .light
